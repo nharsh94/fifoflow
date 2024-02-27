@@ -1,8 +1,11 @@
-# volumes:
+volumes:
+    postgres:
+        external: true
 services:
     fastapi:
         environment:
             CORS_HOST: http://localhost:5173
+            DATABASE_URL: postgresql://user:user@postgres/user
         build:
             context: api
             dockerfile: Dockerfile.dev
