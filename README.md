@@ -170,3 +170,9 @@ in GitLab.
 Merge a change into main to kick off the initial deploy. Once the build pipeline
 finishes you should be able to see an "under construction" page on your GitLab
 pages site.
+
+# packit
+
+packit was designed to reduce the headache that is the inventory system.
+
+packit makes it easier to track your inventory and your orders. just point-and-click, that's it! 😊
