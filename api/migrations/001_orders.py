@@ -9,8 +9,8 @@ steps = [
             quantity INT NOT NULL,
             unit_price DECIMAL(10, 2) NOT NULL,
             total_price DECIMAL(10, 2) NOT NULL,
-        )
-        """
+        );
+        """,
         """
         DROP TABLE order_items;
         """
@@ -27,7 +27,10 @@ steps = [
             product_id INT references products(product_id),
             quantity INT,
             total_price DECIMAL(10, 2),
-        )
+        );
+        """,
+        """
+        DROP TABLE vacations;
         """
     ]
 ]
