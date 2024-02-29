@@ -1,38 +1,33 @@
 steps = [
     [
-        # "Up" SQL statement
         """
-        CREATE TABLE dummy (
+        CREATE TABLE order_items (
             id SERIAL PRIMARY KEY NOT NULL,
-            required_limited_text VARCHAR(1000) NOT NULL,
-            required_unlimited_text TEXT NOT NULL,
-            required_date_time TIMESTAMP NOT NULL,
-            automatically_set_date_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            required_integer INTEGER NOT NULL,
-            required_money MONEY NOT NULL
-        );
-        """,
-        # "Down" SQL statement
+            shop_id INT references shops(id) NOT NULL,
+            order_id INT reference orders(id) NOT NULL,
+            product_id INT reference products(id) NOT NULL,
+            quantity INT NOT NULL,
+            unit_price DECIMAL(10, 2) NOT NULL,
+            total_price DECIMAL(10, 2) NOT NULL,
+        )
         """
-        DROP TABLE dummy;
         """
-    ],
+        DROP TABLE order_items;
+        """
+    ]
     [
-        # "Up" SQL statement
         """
-        CREATE TABLE big_dummy (
-            id SERIAL PRIMARY KEY NOT NULL,
-            required_limited_text VARCHAR(1000) NOT NULL,
-            required_unlimited_text TEXT NOT NULL,
-            required_date_time TIMESTAMP NOT NULL,
-            automatically_set_date_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            required_integer INTEGER NOT NULL,
-            required_money MONEY NOT NULL
-        );
-        """,
-        # "Down" SQL statement
-        """
-        DROP TABLE big_dummy;
+        CREATE TABLE orders(
+            order_id SEARIAL PRIMART KEY,
+            shop_id INT REFERENCES shops(shop_id),
+            employee_id INT references employee_users(employee_id),
+            customer_id INT references customer_users(customer_id),
+            order_date TIMESTAMP,
+            order_item INT,
+            product_id INT references products(product_id),
+            quantity INT,
+            total_price DECIMAL(10, 2),
+        )
         """
     ]
 ]
