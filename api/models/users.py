@@ -1,18 +1,17 @@
 """
 Pydantic Models for Users.
 """
-from pydantic import BaseModel
-from datetime import datetime
+from pydantic import BaseModel, EmailStr
+from jwtdown_fastapi.authentication import Token
 
 class User(BaseModel):
     first_name: str
     last_name: str
-    email: str
+    email: EmailStr
     username: str
 
 class DBUser(User):
     id: int
-    modified: datetime
     password_hash: str
 
 class UserRequest(BaseModel):
@@ -42,3 +41,8 @@ class UserWithPw(BaseModel):
     username: str
     password: str
 
+class AccountToken(Token):
+    user: UserResponse
+
+class AuthenticationException(Exception):
+    pass

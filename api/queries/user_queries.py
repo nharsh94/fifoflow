@@ -84,6 +84,7 @@ class UserQueries:
         Creates a new user in the database
 
         Raises a UserInsertionException if creating the user fails
+        Returns response object that doesn't include sensitive info
         """
         try:
             with pool.connection() as conn:

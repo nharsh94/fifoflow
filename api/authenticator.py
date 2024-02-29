@@ -6,7 +6,7 @@ from queries.user_queries import UserQueries
 from models.users import UserResponse, DBUser
 
 
-class MyAuthenticator(Authenticator):
+class Authenticator(Authenticator):
     async def get_account_data(
         self,
         username: str,
@@ -44,4 +44,4 @@ class MyAuthenticator(Authenticator):
         )
 
 
-authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
+authenticator = Authenticator(os.environ["SIGNING_KEY"])
