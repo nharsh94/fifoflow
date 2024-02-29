@@ -17,7 +17,7 @@ steps = [
     ],
     [
         """
-        CREATE TABLE orders(
+        CREATE TABLE orders (
             order_id SERIAL PRIMARY KEY,
             shop_id INT REFERENCES shops(shop_id),
             employee_id INT REFERENCES employee_users(employee_id),
