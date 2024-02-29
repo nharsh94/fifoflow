@@ -69,7 +69,7 @@ async def ensure_migrations_table(db_url: str):
                 """
                 CREATE TABLE IF NOT EXISTS migrations (
                     name VARCHAR(300) PRIMARY KEY NOT NULL,
-                    digest BYTE NOT NULL
+                    digest BYTEA NOT NULL
                 );
                 """
             )
