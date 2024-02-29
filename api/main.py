@@ -2,7 +2,7 @@ from models.users import User, UserRequest, UserResponse
 from queries.user_queries import UserQueries
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from routers import auth_router
+from routers import auth_router, orders
 import os
 from authenticator import authenticator
 
@@ -60,3 +60,4 @@ def launch_details():
     }
 
 app.include_router(auth_router.router)
+app.include_router(orders.router)
