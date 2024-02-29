@@ -9,9 +9,7 @@ from fastapi import (
     status,
     APIRouter,
 )
-from queries.user_queries import (
-    UserQueries,
-)
+from queries.user_queries import UserQueries
 
 from utils.exceptions import UserDatabaseException
 from models.users import UserRequest, UserResponse

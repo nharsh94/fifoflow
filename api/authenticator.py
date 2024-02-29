@@ -2,46 +2,46 @@
 import os
 from fastapi import Depends
 from jwtdown_fastapi.authentication import Authenticator
-from queries.user_queries import UserQueries
-from models.users import UserResponse, DBUser
+from queries.user_queries import AccountRepo
+from models import AccountOut, DBAccount
 
 
-class Authenticator(Authenticator):
+class MyAuthenticator(Authenticator):
     async def get_account_data(
         self,
         username: str,
-        users: UserQueries,
-    ) -> DBUser:  # Add!!!
-        # Use your repo to get the user based on the
+        accounts: AccountRepo,
+    ) -> DBAccount:  # Add!!!
+        # Use your repo to get the account based on the
         # username (which could be an email)
-        user = users.get(username)
-        if not user:
-            raise Exception("user not found")
-        return user
+        account = accounts.get(username)
+        if not account:
+            raise Exception("Account not found")
+        return account
 
     def get_account_getter(
         self,
-        users: UserQueries = Depends(),
+        accounts: AccountRepo = Depends(),
     ):
-        # Return the users. That's it.
-        return users
+        # Return the accounts. That's it.
+        return accounts
 
-    def get_hashed_password(self, user: DBUser):
+    def get_hashed_password(self, account: DBAccount):
         # Return the encrypted password value from your
-        # user object
-        return user.password_hash
+        # account object
+        return account.password_hash
 
-    def get_user_data_for_cookie(self, user: DBUser):
+    def get_account_data_for_cookie(self, account: DBAccount):
         # Return the username and the data for the cookie.
         # You must return TWO values from this method.
-        return user.username, UserResponse(
-            id=user.id,
-            username=user.username,
-            first_name=user.first_name,
-            last_name=user.last_name,
-            email=user.email,
-            modified=user.modified.isoformat(),
+        return account.username, AccountOut(
+            id=account.id,
+            username=account.username,
+            first_name=account.first_name,
+            last_name=account.last_name,
+            email=account.email,
+            modified=account.modified.isoformat(),
         )
 
 
-authenticator = Authenticator(os.environ["SIGNING_KEY"])
+authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])

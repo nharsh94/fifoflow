@@ -1,116 +1,66 @@
-"""
-Database Queries for Users
-"""
-import os
-import psycopg
-from psycopg_pool import ConnectionPool
 from psycopg.rows import class_row
-from typing import Optional
-from models.users import UserWithPw
-from utils.exceptions import UserDatabaseException
+from psycopg_pool import ConnectionPool
+import os
+from models import Account, DBAccount
+from models import AuthenticationException
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
-if not DATABASE_URL:
-    raise ValueError("DATABASE_URL environment variable is not set")
-
-pool = ConnectionPool(DATABASE_URL)
+pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
 
 
-class UserQueries:
-    """
-    Class containing queries for the Users table
+class AccountRepo:
+    def get_user_by_id(self, pk: int) -> DBAccount:
+        with pool.connection() as conn:
+            with conn.cursor(row_factory=class_row(DBAccount)) as cur:
+                cur.execute(
+                    """
+                    SELECT id, username, first_name, last_name,
+                        modified, email, password_hash
+                    FROM accounts
+                    WHERE id = %s;
+                    """,
+                    [pk],
+                )
+                ac = cur.fetchone()
+                if ac is None:
+                    raise AuthenticationException("No account found")
+                else:
+                    return ac
 
-    Can be dependency injected into a route like so
+    def get(self, username: str) -> DBAccount | None:
+        with pool.connection() as conn:
+            with conn.cursor(row_factory=class_row(DBAccount)) as cur:
+                cur.execute(
+                    """
+                    SELECT id, username, first_name, last_name,
+                        modified, email, password_hash
+                    FROM accounts
+                    WHERE username = %s;
+                    """,
+                    [username],
+                )
+                return cur.fetchone()
 
-    def my_route(userQueries: UserQueries = Depends()):
-        # Here you can call any of the functions to query the DB
-    """
+    def create_user(self, account: Account, hashed_password: str) -> int:
+        with pool.connection() as conn:
+            with conn.cursor(row_factory=class_row(DBAccount)) as cur:
+                cur.execute(
+                    """
+                    INSERT INTO accounts
+                    (username, password_hash, first_name,
+                        last_name, email)
+                    VALUES (%s, %s, %s, %s, %s)
+                    RETURNING *;
+                    """,
+                    (
+                        account.username,
+                        hashed_password,
+                        account.first_name,
+                        account.last_name,
+                        account.email,
+                    ),
+                )
+                new_account = cur.fetchone()
+                if not new_account:
+                    raise AuthenticationException("Error creating Account")
 
-    def get_by_username(self, username: str) -> Optional[UserWithPw]:
-        """
-        Gets a user from the database by username
-
-        Returns None if the user isn't found
-        """
-        try:
-            with pool.connection() as conn:
-                with conn.cursor(row_factory=class_row(UserWithPw)) as cur:
-                    cur.execute(
-                        """
-                            SELECT
-                                *
-                            FROM users
-                            WHERE username = %s
-                            """,
-                        [username],
-                    )
-                    user = cur.fetchone()
-                    if not user:
-                        return None
-        except psycopg.Error as e:
-            print(e)
-            raise UserDatabaseException(f"Error getting user {username}")
-        return user
-
-    def get_by_id(self, id: int) -> Optional[UserWithPw]:
-        """
-        Gets a user from the database by user id
-
-        Returns None if the user isn't found
-        """
-        try:
-            with pool.connection() as conn:
-                with conn.cursor(row_factory=class_row(UserWithPw)) as cur:
-                    cur.execute(
-                        """
-                            SELECT
-                                *
-                            FROM users
-                            WHERE id = %s
-                            """,
-                        [id],
-                    )
-                    user = cur.fetchone()
-                    if not user:
-                        return None
-        except psycopg.Error as e:
-            print(e)
-            raise UserDatabaseException(f"Error getting user with id {id}")
-
-        return user
-
-    def create_user(self, username: str, hashed_password: str) -> UserWithPw:
-        """
-        Creates a new user in the database
-
-        Raises a UserInsertionException if creating the user fails
-        Returns response object that doesn't include sensitive info
-        """
-        try:
-            with pool.connection() as conn:
-                with conn.cursor(row_factory=class_row(UserWithPw)) as cur:
-                    cur.execute(
-                        """
-                        INSERT INTO users (
-                            username,
-                            password
-                        ) VALUES (
-                            %s, %s
-                        )
-                        RETURNING *;
-                        """,
-                        [
-                            username,
-                            hashed_password,
-                        ],
-                    )
-                    user = cur.fetchone()
-                    if not user:
-                        raise UserDatabaseException(
-                            f"Could not create user with username {username}"
-                        )
-        except psycopg.Error:
-            raise UserDatabaseException(
-                f"Could not create user with username {username}"
-            )
-        return user
+                return new_account.id
