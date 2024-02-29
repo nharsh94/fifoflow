@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from routers import auth_router
 import os
 
 app = FastAPI()
@@ -26,3 +27,9 @@ def launch_details():
             "min": "00"
         }
     }
+
+@app.get("/")
+def health_check():
+    return {"Hello": "World"}
+
+app.include_router(auth_router.router)
