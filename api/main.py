@@ -24,6 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/api/user/{pk}")
 async def get_user(
     pk: int,
