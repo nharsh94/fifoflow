@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+from routers import products
 import os
 from models import AccountOut, AccountIn, Account, AccountToken
 from queries.user_queries import AccountRepo
@@ -8,6 +9,7 @@ from models import AuthenticationException
 
 authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
 app = FastAPI()
+app.include_router(products.router)
 app.include_router(authenticator.router)
 
 CORS_HOST = os.environ.get("CORS_HOST")
