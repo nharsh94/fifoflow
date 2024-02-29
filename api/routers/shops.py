@@ -10,6 +10,7 @@ from api.queries.shop_database import (
 
 router = APIRouter()
 
+
 @router.post("/shops", response_model=Union[ShopOut, Error])
 def create_shop(
     shop: ShopIn,
@@ -24,6 +25,7 @@ def get_all(
 ):
     return repo.get_all()
 
+
 @router.put("/shops/{shops_id}", response_model=Union[ShopOut, Error])
 def update_shop(
     shops_id: int,
@@ -32,12 +34,14 @@ def update_shop(
 ) -> Union[Error, ShopOut]:
     return repo.update(shops_id, shop)
 
+
 @router.delete("/shops/{shops_id}", response_model=bool)
 def delete_shop(
     shops_id: int,
     repo: ShopRepository = Depends(),
 ) -> bool:
     return repo.delete(shops_id)
+
 
 @router.get("/shops/{shops_id}", response_model=Optional[ShopOut])
 def get_shop(
