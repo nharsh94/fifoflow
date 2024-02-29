@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Response
 from typing import Union, List, Optional
 
-from queries.shops import (
+from api.queries.shop_database import (
     Error,
     ShopIn,
     ShopRepository,
