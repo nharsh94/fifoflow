@@ -3,3 +3,9 @@
 -   [x] 02/26/2024: Relational database created, importing to postgres
 
 -   [x] 02/23/2024: Created API Design, User Stories and Wireframe Design
+
+-   [x] 02/26/2024: Design review, completed endpoint readjustment and relational database visualization
+
+-   [x] 02/27/2024: Finalized database design
+
+-   [x] 02/28/2024: Tables initialized in migrations, authentication completed w/ endpoints.

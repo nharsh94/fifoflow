@@ -2,7 +2,18 @@
 Pydantic Models for Users.
 """
 from pydantic import BaseModel
+from datetime import datetime
 
+class User(BaseModel):
+    first_name: str
+    last_name: str
+    email: str
+    username: str
+
+class DBUser(User):
+    id: int
+    modified: datetime
+    password_hash: str
 
 class UserRequest(BaseModel):
     """
@@ -30,3 +41,4 @@ class UserWithPw(BaseModel):
     id: int
     username: str
     password: str
+

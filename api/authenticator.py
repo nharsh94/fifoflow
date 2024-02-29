@@ -2,46 +2,45 @@
 import os
 from fastapi import Depends
 from jwtdown_fastapi.authentication import Authenticator
-from queries import AccountRepo
-from models import AccountOut, DBAccount
+from queries.user_queries import UserQueries
+from models.users import UserResponse, DBUser
 
 
 class MyAuthenticator(Authenticator):
     async def get_account_data(
         self,
         username: str,
-        accounts: AccountRepo,
-    ) -> DBAccount:  # Add!!!
-        # Use your repo to get the account based on the
+        users: UserQueries,
+    ) -> DBUser:  # Add!!!
+        # Use your repo to get the user based on the
         # username (which could be an email)
-        account = accounts.get(username)
-        if not account:
-            raise Exception("Account not found")
-        return account
+        user = users.get(username)
+        if not user:
+            raise Exception("user not found")
+        return user
 
     def get_account_getter(
         self,
-        accounts: AccountRepo = Depends(),
+        users: UserQueries = Depends(),
     ):
-        # Return the accounts. That's it.
-        return accounts
+        # Return the users. That's it.
+        return users
 
-    def get_hashed_password(self, account: DBAccount):
+    def get_hashed_password(self, user: DBUser):
         # Return the encrypted password value from your
-        # account object
-        return account.password_hash
+        # user object
+        return user.password_hash
 
-    def get_account_data_for_cookie(self, account: DBAccount):
+    def get_user_data_for_cookie(self, user: DBUser):
         # Return the username and the data for the cookie.
         # You must return TWO values from this method.
-        return account.username, AccountOut(
-            id=account.id,
-            username=account.username,
-            first_name=account.first_name,
-            last_name=account.last_name,
-            age=account.age,
-            email=account.email,
-            modified=account.modified.isoformat(),
+        return user.username, UserResponse(
+            id=user.id,
+            username=user.username,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            email=user.email,
+            modified=user.modified.isoformat(),
         )
 
 
