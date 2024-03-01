@@ -14,7 +14,6 @@ app = FastAPI(
         "All PackIt endpoints needed to make any records to your warehouse."
     )
 )
-
 app.include_router(shops.router)
 app.include_router(products.router)
 app.include_router(auth_router.router)
