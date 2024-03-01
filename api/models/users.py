@@ -11,11 +11,11 @@ class UserRequest(BaseModel):
     """
     username: str
     password: str
-    customer_id: Optional[PositiveInt] = None  
+    customer_id: Optional[PositiveInt] = None
     # Optional field, assuming not all users might have this
-    employee_id: Optional[PositiveInt] = None  
+    employee_id: Optional[PositiveInt] = None
     # Optional field, assuming not all users might have this
-    supplier_id: Optional[PositiveInt] = None  
+    supplier_id: Optional[PositiveInt] = None
     # Optional field, assuming not all users might have this
 
 
@@ -35,9 +35,9 @@ class UserWithPw(BaseModel):
     id: int
     username: str
     password: str
-    customer_id: Optional[PositiveInt] = None  
+    customer_id: Optional[PositiveInt] = None
     # Optional field, assuming not all users might have this
-    employee_id: Optional[PositiveInt] = None  
+    employee_id: Optional[PositiveInt] = None
     # Optional field, assuming not all users might have this
-    supplier_id: Optional[PositiveInt] = None  
+    supplier_id: Optional[PositiveInt] = None
     # Optional field, assuming not all users might have this
