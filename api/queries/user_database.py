@@ -20,7 +20,6 @@ class UserQueries:
     def get_all_users(self) -> list[UserWithPw]:
         """
         Retrieves all users from DB
-        
         Returns list of UserWithPw
         """
         users = []
@@ -41,11 +40,9 @@ class UserQueries:
         return users
     """
     Class containing queries for the Users table
-
     Can be dependency injected into a route like so
-
     def my_route(userQueries: UserQueries = Depends()):
-        # Here you can call any of the functions to query the DB
+    Here you can call any of the functions to query the DB
     """
 
     def get_by_username(self, username: str) -> Optional[UserWithPw]:

@@ -26,6 +26,7 @@ from utils.authentication import (
 # This saves us typing in all the routes below
 router = APIRouter(tags=["User"], prefix="/api/user")
 
+
 @router.get("/list", response_model=List[UserResponse])
 async def list_users(queries: UserQueries = Depends()) -> List[UserResponse]:
     """
@@ -33,7 +34,11 @@ async def list_users(queries: UserQueries = Depends()) -> List[UserResponse]:
     """
     user_list = queries.get_all_users()
 
-    user_response_list = [UserResponse(id=user.id, username=user.username) for user in user_list]
+    user_response_list = [UserResponse(
+        id=user.id, 
+        username=user.username
+        ) 
+        for user in user_list]
 
     return user_response_list
 
