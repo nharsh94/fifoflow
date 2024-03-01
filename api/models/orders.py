@@ -31,4 +31,11 @@ class OrderItemsIn(BaseModel):
     unit_price: Decimal
     total_price: Decimal
 
-
+class OrderItemsOut(BaseModel):
+    order_items_id: int
+    shop_id: int
+    order_id: int
+    product_id: int
+    quantity: int
+    unit_price: Decimal
+    total_price: Decimal
