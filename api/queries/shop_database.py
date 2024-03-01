@@ -1,39 +1,33 @@
-from pydantic import BaseModel
+"""
+Database Queries for Shops
+"""
+from models.shops import ShopIn, ShopOut, Error
+
 from typing import List, Union, Optional
 from queries.pool import pool
 
 
-class Error(BaseModel):
-    message: str
-
-
-class ShopIn(BaseModel):
-    shop_name: str
-    address: str
-    phone: str
-
-
-class ShopOut(BaseModel):
-    shop_id: int
-    shop_name: str
-    address: str
-    phone: str
-
-
 class ShopRepository:
     def get_one(self, shops_id: int) -> Optional[ShopOut]:
+        """
+        Fetch a single shop in the database by shop_id
+
+        Returns None if the shop isn't found
+
+        Raises a Error message if fetching the shop fails
+        """
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                                                SELECT shop_id
-                                                     , shop_name
-                                                     , address
-                                                     , phone
-                                                FROM shops
-                                                WHERE shop_id = %s
-                                                """,
+                        SELECT shop_id
+                             , shop_name
+                             , address
+                             , phone
+                        FROM shops
+                        WHERE shop_id = %s
+                        """,
                         [shops_id],
                     )
                     record = result.fetchone()
@@ -44,14 +38,17 @@ class ShopRepository:
             return {"message": "Could not get Shop"}
 
     def delete(self, shops_id: int) -> bool:
+        """
+        Deletes a shop in the database by shop_id
+        """
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                                                DELETE FROM shops
-                                                WHERE shop_id = %s
-                                                """,
+                        DELETE FROM shops
+                        WHERE shop_id = %s
+                        """,
                         [shops_id],
                     )
                     return True
@@ -61,27 +58,35 @@ class ShopRepository:
     def update(
         self, shops_id: int, shop: ShopIn
     ) -> Union[List[ShopOut], Error]:
+        """
+        Updates a shop in the database
+
+        Raises a Error message if updating the shop fails
+        """
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                                                UPDATE shops
-                                                SET shop_name = %s
-                                                  , address = %s
-                                                  , phone = %s
-                                                  WHERE shop_id = %s
-                                                """,
+                        UPDATE shops
+                        SET shop_name = %s
+                          , address = %s
+                          , phone = %s
+                          WHERE shop_id = %s
+                        """,
                         [shop.shop_name, shop.address, shop.phone, shops_id],
                     )
-                    # old_data = shop.dict()
-                    # return ShopOut(shop_id=shops_id, **old_data)
                     return self.shop_in_out(shops_id, shop)
 
         except Exception:
             return {"message": "Could not update Shop"}
 
     def get_all(self) -> Union[Error, List[ShopOut]]:
+        """
+        Fetches a list of shops in the database
+
+        Raises a Error message if fetching the shop list fails
+        """
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -106,22 +111,25 @@ class ShopRepository:
             return {"message": "Could not get all Shops"}
 
     def create(self, shop: ShopIn) -> ShopOut:
+        """
+        Creates a new shop in the database
+
+        Raises an Error message if creating the shop fails
+        """
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                                                INSERT INTO shops
-                                                (shop_name, address, phone)
-                                                VALUES
-                                                (%s, %s, %s)
-                                                RETURNING shop_id;
-                                                """,
+                        INSERT INTO shops
+                        (shop_name, address, phone)
+                        VALUES
+                        (%s, %s, %s)
+                        RETURNING shop_id;
+                        """,
                         [shop.shop_name, shop.address, shop.phone],
                     )
                     shop_id = result.fetchone()[0]
-                    # old_data = shop.dict()
-                    # return ShopOut(shop_id=shop_id, **old_data)
                     return self.shop_in_out(shop_id, shop)
         except Exception:
             return {"message": "Could not create Shop"}

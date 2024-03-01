@@ -1,37 +1,11 @@
-from pydantic import BaseModel
-from decimal import Decimal
 from typing import List, Optional, Union
 from queries.pool import pool
-
-
-class Error(BaseModel):
-    message: str
-
-
-class ProductIn(BaseModel):
-    name: str
-    description: str
-    price: Decimal
-    quantity_in_stock: int
-    category: str
-    supplier_id: int
-    alert_threshold: int
-
-
-class ProductOut(BaseModel):
-    id: int
-    name: str
-    description: str
-    price: Decimal
-    quantity_in_stock: int
-    category: str
-    supplier_id: int
-    alert_threshold: int
+import models.products as pro
 
 
 class ProductRepository:
 
-    def get_one(self, product_id: int) -> Optional[ProductOut]:
+    def get_one(self, product_id: int) -> Optional[pro.ProductOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -70,7 +44,8 @@ class ProductRepository:
     def update(
             self,
             product_id: int,
-            product: ProductIn) -> Union[ProductOut, Error]:
+            product: pro.ProductIn
+            ) -> Union[List[pro.ProductOut], pro.Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -104,7 +79,8 @@ class ProductRepository:
 
     def partial_update(self,
                        product_id: int,
-                       product: ProductIn) -> Union[ProductOut, Error]:
+                       product: pro.ProductIn
+                       ) -> Union[pro.ProductOut, pro.Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -136,7 +112,7 @@ class ProductRepository:
             print(e)
             return {"message": "Could not update product"}
 
-    def get_all(self) -> Union[Error, List[ProductOut]]:
+    def get_all(self) -> Union[List[pro.ProductOut], pro.Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -154,7 +130,7 @@ class ProductRepository:
             print(e)
             return {"message": "Could not get all products"}
 
-    def create(self, product: ProductIn) -> ProductOut:
+    def create(self, product: pro.ProductIn) -> pro.ProductOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -182,18 +158,18 @@ class ProductRepository:
                             product.alert_threshold
                         ]
                     )
-                id = result.fetchone()[0]
-                return self.product_in_to_out(id, product)
+                product_id = result.fetchone()[0]
+                return self.product_in_to_out(product_id, product)
         except Exception as e:
             print(e)
             return {"message": "Could not create product"}
 
-    def product_in_to_out(self, id: int, product: ProductOut):
+    def product_in_to_out(self, product_id: int, product: pro.ProductOut):
         old_data = product.dict()
-        return ProductOut(id=id, **old_data)
+        return product.ProductOut(product_id=product_id, **old_data)
 
     def record_to_product_out(self, record):
-        return ProductOut(
+        return pro.ProductOut(
             id=record[0],
             name=record[1],
             description=record[2],
