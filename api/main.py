@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import products
+from routers import products, auth_router, user_router
 import os
 
 from routers import shops
@@ -15,26 +15,19 @@ app = FastAPI(
 )
 app.include_router(shops.router)
 app.include_router(products.router)
+app.include_router(auth_router.router)
+app.include_router(user_router.router)
+
+CORS_HOST = os.environ.get("CORS_HOST")
+if not CORS_HOST:
+    origins = ["http://localhost:3000", "http://localhost:5173"]
+else:
+    origins = [CORS_HOST]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        os.environ.get("CORS_HOST")
-    ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.get("/api/launch-details")
-def launch_details():
-    return {
-        "launch_details": {
-            "module": 3,
-            "week": 17,
-            "day": 5,
-            "hour": 19,
-            "min": "00"
-        }
-    }
