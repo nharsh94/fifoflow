@@ -1,7 +1,6 @@
 """
 Database Queries for Users
 """
-from fastapi import APIRouter
 import os
 import psycopg
 from psycopg_pool import ConnectionPool
@@ -9,9 +8,6 @@ from psycopg.rows import class_row
 from typing import Optional
 from models.users import UserWithPw
 from utils.exceptions import UserDatabaseException
-
-
-router = APIRouter(tags=["Authorization"], prefix="/api/auth")
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if not DATABASE_URL:

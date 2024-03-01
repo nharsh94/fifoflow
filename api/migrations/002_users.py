@@ -2,22 +2,17 @@ steps = [
     [
         # "Up" SQL statement
         """
-        CREATE TABLE accounts (
+        CREATE TABLE users (
             id SERIAL PRIMARY KEY NOT NULL,
-            username VARCHAR(255) NOT NULL UNIQUE,
-            password_hash TEXT NOT NULL,
-            first_name VARCHAR(255) NOT NULL,
-            last_name VARCHAR(255) NOT NULL,
-            email VARCHAR(255) NOT NULL UNIQUE,
-              modified TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            username VARCHAR(100) NOT NULL UNIQUE,
+            password VARCHAR(256) NOT NULL
         );
         """,
         # "Down" SQL statement
         """
-        DROP TABLE accounts;
-        """,
+        DROP TABLE users;
+        """
     ],
-
     [
         """
         CREATE TABLE supplier_users (
