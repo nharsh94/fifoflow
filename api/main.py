@@ -3,7 +3,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers import products, auth_router, user_router
 import os
 
-app = FastAPI()
+from routers import shops
+
+app = FastAPI(
+    docs_url="/api/docs",
+    redoc_url="/api/redocs",
+    title="PackIt API",
+    description=(
+        "All PackIt endpoints needed to make any records to your warehouse."
+    )
+)
+app.include_router(shops.router)
 app.include_router(products.router)
 app.include_router(auth_router.router)
 app.include_router(user_router.router)
