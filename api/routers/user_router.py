@@ -1,6 +1,7 @@
 """
 User Authentication API Router
 """
+from typing import List
 from fastapi import (
     Depends,
     Request,
@@ -24,6 +25,17 @@ from utils.authentication import (
 # Note we are using a prefix here,
 # This saves us typing in all the routes below
 router = APIRouter(tags=["User"], prefix="/api/user")
+
+@router.get("/list", response_model=List[UserResponse])
+async def list_users(queries: UserQueries = Depends()) -> List[UserResponse]:
+    """
+    List all users in the DB
+    """
+    user_list = queries.get_all_users()
+
+    user_response_list = [UserResponse(id=user.id, username=user.username) for user in user_list]
+
+    return user_response_list
 
 
 @router.post("/signup")
