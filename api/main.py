@@ -3,7 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers import products
 import os
 
+from routers import shops
+
 app = FastAPI()
+app.include_router(shops.router)
 app.include_router(products.router)
 
 app.add_middleware(
