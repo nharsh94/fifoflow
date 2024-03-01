@@ -1,7 +1,7 @@
 from models.orders import OrderItemsIn, OrdersIn, OrdersOut, OrderItemsOut
 from pool import pool
 
-class OrdersRepository:
+class  OrdersRepository:
     def create_order(self, order: OrdersIn):
         try:
             with pool.connection() as conn:
@@ -9,7 +9,8 @@ class OrdersRepository:
                     result = db.execute(
                         """
                         INSERT INTO orders
-                            (shop_id, employee_id, customer_id, order_date, order_item, product_id, quantity, total_price)
+                            (shop_id, employee_id, customer_id, order_date,
+                            order_item, product_id, quantity, total_price)
                         VALUES
                             (%s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING order_id;
@@ -30,7 +31,7 @@ class OrdersRepository:
         except Exception:
             return {"message": "Order failed to create"}
 
-    def order_in_out(self, order_id: int, order:OrderIn):
+    def order_in_out(self, order_id: int, order: OrdersIn ):
         old_data = order.dict()
         return OrdersOut(order_id=order_id, **old_data)
 
@@ -118,7 +119,8 @@ class OrdersRepository:
                     result = db.execute(
                         """
                         SELECT order_id, shop_id, employee_id, customer_id,
-                            order_date, order_item, product_id, quantity, total_price
+                            order_date, order_item, product_id, quantity,
+                            total_price
                         FROM orders
                         ORDER BY order_id
                         """
@@ -141,7 +143,7 @@ class OrdersRepository:
         except Exception:
             return {"message": "Failed to get all orders"}
 
-class OrderItemsRepository:
+class  OrderItemsRepository:
     def create_order_item(self, order_item: OrderItemsIn):
         try:
             with pool.connection() as conn:
@@ -149,13 +151,15 @@ class OrderItemsRepository:
                     result = db.execute(
                         """
                         INSERT INTO order_items
-                        (shop_id, order_id, product_id, quantity, unit_price, total_price)
+                        (shop_id, order_id, product_id, quantity,
+                        unit_price, total_price)
                         VALUES
                         (%s, %s, %s, %s, %s, %s)
                         RETURNING id
                         """,
-                        [order_item.shop_id, order_item.order_id, order_item.product_id,
-                         order_item.quantity, order_item.unit_price, order_item.total_price]
+                        [order_item.shop_id, order_item.order_id,
+                        order_item.product_id, order_item.quantity,
+                        order_item.unit_price, order_item.total_price]
                     )
                     id = result.fetchone()[0]
                     return self.order_item_in_out(id, order_item)
@@ -189,8 +193,6 @@ class OrderItemsRepository:
                     return self.record_to_order_item_out(record)
         except Exception:
             return {"message": "Order items ID does not exist"}
-
-
 
     def record_to_order_item_out(self, record):
         return OrderItemsOut(
@@ -233,8 +235,9 @@ class OrderItemsRepository:
                             total_price = %s
                         WHERE id = %s
                         """
-                        [order_item.shop_id, order_item.order_id, order_item.product_id,
-                         order_item.quantity, order_item.unit_price, order_item.total_price]
+                        [order_item.shop_id, order_item.order_id,
+                        order_item.product_id, order_item.quantity,
+                        order_item.unit_price, order_item.total_price]
                     )
                     return self.order_items_in_out(id, order_item)
         except Exception:
