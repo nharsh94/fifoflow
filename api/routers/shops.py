@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Response
 from typing import Union, List, Optional
 
-from api.queries.shop_database import (
+from queries.shop_database import (
     Error,
     ShopIn,
     ShopRepository,
@@ -11,7 +11,7 @@ from api.queries.shop_database import (
 router = APIRouter()
 
 
-@router.post("/shops", response_model=Union[ShopOut, Error])
+@router.post("/shops", response_model=Union[ShopOut, Error], tags=["Shops"])
 def create_shop(
     shop: ShopIn,
     repo: ShopRepository = Depends(),
@@ -19,14 +19,18 @@ def create_shop(
     return repo.create(shop)
 
 
-@router.get("/shops", response_model=Union[List[ShopOut], Error])
+@router.get("/shops",
+            response_model=Union[List[ShopOut], Error],
+            tags=["Shops"])
 def get_all(
     repo: ShopRepository = Depends(),
 ):
     return repo.get_all()
 
 
-@router.put("/shops/{shops_id}", response_model=Union[ShopOut, Error])
+@router.put("/shops/{shops_id}",
+            response_model=Union[ShopOut, Error],
+            tags=["Shops"])
 def update_shop(
     shops_id: int,
     shop: ShopIn,
@@ -35,7 +39,7 @@ def update_shop(
     return repo.update(shops_id, shop)
 
 
-@router.delete("/shops/{shops_id}", response_model=bool)
+@router.delete("/shops/{shops_id}", response_model=bool, tags=["Shops"])
 def delete_shop(
     shops_id: int,
     repo: ShopRepository = Depends(),
@@ -43,7 +47,9 @@ def delete_shop(
     return repo.delete(shops_id)
 
 
-@router.get("/shops/{shops_id}", response_model=Optional[ShopOut])
+@router.get("/shops/{shops_id}",
+            response_model=Optional[ShopOut],
+            tags=["Shops"])
 def get_shop(
     shops_id: int,
     response: Response,
