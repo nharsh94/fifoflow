@@ -17,13 +17,31 @@ pool = ConnectionPool(DATABASE_URL)
 
 
 class UserQueries:
+    def get_all_users(self) -> list[UserWithPw]:
+        """
+        Retrieves all users from DB
+        Returns list of UserWithPw
+        """
+        users = []
+        try:
+            with pool.connection() as conn:
+                with conn.cursor(row_factory=class_row(UserWithPw)) as cur:
+                    cur.execute(
+                        """
+                        SELECT id, username, password
+                        FROM users
+                        """
+                    )
+                    users = cur.fetchall()
+        except psycopg.Error as e:
+            print(e)
+            raise UserDatabaseException("Error retrieving all users")
+        return users
     """
     Class containing queries for the Users table
-
     Can be dependency injected into a route like so
-
     def my_route(userQueries: UserQueries = Depends()):
-        # Here you can call any of the functions to query the DB
+    Here you can call any of the functions to query the DB
     """
 
     def get_by_username(self, username: str) -> Optional[UserWithPw]:
