@@ -5,7 +5,15 @@ import os
 
 from routers import shops
 
-app = FastAPI()
+
+app = FastAPI(
+    docs_url="/api/docs",
+    redoc_url="/api/redocs",
+    title="PackIt API",
+    description=(
+        "All PackIt endpoints needed to make any records to your warehouse."
+    )
+)
 
 app.include_router(shops.router)
 app.include_router(products.router)
