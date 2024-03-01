@@ -35,9 +35,9 @@ async def list_users(queries: UserQueries = Depends()) -> List[UserResponse]:
     user_list = queries.get_all_users()
 
     user_response_list = [UserResponse(
-        id=user.id, 
+        id=user.id,
         username=user.username
-        ) 
+        )
         for user in user_list]
 
     return user_response_list

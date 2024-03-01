@@ -36,7 +36,6 @@ class UserQueries:
         except psycopg.Error as e:
             print(e)
             raise UserDatabaseException("Error retrieving all users")
-        
         return users
     """
     Class containing queries for the Users table
