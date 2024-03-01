@@ -77,41 +77,6 @@ class ProductRepository:
             print(e)
             return {"message": "Could not update product"}
 
-    def partial_update(self,
-                       product_id: int,
-                       product: pro.ProductIn
-                       ) -> Union[pro.ProductOut, pro.Error]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    db.execute(
-                        """
-                        UPDATE products
-                        SET name = %s
-                            , description = %s
-                            , price = %s
-                            , quantity_in_stock = %s
-                            , category = %s
-                            , supplier_id = %s
-                            , alert_threshold = %s
-                        WHERE product_id = %s
-                        """,
-                        [
-                            product.name,
-                            product.description,
-                            product.price,
-                            product.quantity_in_stock,
-                            product.category,
-                            product.supplier_id,
-                            product.alert_threshold,
-                            product_id
-                        ]
-                    )
-                    return self.product_in_to_out(product_id, product)
-        except Exception as e:
-            print(e)
-            return {"message": "Could not update product"}
-
     def get_all(self) -> Union[List[pro.ProductOut], pro.Error]:
         try:
             with pool.connection() as conn:
