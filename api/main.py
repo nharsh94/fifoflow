@@ -3,10 +3,12 @@ from queries.user_queries import UserQueries
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from routers import auth_router, orders
+from routers import products
 import os
 from authenticator import authenticator
 
 app = FastAPI()
+app.include_router(products.router)
 
 app.add_middleware(
     CORSMiddleware,
