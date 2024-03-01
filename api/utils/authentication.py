@@ -10,7 +10,8 @@ from jose import JWTError, jwt
 from jose.constants import ALGORITHMS
 from typing import Annotated, Optional
 from models.jwt import JWTPayload, JWTUserData
-from queries.user_queries import UserWithPw
+
+from queries.user_database import UserWithPw
 
 # If you ever need to change the hashing algorith, you can change it here
 ALGORITHM = ALGORITHMS.HS256
@@ -53,7 +54,7 @@ async def try_get_jwt_user_data(
     @app.get("/some-protected-route"):
     def some_protected_route(user: Depends(try_get_user_data)):
         if not user:
-            # Do something when not logged in
+            # Do somthing when not logged in
         else:
             # Do something when logged in
     ```

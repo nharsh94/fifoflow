@@ -1,157 +1,119 @@
 """
-User Authentication API Router
+Database Queries for Users
 """
-from fastapi import (
-    Depends,
-    Request,
-    Response,
-    HTTPException,
-    status,
-    APIRouter,
-)
-from queries.user_queries import (
-    UserQueries,
-)
-
+from fastapi import APIRouter
+import os
+import psycopg
+from psycopg_pool import ConnectionPool
+from psycopg.rows import class_row
+from typing import Optional
+from models.users import UserWithPw
 from utils.exceptions import UserDatabaseException
-from models.users import UserRequest, UserResponse
-
-from utils.authentication import (
-    try_get_jwt_user_data,
-    hash_password,
-    generate_jwt,
-    verify_password,
-)
-
-# Note we are using a prefix here,
-# This saves us typing in all the routes below
-router = APIRouter(tags=["Authentication"], prefix="/api/auth")
 
 
-@router.post("/signup")
-async def signup(
-    new_user: UserRequest,
-    request: Request,
-    response: Response,
-    queries: UserQueries = Depends(),
-) -> UserResponse:
+router = APIRouter(tags=["Authorization"], prefix="/api/auth")
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable is not set")
+
+pool = ConnectionPool(DATABASE_URL)
+
+
+class UserQueries:
     """
-    Creates a new user when someone submits the signup form
-    """
-    # Hash the password the user sent us
-    hashed_password = hash_password(new_user.password)
+    Class containing queries for the Users table
 
-    # Create the user in the database
-    try:
-        user = queries.create_user(new_user.username, hashed_password)
-    except UserDatabaseException as e:
-        print(e)
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    Can be dependency injected into a route like so
 
-    # Generate a JWT token
-    token = generate_jwt(user)
-
-    # Convert the UserWithPW to a UserOut
-    user_out = UserResponse(**user.model_dump())
-
-    # Secure cookies only if running on something besides localhost
-    secure = True if request.headers.get("origin") == "localhost" else False
-
-    # Set a cookie with the token in it
-    response.set_cookie(
-        key="fast_api_token",
-        value=token,
-        httponly=True,
-        samesite="lax",
-        secure=secure,
-    )
-    return user_out
-
-
-@router.post("/signin")
-async def signin(
-    user_request: UserRequest,
-    request: Request,
-    response: Response,
-    queries: UserQueries = Depends(),
-) -> UserResponse:
-    """
-    Signs the user in when they use the Sign In form
+    def my_route(userQueries: UserQueries = Depends()):
+        # Here you can call any of the functions to query the DB
     """
 
-    # Try to get the user from the database
-    user = queries.get_by_username(user_request.username)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-        )
+    def get_by_username(self, username: str) -> Optional[UserWithPw]:
+        """
+        Gets a user from the database by username
 
-    # Verify the user's password
-    if not verify_password(user_request.password, user.password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-        )
+        Returns None if the user isn't found
+        """
+        try:
+            with pool.connection() as conn:
+                with conn.cursor(row_factory=class_row(UserWithPw)) as cur:
+                    cur.execute(
+                        """
+                            SELECT
+                                *
+                            FROM users
+                            WHERE username = %s
+                            """,
+                        [username],
+                    )
+                    user = cur.fetchone()
+                    if not user:
+                        return None
+        except psycopg.Error as e:
+            print(e)
+            raise UserDatabaseException(f"Error getting user {username}")
+        return user
 
-    # Generate a JWT token
-    token = generate_jwt(user)
+    def get_by_id(self, id: int) -> Optional[UserWithPw]:
+        """
+        Gets a user from the database by user id
 
-    # Secure cookies only if running on something besides localhost
-    secure = True if request.headers.get("origin") == "localhost" else False
+        Returns None if the user isn't found
+        """
+        try:
+            with pool.connection() as conn:
+                with conn.cursor(row_factory=class_row(UserWithPw)) as cur:
+                    cur.execute(
+                        """
+                            SELECT
+                                *
+                            FROM users
+                            WHERE id = %s
+                            """,
+                        [id],
+                    )
+                    user = cur.fetchone()
+                    if not user:
+                        return None
+        except psycopg.Error as e:
+            print(e)
+            raise UserDatabaseException(f"Error getting user with id {id}")
 
-    # Set a cookie with the token in it
-    response.set_cookie(
-        key="fast_api_token",
-        value=token,
-        httponly=True,
-        samesite="lax",
-        secure=secure,
-    )
+        return user
 
-    # Convert the UserWithPW to a UserOut
-    return UserResponse(id=user.id, username=user.username)
+    def create_user(self, username: str, hashed_password: str) -> UserWithPw:
+        """
+        Creates a new user in the database
 
-
-@router.get("/authenticate")
-async def authenticate(
-    user: UserResponse = Depends(try_get_jwt_user_data),
-) -> UserResponse:
-    """
-    This function returns the user if the user is logged in.
-
-    The `try_get_jwt_user_data` function tries to get the user and validate
-    the JWT
-
-    If the user isn't logged in this returns a 404
-
-    This can be used in your frontend to determine if a user
-    is logged in or not
-    """
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Not logged in"
-        )
-    return user
-
-
-@router.delete("/signout")
-async def signout(
-    request: Request,
-    response: Response,
-):
-    """
-    Signs the user out by deleting their JWT Cookie
-    """
-    # Secure cookies only if running on something besides localhost
-    secure = True if request.headers.get("origin") == "localhost" else False
-
-    # Delete the cookie
-    response.delete_cookie(
-        key="fast_api_token", httponly=True, samesite="lax", secure=secure
-    )
-
-    # There's no need to return anything in the response.
-    # All that has to happen is the cookie header must come back
-    # Which causes the browser to delete the cookie
-    return
+        Raises a UserInsertionException if creating the user fails
+        """
+        try:
+            with pool.connection() as conn:
+                with conn.cursor(row_factory=class_row(UserWithPw)) as cur:
+                    cur.execute(
+                        """
+                        INSERT INTO users (
+                            username,
+                            password
+                        ) VALUES (
+                            %s, %s
+                        )
+                        RETURNING *;
+                        """,
+                        [
+                            username,
+                            hashed_password,
+                        ],
+                    )
+                    user = cur.fetchone()
+                    if not user:
+                        raise UserDatabaseException(
+                            f"Could not create user with username {username}"
+                        )
+        except psycopg.Error:
+            raise UserDatabaseException(
+                f"Could not create user with username {username}"
+            )
+        return user
