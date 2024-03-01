@@ -3,12 +3,10 @@ from queries.product_database import ProductRepository
 from typing import List, Union, Optional
 import models.products as pro
 
-router = APIRouter()
+router = APIRouter(tags=["Products"], prefix="/api/products")
 
 
-@router.post("/products",
-             response_model=Union[pro.ProductOut, pro.Error],
-             tags=["Products"])
+@router.post("/", response_model=Union[pro.ProductOut, pro.Error])
 def create_products(
     product: pro.ProductIn,
     response: Response,
@@ -18,16 +16,13 @@ def create_products(
     return repo.create(product)
 
 
-@router.get("/products",
-            response_model=Union[List[pro.ProductOut], pro.Error],
-            tags=["Products"])
+@router.get("/", response_model=Union[List[pro.ProductOut], pro.Error])
 def get_all(repo: ProductRepository = Depends()):
     return repo.get_all()
 
 
-@router.put("/products/{product_id}",
-            response_model=Union[pro.ProductOut, pro.Error],
-            tags=["Products"])
+@router.put("/{product_id}",
+            response_model=Union[pro.ProductOut, pro.Error])
 def update_product(product_id: int,
                    product: pro.ProductIn,
                    repo: ProductRepository = Depends()
@@ -35,16 +30,13 @@ def update_product(product_id: int,
     return repo.update(product_id, product)
 
 
-@router.delete("/products/{product_id}",
-               response_model=bool, tags=["Products"])
+@router.delete("/{product_id}", response_model=bool)
 def delete_product(product_id: int,
                    repo: ProductRepository = Depends()) -> bool:
     return repo.delete(product_id)
 
 
-@router.get("/products/{product_id}",
-            response_model=Optional[pro.ProductOut],
-            tags=["Products"])
+@router.get("/{product_id}", response_model=Optional[pro.ProductOut])
 def get_one_product(product_id: int,
                     response: Response,
                     repo: ProductRepository = Depends()) -> pro.ProductOut:
@@ -52,16 +44,3 @@ def get_one_product(product_id: int,
     if product in None:
         response.status_code = 404
     return product
-
-
-@router.patch("/products/{product_id}",
-              response_model=Union[pro.ProductOut, pro.Error],
-              tags=["Products"])
-def pratial_update_product(product_id: int,
-                           product: pro.ProductIn,
-                           repo: ProductRepository = Depends()
-                           ) -> Union[pro.ProductOut, pro.Error]:
-    return repo.partial_update(
-        product_id,
-        product
-    )
