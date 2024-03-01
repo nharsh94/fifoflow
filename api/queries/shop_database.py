@@ -87,10 +87,10 @@ class ShopRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                                                SELECT shop_id, shop_name, address, phone
-                                                FROM shops
-                                                ORDER BY shop_id;
-                                                """
+                        SELECT shop_id, shop_name, address, phone
+                        FROM shops
+                        ORDER BY shop_id;
+                        """
                     )
                     result = []
                     for record in db:
