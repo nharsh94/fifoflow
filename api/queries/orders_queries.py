@@ -1,7 +1,8 @@
 from models.orders import OrderItemsIn, OrdersIn, OrdersOut, OrderItemsOut
 from pool import pool
 
-class  OrdersRepository:
+
+class OrdersRepository:
     def create_order(self, order: OrdersIn):
         try:
             with pool.connection() as conn:
@@ -31,7 +32,7 @@ class  OrdersRepository:
         except Exception:
             return {"message": "Order failed to create"}
 
-    def order_in_out(self, order_id: int, order: OrdersIn ):
+    def order_in_out(self, order_id: int, order: OrdersIn):
         old_data = order.dict()
         return OrdersOut(order_id=order_id, **old_data)
 
@@ -94,19 +95,19 @@ class  OrdersRepository:
                     db.execute(
                         """
                         UPDATE orders
-                        SET shop_id = %s,
-                            employee_id = %s,
-                            customer_id = %s,
-                            order_date = %s,
-                            order_item = %s,
-                            product_id = %s,
-                            quantity = %s,
-                            total_price = %s
+                        SET shop_id = %s
+                            , employee_id = %s
+                            , customer_id = %s
+                            , order_date = %s
+                            , order_item = %s
+                            , product_id = %s
+                            , quantity = %s
+                            , total_price = %s
                         WHERE order_id = %s
                         """
                         [order.shop_id, order.employee_id, order.customer_id,
                          order.order_date, order.order_item, order.product_id,
-                         order.quantity, order.total_price]
+                         order.quantity, order.total_price, order_id]
                     )
                     return self.order_in_out(order_id, order)
         except Exception:
@@ -143,7 +144,8 @@ class  OrdersRepository:
         except Exception:
             return {"message": "Failed to get all orders"}
 
-class  OrderItemsRepository:
+
+class OrderItemsRepository:
     def create_order_item(self, order_item: OrderItemsIn):
         try:
             with pool.connection() as conn:
@@ -158,8 +160,8 @@ class  OrderItemsRepository:
                         RETURNING id
                         """,
                         [order_item.shop_id, order_item.order_id,
-                        order_item.product_id, order_item.quantity,
-                        order_item.unit_price, order_item.total_price]
+                            order_item.product_id, order_item.quantity,
+                            order_item.unit_price, order_item.total_price]
                     )
                     id = result.fetchone()[0]
                     return self.order_item_in_out(id, order_item)
@@ -236,8 +238,8 @@ class  OrderItemsRepository:
                         WHERE id = %s
                         """
                         [order_item.shop_id, order_item.order_id,
-                        order_item.product_id, order_item.quantity,
-                        order_item.unit_price, order_item.total_price]
+                            order_item.product_id, order_item.quantity,
+                            order_item.unit_price, order_item.total_price]
                     )
                     return self.order_items_in_out(id, order_item)
         except Exception:

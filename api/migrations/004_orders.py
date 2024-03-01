@@ -1,5 +1,5 @@
 steps = [
-        [
+    [
         """
         CREATE TABLE orders (
             order_id SERIAL PRIMARY KEY,

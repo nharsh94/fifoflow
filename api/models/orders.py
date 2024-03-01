@@ -2,7 +2,12 @@ from pydantic import BaseModel
 from datetime import datetime
 from decimal import Decimal
 
-class  OrdersIn(BaseModel):
+
+class Error(BaseModel):
+    message: str
+
+
+class OrdersIn(BaseModel):
     shop_id: int
     employee_id: int
     customer_id: int
@@ -12,7 +17,8 @@ class  OrdersIn(BaseModel):
     quantity: int
     total_price: Decimal
 
-class  OrdersOut(BaseModel):
+
+class OrdersOut(BaseModel):
     order_id: int
     shop_id: int
     employee_id: int
@@ -23,7 +29,8 @@ class  OrdersOut(BaseModel):
     quantity: int
     total_price: Decimal
 
-class  OrderItemsIn(BaseModel):
+
+class OrderItemsIn(BaseModel):
     shop_id: int
     order_id: int
     product_id: int
@@ -31,7 +38,8 @@ class  OrderItemsIn(BaseModel):
     unit_price: Decimal
     total_price: Decimal
 
-class  OrderItemsOut(BaseModel):
+
+class OrderItemsOut(BaseModel):
     order_items_id: int
     shop_id: int
     order_id: int

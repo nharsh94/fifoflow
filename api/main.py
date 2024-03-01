@@ -19,6 +19,7 @@ app.include_router(shops.router)
 app.include_router(products.router)
 app.include_router(auth_router.router)
 app.include_router(user_router.router)
+app.include_router(orders.router)
 
 CORS_HOST = os.environ.get("CORS_HOST")
 if not CORS_HOST:
@@ -33,6 +34,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.post("/api/user")
 def create_user(
@@ -63,6 +65,7 @@ def create_user(
         modified=user.modified.isoformat(),
     )
 
+
 @app.get("/api/launch-details")
 def launch_details():
     return {
@@ -74,6 +77,3 @@ def launch_details():
             "min": "00"
         }
     }
-
-app.include_router(auth_router.router)
-app.include_router(orders.router)
