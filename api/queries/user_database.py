@@ -1,18 +1,19 @@
 """
 Database Queries for Users
 """
-
 import os
 import psycopg
+from psycopg_pool import ConnectionPool
 from psycopg.rows import class_row
 from typing import Optional
 from models.users import UserWithPw
 from utils.exceptions import UserDatabaseException
-from queries.pool import pool
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL environment variable is not set")
+
+pool = ConnectionPool(DATABASE_URL)
 
 
 class UserQueries:
@@ -36,7 +37,6 @@ class UserQueries:
             print(e)
             raise UserDatabaseException("Error retrieving all users")
         return users
-
     """
     Class containing queries for the Users table
     Can be dependency injected into a route like so
@@ -97,14 +97,7 @@ class UserQueries:
 
         return user
 
-    def create_user(
-        self,
-        username: str,
-        hashed_password: str,
-        customer_id: Optional[int] = None,
-        employee_id: Optional[int] = None,
-        supplier_id: Optional[int] = None,
-    ) -> UserWithPw:
+    def create_user(self, username: str, hashed_password: str) -> UserWithPw:
         """
         Creates a new user in the database
 
