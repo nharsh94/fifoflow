@@ -1,5 +1,5 @@
 from models.orders import OrderItemsIn, OrdersIn, OrdersOut, OrderItemsOut
-from pool import pool
+from queries.pool import pool
 
 
 class OrdersRepository:
