@@ -1,5 +1,5 @@
 from models.orders import OrderItemsIn, OrdersIn, OrdersOut, OrderItemsOut
-from pool import pool
+from queries.pool import pool
 
 
 class OrdersRepository:
@@ -24,8 +24,8 @@ class OrdersRepository:
                             order.order_item,
                             order.product_id,
                             order.quantity,
-                            order.total_price
-                        ]
+                            order.total_price,
+                        ],
                     )
                     order_id = result.fetchone()[0]
                     return self.order_in_out(order_id, order)
@@ -70,7 +70,7 @@ class OrdersRepository:
             order_item=record[5],
             product_id=record[6],
             quantity=record[7],
-            total_price=record[8]
+            total_price=record[8],
         )
 
     def delete_order(self, order_id: int):
@@ -104,10 +104,17 @@ class OrdersRepository:
                             , quantity = %s
                             , total_price = %s
                         WHERE order_id = %s
-                        """
-                        [order.shop_id, order.employee_id, order.customer_id,
-                         order.order_date, order.order_item, order.product_id,
-                         order.quantity, order.total_price, order_id]
+                        """[
+                            order.shop_id,
+                            order.employee_id,
+                            order.customer_id,
+                            order.order_date,
+                            order.order_item,
+                            order.product_id,
+                            order.quantity,
+                            order.total_price,
+                            order_id,
+                        ]
                     )
                     return self.order_in_out(order_id, order)
         except Exception:
@@ -137,7 +144,7 @@ class OrdersRepository:
                             order_item=record[5],
                             product_id=record[6],
                             quantity=record[7],
-                            total_price=record[8]
+                            total_price=record[8],
                         )
                         result.append(order)
                     return result
@@ -159,9 +166,14 @@ class OrderItemsRepository:
                         (%s, %s, %s, %s, %s, %s)
                         RETURNING id
                         """,
-                        [order_item.shop_id, order_item.order_id,
-                            order_item.product_id, order_item.quantity,
-                            order_item.unit_price, order_item.total_price]
+                        [
+                            order_item.shop_id,
+                            order_item.order_id,
+                            order_item.product_id,
+                            order_item.quantity,
+                            order_item.unit_price,
+                            order_item.total_price,
+                        ],
                     )
                     id = result.fetchone()[0]
                     return self.order_item_in_out(id, order_item)
@@ -204,7 +216,7 @@ class OrderItemsRepository:
             product_id=record[3],
             quantity=record[4],
             unit_price=record[5],
-            total_price=record[6]
+            total_price=record[6],
         )
 
     def delete_order_item(self, id: int):
@@ -236,10 +248,14 @@ class OrderItemsRepository:
                             unit_price = %s,
                             total_price = %s
                         WHERE id = %s
-                        """
-                        [order_item.shop_id, order_item.order_id,
-                            order_item.product_id, order_item.quantity,
-                            order_item.unit_price, order_item.total_price]
+                        """[
+                            order_item.shop_id,
+                            order_item.order_id,
+                            order_item.product_id,
+                            order_item.quantity,
+                            order_item.unit_price,
+                            order_item.total_price,
+                        ]
                     )
                     return self.order_items_in_out(id, order_item)
         except Exception:
@@ -266,7 +282,7 @@ class OrderItemsRepository:
                             product_id=record[3],
                             quantity=record[4],
                             unit_price=record[5],
-                            total_price=record[6]
+                            total_price=record[6],
                         )
                         result.append(order_item)
                     return result
