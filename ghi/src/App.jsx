@@ -1,9 +1,14 @@
 // This makes VSCode check types as if you are using TypeScript
 //@ts-check
 import { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ErrorNotification from './ErrorNotification'
 import Construct from './Construct'
 import './App.css'
+import React from 'react'
+import UserPage from './UserPage'
+import SignUpForm from './SignUpForm'
+import ForgotPassword from './ForgotPassword'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -56,11 +61,21 @@ function App() {
     }, [])
 
     return (
-        <div>
-            <ErrorNotification error={error} />
-            <Construct info={launchInfo} />
-        </div>
+        <BrowserRouter>
+            <div className="App">
+                <ErrorNotification error={error} />
+                <Routes>
+                    <Route path="/" element={<Construct info={launchInfo} />} />
+                    <Route path="/user" element={<UserPage />} />
+                    <Route path="/signup" element={<SignUpForm />} />
+                    <Route
+                        path="/forgot-password"
+                        element={<ForgotPassword />}
+                    />
+                    {/* Define more routes as needed */}
+                </Routes>
+            </div>
+        </BrowserRouter>
     )
 }
-
 export default App
