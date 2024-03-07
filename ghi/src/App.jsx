@@ -8,6 +8,7 @@ import './App.css'
 import React from 'react'
 import UserPage from './UserPage'
 import SignUpForm from './SignUpForm'
+import ForgotPassword from './ForgotPassword'
 
 // All your environment variables in vite are in this object
 console.table(import.meta.env)
@@ -65,6 +66,10 @@ function App() {
                     <Route path="/" element={<Construct info={launchInfo} />} />
                     <Route path="/user" element={<UserPage />} />
                     <Route path="/signup" element={<SignUpForm />} />
+                    <Route
+                        path="/forgot-password"
+                        element={<ForgotPassword />}
+                    />
                     {/* Define more routes as needed */}
                 </Routes>
             </div>

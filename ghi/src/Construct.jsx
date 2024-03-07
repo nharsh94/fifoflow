@@ -102,7 +102,7 @@ function Construct({ info }) {
                 </form>
                 <div className="side-by-side-buttons">
                     <button className="btn btn-link" id="forgot-password-btn">
-                        Forgot password?
+                        <Link to="/forgot-password">Forgot password?</Link>
                     </button>
                     <button className="btn btn-link" id="create-account-btn">
                         <Link to="/signup">Sign up</Link>
