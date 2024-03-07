@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import logo from './FIFOFlow_transparent_x1.png'
-import FloatingLabel from 'react-bootstrap/FloatingLabel'
-import Form from 'react-bootstrap/Form'
-import 'bootstrap/dist/js/bootstrap.bundle'
-import 'react-json-pretty/themes/monikai.css'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import logo from './FIFOFlow_transparent_x1.png';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+
+import 'bootstrap/dist/js/bootstrap.bundle';
+import 'react-json-pretty/themes/monikai.css';
+import { Link } from 'react-router-dom';
 
 function Construct({ info }) {
     const navigate = useNavigate()
@@ -21,6 +23,7 @@ function Construct({ info }) {
             </div>
         )
     }
+
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -60,10 +63,11 @@ function Construct({ info }) {
     }
 
     return (
+    <>
         <div className="App">
             <header className="App-header">
                 <img className="logo" src={logo} alt="FIFOFlow Logo" />
-                <h5>
+                <h5 className='motto'>
                     An open-source, automated system for managing your
                     logistical nightmares!
                 </h5>
@@ -92,13 +96,15 @@ function Construct({ info }) {
                             />
                         </FloatingLabel>
                     </div>
-                    <button
-                        className="btn btn-outline-light btn-lg"
-                        id="login-btn"
-                        type="submit"
-                    >
-                        Login
-                    </button>
+                        <Button
+                            className="btn btn-outline-light btn-lg"
+                            variant="primary"
+                            id="login-btn"
+                            data-replace=""
+                            type="submit"
+                        >
+                            Login
+                        </Button>{' '}
                 </form>
                 <div className="side-by-side-buttons">
                     <button className="btn btn-link" id="forgot-password-btn">
@@ -110,7 +116,8 @@ function Construct({ info }) {
                 </div>
             </header>
         </div>
+    </>
     )
 }
 
-export default Construct
+export default Construct;

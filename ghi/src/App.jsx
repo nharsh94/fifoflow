@@ -10,6 +10,8 @@ import UserPage from './UserPage'
 import SignUpForm from './SignUpForm'
 import ForgotPassword from './ForgotPassword'
 
+import 'bootstrap/dist/css/bootstrap.min.css'
+
 // All your environment variables in vite are in this object
 console.table(import.meta.env)
 
