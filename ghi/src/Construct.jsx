@@ -9,6 +9,8 @@ import logo from './FIFOFlow_transparent_x1.png'
 
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+
 
 function Construct(props) {
     if (!props.info) {
@@ -20,13 +22,12 @@ function Construct(props) {
             </div>
         )
     }
-    console.log("doodoo")
     return (
         <>
             <div className="App">
                 <header className="App-header">
                     <img className="logo" src={logo} alt="FIFOFlow Logo" />
-                    <h5>
+                    <h5 className='motto'>
                         An open-source, automated system for managing your
                         logistical nightmares!
                     </h5>
@@ -35,7 +36,6 @@ function Construct(props) {
                             <FloatingLabel
                                 controlId="floatingInput"
                                 label="User Login"
-                                className="form.control"
                             >
                                 <Form.Control
                                     type="username"
@@ -45,7 +45,6 @@ function Construct(props) {
                             <FloatingLabel
                                 controlId="floatingPassword"
                                 label="Password"
-                                className="form.control"
                             >
                                 <Form.Control
                                     type="password"
@@ -53,14 +52,15 @@ function Construct(props) {
                                 />
                             </FloatingLabel>
                         </div>
-                        <button
+                        <Button
                             className="btn btn-outline-light btn-lg"
+                            variant="primary"
                             id="login-btn"
                             data-replace=""
                             type="submit"
                         >
                             Login
-                        </button>
+                        </Button>{' '}
                     </form>
                     <div className="side-by-side-buttons">
                         <a id="forgot-password-btn" data-replace="" href="#">
