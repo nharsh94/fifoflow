@@ -1,6 +1,7 @@
 """
 Database Queries for Users
 """
+
 import os
 import psycopg
 from psycopg_pool import ConnectionPool
@@ -37,6 +38,7 @@ class UserQueries:
             print(e)
             raise UserDatabaseException("Error retrieving all users")
         return users
+
     """
     Class containing queries for the Users table
     Can be dependency injected into a route like so

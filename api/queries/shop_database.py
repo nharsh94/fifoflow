@@ -1,6 +1,7 @@
 """
 Database Queries for Shops
 """
+
 from models.shops import ShopIn, ShopOut, Error
 
 from typing import List, Union, Optional
