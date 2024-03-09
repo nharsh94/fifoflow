@@ -44,7 +44,7 @@ def delete_product(
     if not repo.delete(product_id):
         raise HTTPException(
             status_code=404,
-            detail=f"Product not found",
+            detail="Product not found",
         )
     return True
 
