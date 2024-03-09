@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Response, HTTPException
 from queries.product_database import ProductRepository
-from typing import List, Union, Optional
+from typing import List, Optional
 import models.products as pro
 
 router = APIRouter(tags=["Products"], prefix="/api/products")
@@ -44,7 +44,7 @@ def delete_product(
     if not repo.delete(product_id):
         raise HTTPException(
             status_code=404,
-            detail=f"Product with ID {product_id} not found or could not be deleted",
+            detail=f"Product not found",
         )
     return True
 

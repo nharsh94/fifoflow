@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import List, Optional
 from queries.pool import pool
 import models.products as pro
 import logging
@@ -114,12 +114,12 @@ class ProductRepository:
                     db.execute(
                         """
                         INSERT INTO products (
-                            name, 
-                            description, 
-                            price, 
-                            quantity_in_stock, 
-                            category, 
-                            user_id, 
+                            name,
+                            description,
+                            price,
+                            quantity_in_stock,
+                            category,
+                            user_id,
                             alert_threshold
                         )
                         VALUES (%s, %s, %s, %s, %s, %s, %s)
