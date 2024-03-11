@@ -11,6 +11,7 @@ import SignUpForm from './SignUpForm'
 import ForgotPassword from './ForgotPassword'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
+import CreateProduct from './CreateProduct'
 
 // All your environment variables in vite are in this object
 console.table(import.meta.env)
@@ -72,6 +73,7 @@ function App() {
                         path="/forgot-password"
                         element={<ForgotPassword />}
                     />
+                    <Route path="/products" element={<CreateProduct />} />
                     {/* Define more routes as needed */}
                 </Routes>
             </div>

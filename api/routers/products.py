@@ -41,6 +41,6 @@ def get_one_product(product_id: int,
                     response: Response,
                     repo: ProductRepository = Depends()) -> pro.ProductOut:
     product = repo.get_one(product_id)
-    if product in None:
+    if product is None:
         response.status_code = 404
     return product
