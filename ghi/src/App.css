@@ -5,25 +5,25 @@
 }
 
 .App-header {
-    /* background-color: #282c34; */
-    background-color: #076ae1;
+    background-color: #404821;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: calc(5px + 2vmin);
-    color: white;
 }
-.form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: 20px;
+.logo {
+    max-width: 70%;
+    height: auto;
 }
-.form-control {
-    width: 35em;
-    font-size: 16px;
+.motto {
+    color: whitesmoke;
+}
+
+.form-floating {
+    width: 25rem;
+    padding-bottom: 3px;
 }
 .side-by-side-buttons {
     display: flex;
@@ -31,7 +31,18 @@
 }
 .side-by-side-buttons a {
     margin-right: 10px;
+    text-decoration: none;
+    color: #316ff6;
 }
 #login-btn {
-    margin-top: 10px;
+    color: black;
+    color: white;
+    /* background-color: white; */
+    border: 1px solid black;
+    /* border: 1px solid white; */
+    padding: 6px 12px;
+    text-decoration: none;
+}
+.forgot_password_btn {
+    text-decoration: none;
 }
