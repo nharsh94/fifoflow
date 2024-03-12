@@ -129,7 +129,7 @@ class ProductRepository:
                             product.alert_threshold,
                         ],
                     )
-                    product_id = result.fetchone()[0]
+                    product_id = db.fetchone()[0]
                     return self.product_in_to_out(product_id, product)
         except Exception as e:
             logging.error(f"Error creating product: {e}")
