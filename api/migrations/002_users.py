@@ -37,7 +37,6 @@ steps = [
             last_name VARCHAR(100) NOT NULL,
             email VARCHAR(200) NOT NULL,
             phone VARCHAR(12) NOT NULL,
-            password VARCHAR(8) NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (role_id) REFERENCES roles(role_id)
         );

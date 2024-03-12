@@ -1,45 +1,43 @@
 from fastapi import APIRouter, Depends, Response
 from queries.profile_database import ProfileRepository
 from typing import List, Union, Optional
-import models.profiles as pro
+from models.profiles import ProfileIn, ProfileOut, Error
 
 router = APIRouter(tags=["Profiles"], prefix="/api/profile")
 
 
-@router.post("/", response_model=Union[pro.ProfileOut, pro.Error])
+@router.post("/", response_model=Union[ProfileOut, Error])
 def create_profile(
-    profile: pro.ProfileIn,
-    response: Response,
+    profile: ProfileIn,
     repo: ProfileRepository = Depends()
 ):
-    response.status_code = 400
     return repo.create(profile)
 
 
-@router.get("/", response_model=Union[List[pro.ProfileOut], pro.Error])
+@router.get("/", response_model=Union[List[ProfileOut], Error])
 def get_all(repo: ProfileRepository = Depends()):
     return repo.get_all()
 
 
 @router.put("/{user_id}",
-            response_model=Union[pro.ProfileOut, pro.Error])
+            response_model=Union[ProfileOut, Error])
 def update_profile(user_id: int,
-                   profile: pro.ProfileIn,
+                   profile: ProfileIn,
                    repo: ProfileRepository = Depends()
-                   ) -> Union[pro.ProfileOut, pro.Error]:
+                   ) -> Union[ProfileOut, Error]:
     return repo.update(user_id, profile)
 
 
-@router.delete("/{id}", response_model=bool)
-def delete_profile(id: int,
+@router.delete("/{user_id}", response_model=bool)
+def delete_profile(user_id: int,
                    repo: ProfileRepository = Depends()) -> bool:
-    return repo.delete(id)
+    return repo.delete(user_id)
 
 
-@router.get("/{id}", response_model=Optional[pro.ProfileOut])
+@router.get("/{id}", response_model=Optional[ProfileOut])
 def get_one_profile(id: int,
                     response: Response,
-                    repo: ProfileRepository = Depends()) -> pro.ProfileOut:
+                    repo: ProfileRepository = Depends()) -> ProfileOut:
     profile = repo.get_one(id)
     if profile is None:
         response.status_code = 404

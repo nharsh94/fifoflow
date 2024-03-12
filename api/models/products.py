@@ -17,7 +17,7 @@ class ProductIn(BaseModel):
 
 
 class ProductOut(BaseModel):
-    id: int
+    product_id: int
     name: str
     description: str
     price: Decimal

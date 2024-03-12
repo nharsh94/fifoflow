@@ -12,7 +12,6 @@ class ProfileIn(BaseModel):
     last_name: str
     email: str
     phone: str
-    password: str
 
 
 class ProfileOut(BaseModel):
@@ -23,4 +22,3 @@ class ProfileOut(BaseModel):
     last_name: str
     email: str
     phone: str
-    password: str
