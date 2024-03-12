@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import products, auth_router, user_router, orders
+from routers import products, auth_router, user_router, orders, profiles, roles
 import os
 
 from routers import shops
@@ -12,13 +12,15 @@ app = FastAPI(
     title="PackIt API",
     description=(
         "All PackIt endpoints needed to make any records to your warehouse."
-    )
+    ),
 )
 app.include_router(shops.router)
 app.include_router(products.router)
 app.include_router(auth_router.router)
 app.include_router(user_router.router)
 app.include_router(orders.router)
+app.include_router(profiles.router)
+app.include_router(roles.router)
 
 CORS_HOST = os.environ.get("CORS_HOST")
 if not CORS_HOST:
@@ -29,7 +31,7 @@ else:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=True,
+    allow_credentials=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -43,6 +45,6 @@ def launch_details():
             "week": 17,
             "day": 5,
             "hour": 19,
-            "min": "00"
+            "min": "00",
         }
     }
