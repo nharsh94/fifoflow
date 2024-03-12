@@ -15,8 +15,8 @@ import SignUpForm from './SignUpForm';
 import ForgotPassword from './ForgotPassword';
 import ShopCreate from './ShopCreate';
 import ShopsList from './ShopsList';
-import ShopDetails from './ShopDetails';
-
+// import ShopDetails from './ShopDetails';
+import OrderList from './list_orders';
 
 // All your environment variables in vite are in this object
 console.table(import.meta.env)
@@ -55,19 +55,19 @@ function App() {
                 <ErrorNotification error={error} />
                 <Routes>
                     <Route path="/" element={<Construct info={{}} />} />
-
+                    <Route path="/orders" element={<OrderList />} />
                     <Route path="/user" element={<UserPage />} />
                     <Route path="/signup" element={<SignUpForm />} />
                     <Route path="/shops">
                         <Route path="create" element={<ShopCreate />} />
                         <Route path="list" element={<ShopsList />} />
-                        <Route path="details" element={<ShopDetails shopId={123} />} />
+                        {/* <Route path="details" element={<ShopDetails shopId={123} />} /> */}
                     </Route>
                     <Route
                         path="/forgot-password"
                         element={<ForgotPassword />}
                     />
-                    <Route path="/products" element={<CreateProduct />} />
+                    {/* <Route path="/products" element={<CreateProduct />} /> */}
                     {/* Define more routes as needed */}
                 </Routes>
             </div>
