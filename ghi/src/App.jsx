@@ -7,7 +7,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ErrorNotification from './ErrorNotification'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
-
+import CreateProduct from './CreateProduct'
+import ProductsList from './ProductsList'
 import Nav from './Nav'
 import Construct from './Construct'
 import UserPage from './UserPage'
@@ -15,7 +16,6 @@ import SignUpForm from './SignUpForm'
 import ForgotPassword from './ForgotPassword'
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
-import ShopDetails from './ShopDetails'
 
 // All your environment variables in vite are in this object
 console.table(import.meta.env)
@@ -60,16 +60,15 @@ function App() {
                     <Route path="/shops">
                         <Route path="create" element={<ShopCreate />} />
                         <Route path="list" element={<ShopsList />} />
-                        <Route
-                            path="details"
-                            element={<ShopDetails shopId={123} />}
-                        />
                     </Route>
                     <Route
                         path="/forgot-password"
                         element={<ForgotPassword />}
                     />
-                    <Route path="/products" element={<CreateProduct />} />
+                    <Route path="/products">
+                        <Route path="create" element={<CreateProduct />} />
+                        <Route path="list" element={<ProductsList />} />
+                    </Route>
                     {/* Define more routes as needed */}
                 </Routes>
             </div>
