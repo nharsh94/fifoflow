@@ -1,11 +1,12 @@
 from typing import List, Optional, Union
 from queries.pool import pool
-import models.products as pro
+from models.products import ProductIn, ProductOut, Error
+import traceback
 
 
 class ProductRepository:
 
-    def get_one(self, product_id: int) -> Optional[pro.ProductOut]:
+    def get_one(self, product_id: int) -> Optional[ProductOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -44,8 +45,8 @@ class ProductRepository:
     def update(
             self,
             product_id: int,
-            product: pro.ProductIn
-            ) -> Union[List[pro.ProductOut], pro.Error]:
+            product: ProductIn
+            ) -> Union[List[ProductOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -73,11 +74,11 @@ class ProductRepository:
                         ]
                     )
                     return self.product_in_to_out(product_id, product)
-        except Exception as e:
-            print(e)
+        except Exception:
+            traceback.print_exc()
             return {"message": "Could not update product"}
 
-    def get_all(self) -> Union[List[pro.ProductOut], pro.Error]:
+    def get_all(self) -> Union[List[ProductOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -95,7 +96,7 @@ class ProductRepository:
             print(e)
             return {"message": "Could not get all products"}
 
-    def create(self, product: pro.ProductIn) -> pro.ProductOut:
+    def create(self, product: ProductIn) -> ProductOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -123,19 +124,19 @@ class ProductRepository:
                             product.alert_threshold
                         ]
                     )
-                product_id = result.fetchone()[0]
-                return self.product_in_to_out(product_id, product)
+                    product_id = result.fetchone()[0]
+                    return self.product_in_to_out(product_id, product)
         except Exception as e:
             print(e)
             return {"message": "Could not create product"}
 
-    def product_in_to_out(self, product_id: int, product: pro.ProductOut):
+    def product_in_to_out(self, product_id: int, product: ProductOut):
         old_data = product.dict()
-        return product.ProductOut(product_id=product_id, **old_data)
+        return ProductOut(product_id=product_id, **old_data)
 
     def record_to_product_out(self, record):
-        return pro.ProductOut(
-            id=record[0],
+        return ProductOut(
+            product_id=record[0],
             name=record[1],
             description=record[2],
             price=record[3],

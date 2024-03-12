@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import products, auth_router, user_router, orders
+from routers import products, auth_router, user_router, orders, profiles, roles
 import os
 
 from routers import shops
@@ -19,6 +19,8 @@ app.include_router(products.router)
 app.include_router(auth_router.router)
 app.include_router(user_router.router)
 app.include_router(orders.router)
+app.include_router(profiles.router)
+app.include_router(roles.router)
 
 CORS_HOST = os.environ.get("CORS_HOST")
 if not CORS_HOST:

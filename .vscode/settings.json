@@ -6,5 +6,7 @@
     "cSpell.words": ["bckgrnd", "fastapi", "Packit"],
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter"
-    }
+    },
+    "liveServer.settings.host": "localhost",
+    "liveServer.settings.port": 1932
 }
