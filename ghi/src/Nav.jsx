@@ -1,15 +1,14 @@
-import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav'
+import NavDropdown from 'react-bootstrap/NavDropdown'
+import Container from 'react-bootstrap/Container'
+import Navbar from 'react-bootstrap/Navbar'
 
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 // import brand from './FIFOFlow_x_stamp.png';
-import brand from './assets/FIFOFlow_transparent_x1.png';
+import brand from './assets/FIFOFlow_transparent_x1.png'
 
 function Navs() {
-
     return (
         <>
             <Navbar className="bg-body-tertiary" expand="lg">
@@ -40,11 +39,27 @@ function Navs() {
                                     All Orders
                                 </NavDropdown.Item>
                             </NavDropdown>
-                            <Nav.Item>
-                                <Nav.Link eventKey="3" title="/api/products">
-                                    Product Management
-                                </Nav.Link>
-                            </Nav.Item>
+                            <NavDropdown
+                                title="Product Management"
+                                id="nav-dropdown"
+                            >
+                                <NavDropdown.Item as={Link} to="/products/list">
+                                    Product Database
+                                </NavDropdown.Item>
+                                <NavDropdown.Item eventKey="4.2">
+                                    Product Details
+                                </NavDropdown.Item>
+                                <NavDropdown.Item
+                                    as={Link}
+                                    to="/products/create"
+                                >
+                                    Add Product To Flow
+                                </NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item eventKey="4.4">
+                                    Separated link
+                                </NavDropdown.Item>
+                            </NavDropdown>
                             <NavDropdown
                                 title="Shop Management"
                                 id="nav-dropdown"

@@ -1,115 +1,8 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function CreateProduct() {
-    //     const [formData, setFormData] = useState({
-    //         productName: '',
-    //         description: '',
-    //         price: 0,
-    //         quantity_in_stock: 0,
-    //         category: '',
-    //         supplier_id: 0,
-    //         alert_threshold: 0,
-    //     })
-
-    //     const handleFormChange = (e) => {
-    //         const { name, value } = e.target
-    //         setFormData({ ...formData, [name]: value })
-    //     }
-
-    //     const handleSubmit = (e) => {
-    //         e.preventDefault()
-    //         // Handle form submission logic here
-    //         console.log('Form submitted with data:', formData)
-    //     }
-
-    //     return (
-    //         <div className="App-header">
-    //             <h1>Add Products</h1>
-    //             <form onSubmit={handleSubmit}>
-    //                 <div className="mb-3">
-    //                     <label htmlFor="product_name" className="form-label">
-    //                         Product Name:
-    //                     </label>
-    //                     <input
-    //                         value={formData.productName}
-    //                         onChange={handleFormChange}
-    //                         type="text"
-    //                         className="form-control"
-    //                         name="productName"
-    //                     />
-    //                 </div>
-    //                 <div className="mb-3">
-    //                     <label htmlFor="description" className="form-label">
-    //                         Description:
-    //                     </label>
-    //                     <input
-    //                         value={formData.description}
-    //                         onChange={handleFormChange}
-    //                         type="text"
-    //                         className="form-control"
-    //                         name="description"
-    //                     />
-    //                 </div>
-    //                 <div className="mb-3">
-    //                     <label htmlFor="price" className="form-label">
-    //                         Price:
-    //                     </label>
-    //                     <input
-    //                         value={formData.price}
-    //                         onChange={handleFormChange}
-    //                         type="text"
-    //                         className="form-control"
-    //                         name="price"
-    //                     />
-    //                 </div>
-    // <div className="mb-3">
-    //     <label htmlFor="quantity_in_stock" className="form-label">
-    //         Quantity in Stock:
-    //     </label>
-    //     <input
-    //         value={formData.quantity_in_stock}
-    //         onChange={handleFormChange}
-    //         type="text"
-    //         className="form-control"
-    //         name="quantity_in_stock"
-    //     />
-    // </div>
-    // <div className="mb-3">
-    //     <label htmlFor="supplier_id" className="form-label">
-    //         Supplier
-    //     </label>
-    //     <select
-    //         value={formData.supplier_id}
-    //         onChange={handleFormChange}
-    //         className="form-control"
-    //         name="supplier_id"
-    //     >
-    //         <option value="">Select a Supplier</option>
-    //         {/* map over bins array and generate options */}
-    //     </select>
-    // </div>
-    // <div className="mb-3">
-    //     <label htmlFor="alert_threshold" className="form-label">
-    //         Alert Threshold:
-    //     </label>
-    //     <input
-    //         value={formData.alert_threshold}
-    //         onChange={handleFormChange}
-    //         type="text"
-    //         className="form-control"
-    //         name="alert_threshold"
-    //     />
-    // </div>
-    //                 <button className="btn btn-lg btn-primary w-100" type="submit">
-    //                     Create Product
-    //                 </button>
-    //             </form>
-    //         </div>
-    //     )
-    // }
-
     const [formData, setFormData] = useState({
-        productName: '',
+        name: '',
         description: '',
         price: 0,
         quantity_in_stock: 0,
@@ -118,13 +11,55 @@ function CreateProduct() {
         alert_threshold: 0,
     })
 
+    const [suppliers, setSuppliers] = useState([])
     const [addSuccess, setAddSuccess] = useState(false)
 
-    const handleSubmit = (event) => {
+    useEffect(() => {
+        // Fetch suppliers when component mounts
+        fetchSuppliers()
+    }, [])
+
+    const fetchSuppliers = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/api/profile')
+            if (response.ok) {
+                const suppliersData = await response.json()
+                console.log(suppliersData)
+                setSuppliers(suppliersData)
+            } else {
+                console.error('Failed to fetch suppliers')
+            }
+        } catch (error) {
+            console.error('Error fetching suppliers:', error)
+        }
+    }
+
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        // Your form submission logic goes here
-        // Example: Call an API to add the product
-        // If successful, setAddSuccess(true);
+        const url = 'http://localhost:8000/api/products'
+
+        const fetchConfig = {
+            method: 'post',
+            body: JSON.stringify({
+                ...formData,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+        const response = await fetch(url, fetchConfig)
+        if (response.ok) {
+            setFormData({
+                name: '',
+                description: '',
+                price: 0,
+                quantity_in_stock: 0,
+                category: '',
+                supplier_id: 0,
+                alert_threshold: 0,
+            })
+            addSuccess(true)
+        }
     }
 
     const handleChange = (event) => {
@@ -134,6 +69,7 @@ function CreateProduct() {
             [name]: value,
         })
     }
+    console.log(formData)
 
     return (
         <div>
@@ -167,11 +103,11 @@ function CreateProduct() {
                                             Product Name
                                         </label>
                                         <input
-                                            value={formData.productName}
+                                            value={formData.name}
                                             onChange={handleChange}
                                             type="text"
                                             className="form-control"
-                                            name="productName"
+                                            name="name"
                                         />
                                     </div>
                                     <div className="mb-3">
@@ -221,6 +157,21 @@ function CreateProduct() {
                                     </div>
                                     <div className="mb-3">
                                         <label
+                                            htmlFor="category"
+                                            className="form-label"
+                                        >
+                                            Category:
+                                        </label>
+                                        <input
+                                            value={formData.category}
+                                            onChange={handleChange}
+                                            type="text"
+                                            className="form-control"
+                                            name="category"
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label
                                             htmlFor="supplier_id"
                                             className="form-label"
                                         >
@@ -235,7 +186,14 @@ function CreateProduct() {
                                             <option value="">
                                                 Select a Supplier
                                             </option>
-                                            {/* map over bins array and generate options */}
+                                            {suppliers.map((supplier) => (
+                                                <option
+                                                    key={supplier.id}
+                                                    value={supplier.id}
+                                                >
+                                                    {supplier.first_name}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                     <div className="mb-3">

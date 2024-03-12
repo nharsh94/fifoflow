@@ -1,22 +1,22 @@
 // This makes VSCode check types as if you are using TypeScript
 //@ts-check
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React from 'react'
+import { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import ErrorNotification from './ErrorNotification';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
-
-import Nav from './Nav';
-import Construct from './Construct';
-import UserPage from './UserPage';
-import SignUpForm from './SignUpForm';
-import ForgotPassword from './ForgotPassword';
-import ShopCreate from './ShopCreate';
-import ShopsList from './ShopsList';
-// import ShopDetails from './ShopDetails';
-import OrderList from './list_orders';
+import ErrorNotification from './ErrorNotification'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './App.css'
+import CreateProduct from './CreateProduct'
+import ProductsList from './ProductsList'
+import Nav from './Nav'
+import Construct from './Construct'
+import UserPage from './UserPage'
+import SignUpForm from './SignUpForm'
+import ForgotPassword from './ForgotPassword'
+import ShopCreate from './ShopCreate'
+import ShopsList from './ShopsList'
+import OrderList from './list_orders'
 
 // All your environment variables in vite are in this object
 console.table(import.meta.env)
@@ -39,10 +39,10 @@ function App() {
             let response = await fetch(url)
 
             if (response.ok) {
-                    console.log('Data fetched successfully!');
+                console.log('Data fetched successfully!')
             } else {
-                    console.log('Error fetching data');
-                    setError('No fetched data')
+                console.log('Error fetching data')
+                setError('No fetched data')
             }
         }
         getData()
@@ -67,11 +67,14 @@ function App() {
                         path="/forgot-password"
                         element={<ForgotPassword />}
                     />
-                    {/* <Route path="/products" element={<CreateProduct />} /> */}
+                    <Route path="/products">
+                        <Route path="create" element={<CreateProduct />} />
+                        <Route path="list" element={<ProductsList />} />
+                    </Route>
                     {/* Define more routes as needed */}
                 </Routes>
             </div>
         </BrowserRouter>
     )
 }
-export default App;
+export default App
