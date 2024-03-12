@@ -67,7 +67,6 @@ def create_order_item(
     response: Response,
     repo: OrderItemsRepository = Depends(),
 ):
-    response.status_code = 400
     return repo.create_order_item(order_item)
 
 
