@@ -1,8 +1,11 @@
 steps = [
     [
         """
-        CREATE TYPE status_type AS ENUM('cancelled', 'submitted',
-        'approved', 'updated');
+        CREATE TYPE status_type
+        AS ENUM('cancelled', 'submitted', 'approved', 'updated');
+        """,
+        """
+        DROP TYPE status_type ;
         """
     ],
     [
@@ -15,7 +18,7 @@ steps = [
             order_item INT,
             FOREIGN KEY (product_id) REFERENCES products(product_id),
             quantity INT,
-            total_price DECIMAL(10, 2)
+            total_price DECIMAL(10, 2),
             status status_type
         );
         """,
