@@ -9,6 +9,7 @@ import React from 'react'
 import UserPage from './UserPage'
 import SignUpForm from './SignUpForm'
 import ForgotPassword from './ForgotPassword'
+import OrderList from './list_orders'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -65,6 +66,7 @@ function App() {
             <div className="App">
                 <ErrorNotification error={error} />
                 <Routes>
+                    <Route path="/orders" element={<OrderList />} />
                     <Route path="/" element={<Construct info={launchInfo} />} />
                     <Route path="/user" element={<UserPage />} />
                     <Route path="/signup" element={<SignUpForm />} />
