@@ -12,16 +12,18 @@ class ProductIn(BaseModel):
     price: Decimal
     quantity_in_stock: int
     category: str
-    supplier_id: int
     alert_threshold: int
+    stock_alert: bool
+    shop_name: str
 
 
 class ProductOut(BaseModel):
-    id: int
+    product_id: int
     name: str
     description: str
     price: Decimal
     quantity_in_stock: int
     category: str
-    supplier_id: int
     alert_threshold: int
+    stock_alert: bool
+    shop_name: str

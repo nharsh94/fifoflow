@@ -11,7 +11,9 @@ from queries.shop_database import (
 router = APIRouter(tags=["Shops"], prefix="/api/shops")
 
 
-@router.post("/", response_model=Union[ShopOut, Error], tags=["Shops"])
+@router.post("/",
+             response_model=Union[ShopOut, Error],
+             tags=["Shops"])
 def create_shop(
     shop: ShopIn,
     repo: ShopRepository = Depends(),
@@ -39,7 +41,9 @@ def update_shop(
     return repo.update(shops_id, shop)
 
 
-@router.delete("/{shops_id}", response_model=bool, tags=["Shops"])
+@router.delete("/{shops_id}",
+               response_model=bool,
+               tags=["Shops"])
 def delete_shop(
     shops_id: int,
     repo: ShopRepository = Depends(),

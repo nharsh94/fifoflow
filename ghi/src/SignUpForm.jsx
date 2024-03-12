@@ -1,15 +1,21 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom' // Import useNavigate
 
+import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+
 export default function SignUpForm() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
     const handleFormSubmit = async (event) => {
         event.preventDefault()
         try {
+            setLoading(true)
             const response = await fetch(
                 'http://localhost:8000/api/user/signup',
                 {
@@ -30,27 +36,66 @@ export default function SignUpForm() {
             navigate('/')
         } catch (error) {
             setError(error.message || 'An unknown error occurred') // Set the error state to display the error message
+        } finally {
+            setLoading(false)
         }
     }
 
     return (
-        <form onSubmit={handleFormSubmit}>
-            {error && <div className="error">{error}</div>}
-            <input
-                type="text"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                placeholder="Enter username"
-                required
-            />
-            <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder="Enter Password"
-                required
-            />
-            <button type="submit">Sign Up</button>
-        </form>
+        <>
+            <div>
+                <h2>Create an account</h2>
+                <Form
+                    onSubmit={handleFormSubmit}
+                    id="signup-form"
+                    className="center-form"
+                >
+                    <div className="mb-3">
+                        {error && <div className="error">{error}</div>}
+                        <FloatingLabel
+                            controlId="FloatingInput"
+                            label="Username"
+                            className="mb-3"
+                        >
+                            <Form.Control
+                                type="text"
+                                value={username}
+                                onChange={(event) =>
+                                    setUsername(event.target.value)
+                                }
+                                placeholder="Enter username"
+                                required
+                            />
+                        </FloatingLabel>
+                        <FloatingLabel
+                            controlId="FloatingPassword"
+                            label="Password"
+                            className="mb-3"
+                        >
+                            <Form.Control
+                                type="password"
+                                value={password}
+                                onChange={(event) =>
+                                    setPassword(event.target.value)
+                                }
+                                placeholder="Enter Password"
+                                required
+                            />
+                        </FloatingLabel>
+                    </div>
+                    <Button
+                        className="btn btn-outline-light"
+                        variant="primary"
+                        size="lg"
+                        id="submit-btn"
+                        data-replace=""
+                        type="submit"
+                        disabled={loading}
+                    >
+                        {loading ? 'Signing Up...' : 'Sign Up'}
+                    </Button>
+                </Form>
+            </div>
+        </>
     )
 }

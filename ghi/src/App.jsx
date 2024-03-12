@@ -1,22 +1,24 @@
 // This makes VSCode check types as if you are using TypeScript
 //@ts-check
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React from 'react'
+import { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import ErrorNotification from './ErrorNotification';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import ErrorNotification from './ErrorNotification'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './App.css'
 
-import Nav from './Nav';
-import Construct from './Construct';
-import UserPage from './UserPage';
-import SignUpForm from './SignUpForm';
-import ForgotPassword from './ForgotPassword';
-import ShopCreate from './ShopCreate';
-import ShopsList from './ShopsList';
-import ShopDetails from './ShopDetails';
-
+import Nav from './Nav'
+import Construct from './Construct'
+import UserPage from './UserPage'
+import SignUpForm from './SignUpForm'
+import ForgotPassword from './ForgotPassword'
+import ShopCreate from './ShopCreate'
+import ShopsList from './ShopsList'
+// import ProductDetails from './ProductDetails'
+import ProductCreate from './ProductCreate'
+import ProductsList from './ProductsList'
+// import ThreeScene from './ThreeScene'
 
 // All your environment variables in vite are in this object
 console.table(import.meta.env)
@@ -39,10 +41,10 @@ function App() {
             let response = await fetch(url)
 
             if (response.ok) {
-                    console.log('Data fetched successfully!');
+                console.log('Data fetched successfully!')
             } else {
-                    console.log('Error fetching data');
-                    setError('No fetched data')
+                console.log('Error fetching data')
+                setError('No fetched data')
             }
         }
         getData()
@@ -56,12 +58,22 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Construct info={{}} />} />
 
+                    {/* <Route path="/threescene" element={<ThreeScene />} /> */}
+
                     <Route path="/user" element={<UserPage />} />
                     <Route path="/signup" element={<SignUpForm />} />
                     <Route path="/shops">
                         <Route path="create" element={<ShopCreate />} />
                         <Route path="list" element={<ShopsList />} />
-                        <Route path="details" element={<ShopDetails shopId={123} />} />
+                        {/* <Route
+                            path="details"
+                            element={<ShopDetails shopId={123} />}
+                        /> */}
+                    </Route>
+                    <Route path="/products">
+                        <Route path="create" element={<ProductCreate />} />
+                        <Route path="list" element={<ProductsList />} />
+                        {/* <Route path="details" element={<ProductDetails />} /> */}
                     </Route>
                     <Route
                         path="/forgot-password"
@@ -73,4 +85,4 @@ function App() {
         </BrowserRouter>
     )
 }
-export default App;
+export default App
