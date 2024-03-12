@@ -9,25 +9,23 @@ class Error(BaseModel):
 
 class OrdersIn(BaseModel):
     shop_id: int
-    employee_id: int
-    customer_id: int
+    user_id: int
     order_date: datetime
-    order_item: int
     product_id: int
     quantity: int
     total_price: Decimal
+    status: str
 
 
 class OrdersOut(BaseModel):
     order_id: int
     shop_id: int
-    employee_id: int
-    customer_id: int
+    user_id: int
     order_date: datetime
-    order_item: int
     product_id: int
     quantity: int
     total_price: Decimal
+    status: str
 
 
 class OrderItemsIn(BaseModel):
@@ -37,13 +35,15 @@ class OrderItemsIn(BaseModel):
     quantity: int
     unit_price: Decimal
     total_price: Decimal
+    status: str
 
 
 class OrderItemsOut(BaseModel):
-    order_items_id: int
+    id: int
     shop_id: int
     order_id: int
     product_id: int
     quantity: int
     unit_price: Decimal
     total_price: Decimal
+    status: str
