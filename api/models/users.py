@@ -1,8 +1,7 @@
 """
 Pydantic Models for Users.
 """
-from typing import Optional
-from pydantic import BaseModel, PositiveInt
+from pydantic import BaseModel
 
 
 class UserRequest(BaseModel):
@@ -11,12 +10,6 @@ class UserRequest(BaseModel):
     """
     username: str
     password: str
-    customer_id: Optional[PositiveInt] = None
-    # Optional field, assuming not all users might have this
-    employee_id: Optional[PositiveInt] = None
-    # Optional field, assuming not all users might have this
-    supplier_id: Optional[PositiveInt] = None
-    # Optional field, assuming not all users might have this
 
 
 class UserResponse(BaseModel):
@@ -35,9 +28,3 @@ class UserWithPw(BaseModel):
     id: int
     username: str
     password: str
-    customer_id: Optional[PositiveInt] = None
-    # Optional field, assuming not all users might have this
-    employee_id: Optional[PositiveInt] = None
-    # Optional field, assuming not all users might have this
-    supplier_id: Optional[PositiveInt] = None
-    # Optional field, assuming not all users might have this
