@@ -4,8 +4,6 @@ import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
 
 import { Link } from 'react-router-dom'
-
-// import brand from './FIFOFlow_x_stamp.png';
 import brand from './assets/FIFOFlow_transparent_x1.png'
 
 function Navs() {

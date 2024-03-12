@@ -1,4 +1,5 @@
-from typing import List, Optional
+import logging
+from typing import List, Optional, Union
 from queries.pool import pool
 from models.products import ProductIn, ProductOut, Error
 import traceback
