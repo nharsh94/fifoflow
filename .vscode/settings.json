@@ -3,8 +3,10 @@
     "python.formatting.provider": "black",
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "cSpell.words": ["bckgrnd", "fastapi", "Packit"],
+    "cSpell.words": ["bckgrnd", "fastapi", "Navs", "Packit"],
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter"
-    }
+    },
+    "liveServer.settings.host": "localhost",
+    "liveServer.settings.port": 1932
 }

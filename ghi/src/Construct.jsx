@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from './FIFOFlow_transparent_x1.png';
+import { Link } from 'react-router-dom';
+
+import logo from './assets/FIFOFlow_transparent_x1.png';
+
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-
 import 'bootstrap/dist/js/bootstrap.bundle';
 import 'react-json-pretty/themes/monikai.css';
-import { Link } from 'react-router-dom';
 
 function Construct({ info }) {
     const navigate = useNavigate()
@@ -71,7 +72,7 @@ function Construct({ info }) {
                     An open-source, automated system for managing your
                     logistical nightmares!
                 </h5>
-                <form id="user_login" onSubmit={handleSubmit}>
+                <Form id="user_login" onSubmit={handleSubmit}>
                     <div className="mb-3">
                         <FloatingLabel
                             controlId="floatingInput"
@@ -97,15 +98,15 @@ function Construct({ info }) {
                         </FloatingLabel>
                     </div>
                         <Button
-                            className="btn btn-outline-light btn-lg"
+                            className="btn btn-lg"
                             variant="primary"
                             id="login-btn"
                             data-replace=""
                             type="submit"
                         >
-                            Login
+                            Log in
                         </Button>{' '}
-                </form>
+                </Form>
                 <div className="side-by-side-buttons">
                     <button className="btn btn-link" id="forgot-password-btn">
                         <Link to="/forgot-password">Forgot password?</Link>
