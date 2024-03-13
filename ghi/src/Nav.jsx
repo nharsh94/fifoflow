@@ -3,16 +3,16 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
 
-import { NavLink } from 'react-router-dom'
+import { NavNavLink } from 'react-router-dom'
 
-import brand from './assets/FIFOFlow_transparent_x1.png'
+// import brand from './assets/FIFOFlow_transparent_x1.png'
 
 function Navs() {
     return (
         <>
             <Navbar bg="dark" expand="lg" variant="dark">
                 <Container fluid>
-                    <Navbar.Brand as={NavLink} to="/">
+                    {/* <Navbar.Brand as={NavLink} to="/">
                         <img
                             src={brand}
                             width="240"
@@ -20,7 +20,7 @@ function Navs() {
                             className="d-inline-block align-top"
                             alt="brand"
                         />
-                    </Navbar.Brand>
+                    </Navbar.Brand> */}
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav activeKey="/home">
@@ -34,7 +34,8 @@ function Navs() {
                                 </Nav.Link>
                             </Nav.Item>
                             <NavDropdown
-                                title="Order Management"
+                                className="px-2"
+                                title="Products"
                                 id="nav-dropdown"
                             >
                                 <NavDropdown.Item as={NavLink} to="/orders">

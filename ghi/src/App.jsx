@@ -2,8 +2,8 @@
 //@ts-check
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import Header from './Header'
 import ErrorNotification from './ErrorNotification'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
@@ -15,11 +15,12 @@ import ForgotPassword from './ForgotPassword'
 
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
-import OrderList from './list_orders'
-import OrderCreate from './order_form'
 
 import CreateProduct from './CreateProduct'
 import ProductsList from './ProductsList'
+
+import OrderList from './list_orders'
+import OrderCreate from './order_form'
 
 //
 import TestProductCreate from './TestProductCreate' // By Mel K
@@ -30,12 +31,16 @@ import TestProductsList from './TestProductsList'  // By Mel K
 // import ThreeScene from './ThreeScene'
 
 
-// All your environment variables in vite are in this object
 console.table(import.meta.env)
 const API_HOST = import.meta.env.VITE_API_HOST
 
 if (!API_HOST) {
     throw new Error('VITE_API_HOST is not defined')
+}
+
+function Navigation() {
+    const location = useLocation()
+    return location.pathname !== '/' && <Nav />
 }
 
 function App() {
@@ -60,6 +65,7 @@ function App() {
     return (
         <BrowserRouter>
             <div className="App">
+                <Header />
                 <Nav />
                 <ErrorNotification error={error} />
                 <Routes>
@@ -73,7 +79,6 @@ function App() {
                         <Route path="list" element={<ShopsList />} />
                         {/* <Route path="details" element={<ShopDetails shopId={123} />} /> */}
                     </Route>
-
                     {/* <Route path="/threescene" element={<ThreeScene />} /> */}
 
                     <Route path="/user" element={<UserPage />} />
@@ -82,12 +87,6 @@ function App() {
                         path="/forgot-password"
                         element={<ForgotPassword />}
                     />
-
-                    <Route path="/shops">
-                        <Route path="create" element={<ShopCreate />} />
-                        <Route path="list" element={<ShopsList />} />
-                        {/* <Route path="details" element={<ShopDetails />} /> */}
-                    </Route>
 
                     <Route path="/products">
                         <Route path="create" element={<CreateProduct />} />
