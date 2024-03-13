@@ -81,10 +81,6 @@ function App() {
                             path="/forgot-password"
                             element={<ForgotPassword />}
                         />
-                        <Route
-                            path="/products/create"
-                            element={<CreateProduct />}
-                        />
                         <Route path="/products">
                             <Route path="create" element={<CreateProduct />} />
                             <Route path="list" element={<ProductsList />} />
