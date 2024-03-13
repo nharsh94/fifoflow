@@ -44,29 +44,3 @@ def get_one_product(
         response.status_code = 404
         return None
     return product
-
-
-@router.put(
-    "/{products_id}/set-stock-alert/{value}",
-    response_model=bool,
-    tags=["Products"],
-)
-def set_stock_alert(
-    product_id: int, value: bool, repo: ProductRepository = Depends()
-) -> bool:
-    success = repo.set_stock_alert(product_id, value)
-    if not success:
-        raise HTTPException(status_code=404, detail="Product not found")
-    return success
-
-
-@router.get(
-    "/{products_id}/get-stock-alert", response_model=bool, tags=["Products"]
-)
-def get_stock_alert(
-    product_id: int, repo: ProductRepository = Depends()
-) -> bool:
-    stock_alert = repo.get_stock_alert(product_id)
-    if stock_alert is None:
-        raise HTTPException(status_code=404, detail="Product not found")
-    return stock_alert

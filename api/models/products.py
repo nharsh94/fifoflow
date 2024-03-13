@@ -13,8 +13,6 @@ class ProductIn(BaseModel):
     quantity_in_stock: int
     category: str
     alert_threshold: int
-    stock_alert: bool
-    shop_name: str
 
 
 class ProductOut(BaseModel):
@@ -25,5 +23,3 @@ class ProductOut(BaseModel):
     quantity_in_stock: int
     category: str
     alert_threshold: int
-    stock_alert: bool
-    shop_name: str
