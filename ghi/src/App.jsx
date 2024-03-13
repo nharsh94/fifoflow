@@ -12,11 +12,22 @@ import Construct from './Construct'
 import UserPage from './UserPage'
 import SignUpForm from './SignUpForm'
 import ForgotPassword from './ForgotPassword'
+
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
-import OrderList from './list_orders'
+
 import CreateProduct from './CreateProduct'
 import ProductsList from './ProductsList'
+
+import OrderList from './list_orders'
+//
+import TestProductCreate from './TestProductCreate' // By Mel K
+import TestProductsList from './TestProductsList'  // By Mel K
+// import ProductDetails from './ProductDetails'
+//
+
+// import ThreeScene from './ThreeScene'
+
 
 console.table(import.meta.env)
 const API_HOST = import.meta.env.VITE_API_HOST
@@ -62,11 +73,6 @@ function App() {
 
                     <Route path="/user" element={<UserPage />} />
                     <Route path="/signup" element={<SignUpForm />} />
-                    <Route path="/shops">
-                        <Route path="create" element={<ShopCreate />} />
-                        <Route path="list" element={<ShopsList />} />
-                        {/* <Route path="details" element={<ShopDetails shopId={123} />} /> */}
-                    </Route>
                     <Route
                         path="/forgot-password"
                         element={<ForgotPassword />}
@@ -81,7 +87,6 @@ function App() {
                     <Route path="/products">
                         <Route path="create" element={<CreateProduct />} />
                         <Route path="list" element={<ProductsList />} />
-                        {/* <Route path="details" element={<ProductDetails />} /> */}
                     </Route>
                     <Route path="/orders" element={<OrderList />} />
                     {/* Define more routes as needed */}

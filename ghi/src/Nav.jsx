@@ -3,7 +3,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
 
-import { NavLink } from 'react-router-dom'
+import { NavNavLink } from 'react-router-dom'
 
 // import brand from './assets/FIFOFlow_transparent_x1.png'
 
