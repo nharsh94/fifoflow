@@ -7,13 +7,13 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 import CreateProduct from './CreateProduct'
 import ProductsList from './ProductsList'
+import TestProductCreate from './TestProductCreate'
+import TestProductsList from './TestProductsList'
 import Nav from './Nav'
 import Construct from './Construct'
 import UserPage from './UserPage'
 import SignUpUserForm from './SignUpUserForm'
 import ForgotPassword from './ForgotPassword'
-import ShopCreate from './ShopCreate'
-import ShopsList from './ShopsList'
 import AssignRole from './AssignRole.jsx'
 import CreateProfile from './CreateProfile'
 import { UserProvider } from './UserContext'
@@ -63,10 +63,6 @@ function App() {
                         <Route path="/signup" element={<SignUpUserForm />} />
                         <Route path="/role" element={<AssignRole />} />
                         <Route path="/profile" element={<CreateProfile />} />
-                        <Route path="/shops">
-                            <Route path="create" element={<ShopCreate />} />
-                            <Route path="list" element={<ShopsList />} />
-                        </Route>
                         <Route
                             path="/forgot-password"
                             element={<ForgotPassword />}
