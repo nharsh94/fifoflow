@@ -2,8 +2,8 @@
 //@ts-check
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import Header from './Header'
 import ErrorNotification from './ErrorNotification'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
@@ -29,12 +29,16 @@ import TestProductsList from './TestProductsList'  // By Mel K
 // import ThreeScene from './ThreeScene'
 
 
-// All your environment variables in vite are in this object
 console.table(import.meta.env)
 const API_HOST = import.meta.env.VITE_API_HOST
 
 if (!API_HOST) {
     throw new Error('VITE_API_HOST is not defined')
+}
+
+function Navigation() {
+    const location = useLocation()
+    return location.pathname !== '/' && <Nav />
 }
 
 function App() {
@@ -59,6 +63,7 @@ function App() {
     return (
         <BrowserRouter>
             <div className="App">
+                <Header />
                 <Nav />
                 <ErrorNotification error={error} />
                 <Routes>
@@ -82,12 +87,9 @@ function App() {
                     <Route path="/products">
                         <Route path="create" element={<CreateProduct />} />
                         <Route path="list" element={<ProductsList />} />
-                        <Route path="create1" element={<TestProductCreate />} />
-                        <Route path="list1" element={<TestProductsList />} />
-                        {/* <Route path="details" element={<ProductDetails />} /> */}
-
-                        <Route path="/orders" element={<OrderList />} />
                     </Route>
+                    <Route path="/orders" element={<OrderList />} />
+                    {/* Define more routes as needed */}
                 </Routes>
             </div>
         </BrowserRouter>
