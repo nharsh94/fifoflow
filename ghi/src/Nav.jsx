@@ -5,9 +5,6 @@ import Navbar from 'react-bootstrap/Navbar'
 
 import { Link } from 'react-router-dom'
 
-// import brand from './FIFOFlow_x_stamp.png';
-import brand from './assets/FIFOFlow_transparent_x1.png'
-
 function Navs() {
     return (
         <>
@@ -28,7 +25,7 @@ function Navs() {
                         <Nav activeKey="1">
                             <Nav.Item>
                                 <Nav.Link eventKey="1" href="#/home">
-                                    InVentory Management
+                                    Inventory Management
                                 </Nav.Link>
                             </Nav.Item>
                             <NavDropdown

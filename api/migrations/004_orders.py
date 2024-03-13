@@ -26,7 +26,7 @@ steps = [
         """,
         """
         DROP TABLE orders;
-        """
+        """,
     ],
     [
         """
@@ -46,6 +46,6 @@ steps = [
         """,
         """
         DROP TABLE order_items;
-        """
-    ]
+        """,
+    ],
 ]
