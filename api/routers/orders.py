@@ -13,7 +13,6 @@ router = APIRouter(prefix="/api")
              tags=["Orders"])
 def create_order(
     order: OrdersIn,
-    response: Response,
     repo: OrdersRepository = Depends(),
 ):
     return repo.create_order(order)

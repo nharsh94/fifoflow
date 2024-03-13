@@ -1,5 +1,6 @@
 from models.orders import OrderItemsIn, OrdersIn, OrdersOut, OrderItemsOut
 from queries.pool import pool
+import datetime
 
 
 class OrdersRepository:
@@ -10,30 +11,33 @@ class OrdersRepository:
                     result = db.execute(
                         """
                         INSERT INTO orders
-                            (shop_id, user_id, order_date,
+                            (shop_id, user_id,
                             product_id, quantity, total_price, status)
                         VALUES
-                            (%s, %s, %s, %s, %s, %s, %s)
-                        RETURNING order_id;
+                            (%s, %s, %s, %s, %s, %s)
+                        RETURNING order_id, order_date;
                         """,
                         [
                             order.shop_id,
                             order.user_id,
-                            order.order_date,
                             order.product_id,
                             order.quantity,
                             order.total_price,
-                            order.status,
+                            order.status
                         ],
                     )
-                    order_id = result.fetchone()[0]
-                    return self.order_in_out(order_id, order)
+                    row = result.fetchone()
+                    if row:
+                        order_id, order_date = row
+                    return self.order_in_out(order_id, order_date, order)
         except Exception:
             return {"message": "Order failed to create"}
 
-    def order_in_out(self, order_id: int, order: OrdersIn):
+    def order_in_out(self, order_id: int, order_date: datetime,
+                     order: OrdersIn):
         old_data = order.dict()
-        return OrdersOut(order_id=order_id, **old_data)
+        return OrdersOut(order_id=order_id,
+                         order_date=order_date, ** old_data)
 
     def get_one_order(self, order_id: int):
         try:
@@ -55,7 +59,7 @@ class OrdersRepository:
                     record = result.fetchone()
                     if record is None:
                         return None
-                    return self.record_to_shop_out(record)
+                    return self.record_to_orders_out(record)
         except Exception:
             return {"message": "Order ID does not exist"}
 
@@ -95,7 +99,6 @@ class OrdersRepository:
                         UPDATE orders
                         SET shop_id = %s
                             , user_id = %s
-                            , order_date = %s
                             , product_id = %s
                             , quantity = %s
                             , total_price = %s

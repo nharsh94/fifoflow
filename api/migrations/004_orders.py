@@ -14,7 +14,7 @@ steps = [
             order_id SERIAL PRIMARY KEY,
             shop_id INT,
             user_id INT,
-            order_date TIMESTAMP,
+            order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             product_id INT,
             quantity INT,
             total_price DECIMAL(10, 2),
