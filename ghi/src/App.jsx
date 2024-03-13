@@ -15,6 +15,7 @@ import ForgotPassword from './ForgotPassword'
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
 import OrderList from './list_orders'
+import OrderCreate from './order_form'
 
 console.table(import.meta.env)
 const API_HOST = import.meta.env.VITE_API_HOST
@@ -56,6 +57,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Construct info={{}} />} />
                     <Route path="/orders" element={<OrderList />} />
+                    <Route path="/create-order" element={<OrderCreate />} />
                     <Route path="/user" element={<UserPage />} />
                     <Route path="/signup" element={<SignUpForm />} />
                     <Route path="/shops">

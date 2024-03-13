@@ -1,41 +1,80 @@
-import { useState } from 'react'
-
-import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
+import { useState, useEffect } from 'react'
 
 function OrderCreate() {
     const [orders, setOrders] = useState([])
+    const [products, setProducts] = useState([])
+    const [shops, setShops] = useState([])
+    const [users, setUsers] = useState([])
     const [formData, setFormData] = useState({
-        shop_ip: '',
+        shop_id: '',
         user_id: '',
-        order_date: '',
         product_id: '',
         quantity: '',
         total_price: '',
-        status: 'submitted'
+        status: 'submitted',
     })
 
+    const getOrderData = async () => {
+        const response = await fetch('http://localhost:8000/api/orders')
+
+        if (response.ok) {
+            const data = await response.json()
+            setOrders(data)
+        }
+    }
+
+    const getProductData = async () => {
+        const response = await fetch('http://localhost:8000/api/products')
+
+        if (response.ok) {
+            const data = await response.json()
+            setProducts(data)
+        }
+    }
+
+    const getShopData = async () => {
+        const response = await fetch('http://localhost:8000/api/shops')
+
+        if (response.ok) {
+            const data = await response.json()
+            setShops(data)
+        }
+    }
+
+    const getUserData = async () => {
+        const response = await fetch('http://localhost:8000/api/profile')
+
+        if (response.ok) {
+            const data = await response.json()
+            setUsers(data)
+        }
+    }
     const handleFormChange = (e) => {
-        const value = e.target.value;
-        const inputName = e.target.name;
+        const value = parseInt(e.target.value)
+        const inputName = e.target.name
         setFormData({
             ...formData,
-            [inputName]: value
+            [inputName]: value,
         })
     }
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        const fullAddress = `${formData.street_address}, ${formData.city}, ${formData.selectedState}, ${formData.zip_code}`
-        const url = 'http://localhost:8000/api/shops/'
+        const url = 'http://localhost:8000/api/orders/'
+        const product = products.find(
+            (product) => product.product_id === formData.product_id
+        )
+        const total = formData.quantity * product.price
+        formData.total_price = total
+
+        const newFormData = {
+            ...formData,
+            total_price: total,
+        }
 
         const fetchConfig = {
-            method: 'post',
-            body: JSON.stringify({
-                ...formData,
-                address: fullAddress,
-            }),
+            method: 'POST',
+            body: JSON.stringify(newFormData),
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -43,156 +82,109 @@ function OrderCreate() {
         const response = await fetch(url, fetchConfig)
         if (response.ok) {
             setFormData({
-                shop_name: '',
-                street_address: '',
-                city: '',
-                selectedState: '',
-                zip_code: '',
-                phone: '',
+                shop_id: '',
+                user_id: '',
+                product_id: '',
+                quantity: '',
             })
-            setFormSuccess(true)
-        }
+        }location.reload()
     }
 
-    const handleFormChange = (e, inputName) => {
-        let value = e.target.value
+    useEffect(() => {
+        getOrderData(), getProductData(), getShopData(), getUserData()
+    }, [])
 
-        if (inputName === 'phone') {
-            value = value.replace(/\D/g, '')
-
-            if (value.length >= 3) {
-                value = value.replace(/(\d{3})(?=\d)/, '$1-')
-            }
-            if (value.length >= 7) {
-                value = value.replace(/(\d{3})-(\d{3})(?=\d)/, '$1-$2-')
-            }
-
-            value = value.slice(0, 12)
-        }
-        setFormData((prevState) => ({
-            ...prevState,
-            [inputName]: value,
-        }))
-    }
-    let messageClasses = 'alert alert-success d-none mb-0'
-    let formClasses = ''
-    if (formSuccess) {
-        messageClasses = 'alert alert-success mb-0'
-        formClasses = 'd-none'
-    }
     return (
-        <>
-            <div>
-                <h1>Add Shop to Flow</h1>
-                <Form
-                    onSubmit={handleSubmit}
-                    id="create-shop-form"
-                    className="center-form"
-                >
-                    <div className="mb-3">
-                        <FloatingLabel
-                            controlId="FloatingInput"
-                            label="Shop Name"
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                type="text"
-                                placeholder="shop_name"
-                                value={formData.shop_name}
-                                onChange={(e) =>
-                                    handleFormChange(e, 'shop_name')
-                                }
-                            />
-                        </FloatingLabel>
-                        <FloatingLabel
-                            controlId="FloatingStreetAddress"
-                            label="Street Address"
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                type="text"
-                                placeholder="street_address"
-                                value={formData.street_address}
-                                onChange={(e) =>
-                                    handleFormChange(e, 'street_address')
-                                }
-                            />
-                        </FloatingLabel>
-                        <FloatingLabel
-                            controlId="FloatingCity"
-                            label="City"
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                type="text"
-                                placeholder="city"
-                                value={formData.city}
-                                onChange={(e) => handleFormChange(e, 'city')}
-                            />
-                        </FloatingLabel>
-                        <FloatingLabel
-                            controlId="FloatingState"
-                            label="State"
-                            className="mb-3"
-                        >
-                            <Form.Select
-                                value={formData.selectedState}
-                                onChange={(e) => handleStateChange(e)}
+        <div className="row">
+            <div className="offset-3 col-6">
+                <div className="shadow p-4 mt-4">
+                    <h1>Create a new order</h1>
+                    <form onSubmit={handleSubmit} id="create-sale-form">
+                        <div className="form-floating mb-3">
+                            <select
+                                onChange={handleFormChange}
+                                value={FormData.shop_id}
+                                required
+                                name="shop_id"
+                                id="shop_id"
+                                className="form-select"
                             >
-                                <option value="" disabled>
-                                    Select a State
-                                </option>
-                                {stateOptions.map((state) => (
-                                    <option
-                                        key={state.value}
-                                        value={state.value}
-                                    >
-                                        {state.value} - {state.label}
-                                    </option>
-                                ))}
-                            </Form.Select>
-                        </FloatingLabel>
-                        <FloatingLabel
-                            controlId="FloatingZipCode"
-                            label="Zip Code"
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                type="text"
-                                placeholder="zip_code"
-                                value={formData.zip_code}
-                                onChange={(e) =>
-                                    handleFormChange(e, 'zip_code')
-                                }
+                                <option value="">Choose an Shop</option>
+                                {shops.map((shop) => {
+                                    return (
+                                        <option
+                                            key={shop.shop_id}
+                                            value={shop.shop_id}
+                                        >
+                                            {shop.shop_name}
+                                        </option>
+                                    )
+                                })}
+                            </select>
+                        </div>
+                        <div className="form-floating mb-3">
+                            <select
+                                onChange={handleFormChange}
+                                value={FormData.user_id}
+                                required
+                                name="user_id"
+                                id="user_id"
+                                className="form-select"
+                            >
+                                <option value="">Select User</option>
+                                {users.map((user) => {
+                                    return (
+                                        <option
+                                            key={user.user_id}
+                                            value={user.user_id}
+                                        >
+                                            {user.user_id}
+                                        </option>
+                                    )
+                                })}
+                            </select>
+                        </div>
+                        <div className="form-floating mb-3">
+                            <select
+                                onChange={handleFormChange}
+                                value={FormData.product_id}
+                                required
+                                name="product_id"
+                                id="product_id"
+                                className="form-select"
+                            >
+                                <option value="">Select Product</option>
+                                {products.map((product) => {
+                                    return (
+                                        <option
+                                            key={product.product_id}
+                                            value={product.product_id}
+                                        >
+                                            {product.name}
+                                        </option>
+                                    )
+                                })}
+                            </select>
+                        </div>
+                        <div className="form-floating mb-3">
+                            <input
+                                onChange={handleFormChange}
+                                value={FormData.quantity}
+                                placeholder="Quantity"
+                                required
+                                type="number"
+                                name="quantity"
+                                id="quantity"
+                                className="form-control"
                             />
-                        </FloatingLabel>
-                        <FloatingLabel controlId="phone" label="Phone">
-                            <Form.Control
-                                type="tel"
-                                placeholder="phone"
-                                value={formData.phone}
-                                onChange={(e) => handleFormChange(e, 'phone')}
-                                pattern="\d{3}-\d{3}-\d{4}"
-                                title="Enter a valid phone number (e.g., 123-456-7890)"
-                            />
-                        </FloatingLabel>
-                    </div>
-                    <Button
-                        className="btn btn-outline-light"
-                        variant="secondary"
-                        id="submit-btn"
-                        data-replace=""
-                        type="submit"
-                    >
-                        Submit
-                    </Button>{' '}
-                </Form>
-                <div className={messageClasses} id="success-message">
-                    Shop added to Flow!
+                            <label htmlFor="starts">quantity</label>
+                        </div>
+                        <button className="btn btn-primary">Create</button>
+                    </form>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
-export default ShopCreate
+export default OrderCreate

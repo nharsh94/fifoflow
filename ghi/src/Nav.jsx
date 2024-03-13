@@ -11,7 +11,7 @@ function Navs() {
             <Navbar className="bg-body-tertiary" expand="lg">
                 {/* <Container className="d-flex justify-content-between align-items-center"> */}
                 <Container fluid>
-                    <Navbar.Brand as={Link} to="/">
+                    {/* <Navbar.Brand as={Link} to="/">
                         <img
                             src={brand}
                             width="240"
@@ -19,7 +19,7 @@ function Navs() {
                             className="d-inline-block align-top"
                             alt="brand"
                         />
-                    </Navbar.Brand>
+                    </Navbar.Brand> */}
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav activeKey="1">
@@ -34,6 +34,9 @@ function Navs() {
                             >
                                 <NavDropdown.Item as={Link} to="/orders">
                                     All Orders
+                                </NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/create-order">
+                                    Create an Order
                                 </NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown

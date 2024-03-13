@@ -10,7 +10,6 @@ class Error(BaseModel):
 class OrdersIn(BaseModel):
     shop_id: int
     user_id: int
-    order_date: datetime
     product_id: int
     quantity: int
     total_price: Decimal
