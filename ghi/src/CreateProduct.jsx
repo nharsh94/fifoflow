@@ -225,13 +225,6 @@ function CreateProduct() {
                     </div>
                 </div>
             </div>
-            <style>
-                {`
-                    body {
-                        background-color: #404821; /* Olive green */
-                    }
-                `}
-            </style>
         </div>
     )
 }

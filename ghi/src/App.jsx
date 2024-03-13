@@ -53,7 +53,7 @@ function App() {
         <BrowserRouter>
             <div className="App">
                 <Header />
-                <Nav />
+                <Navigation />
                 <ErrorNotification error={error} />
                 <Routes>
                     <Route path="/" element={<Construct info={{}} />} />
