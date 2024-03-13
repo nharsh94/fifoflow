@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import Button from 'react-bootstrap/Button'
 
-function ProductDetails () {
+function TestProductDetails () {
     const [showUsage, setShowUsage] = useState(false);
 
     const toggleStockAlert = async () => {
@@ -72,4 +72,4 @@ function ProductDetails () {
     );
 };
 
-export default ProductDetails
+export default TestProductDetails

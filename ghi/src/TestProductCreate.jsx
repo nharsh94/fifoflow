@@ -4,7 +4,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
-function ProductCreate() {
+function TestProductCreate() {
     const [formSuccess, setFormSuccess] = useState(false)
     const [formData, setFormData] = useState({
         name: '',
@@ -197,4 +197,4 @@ function ProductCreate() {
     )
 }
 
-export default ProductCreate
+export default TestProductCreate
