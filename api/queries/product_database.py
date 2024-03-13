@@ -38,7 +38,7 @@ class ProductRepository:
             logging.error(f"Could not get product: {e}")
             return None
 
-    def delete(self, products_id: int) -> bool:
+    def delete(self, product_id: int) -> bool:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
