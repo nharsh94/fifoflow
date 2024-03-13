@@ -4,6 +4,7 @@ function OrderList() {
     const [orders, setOrders] = useState([])
     const [products, setProducts] = useState([])
     const [shops, setShops] = useState([])
+    const [users, setUsers] = useState([])
 
     const getOrderData = async () => {
         const response = await fetch('http://localhost:8000/api/orders')
@@ -31,10 +32,21 @@ function OrderList() {
             setShops(data)
         }
     }
+
+    const getUserData = async () => {
+        const response = await fetch('http://localhost:8000/api/profile')
+
+        if (response.ok) {
+            const data = await response.json()
+            setUsers(data)
+        }
+    }
+
     useEffect(() => {
         getOrderData(),
         getProductData(),
-        getShopData()
+        getShopData(),
+        getUserData()
     }, [])
 
     return (
@@ -45,18 +57,27 @@ function OrderList() {
                     <th>Quantity</th>
                     <th>Shop</th>
                     <th>Total Price</th>
+                    <th>Orderer</th>
+                    <th>Order Date</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
                 {orders.map((order) => {
                     const product = products.find(product => product.product_id === order.product_id)
                     const shop = shops.find(shop => shop.shop_id === order.shop_id)
+                    const user = users.find(user => user.user_id === order.user_id)
+                    const date = new Date(order.order_date)
+                    const formattedDate = `${date.getMonth()+1}-${date.getDate()}-${date.getFullYear()}`;
                     return (
                         <tr key={order.order_id}>
                             <td>{product ? product.name : "Product not found"}</td>
                             <td>{order.quantity}</td>
-                            <td>{shop ? shop.shop_name : "Product not found"}</td>
+                            <td>{shop ? shop.shop_name : "Shop not found"}</td>
                             <td>{order.total_price}</td>
+                            <td>{user ? user.first_name + " " +  user.last_name : "User not found"}</td>
+                            <td>{formattedDate}</td>
+                            <td>{order.status}</td>
                         </tr>
                     )
                 })}
