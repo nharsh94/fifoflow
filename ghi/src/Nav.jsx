@@ -79,9 +79,6 @@ function Navs() {
                                 title="User Management"
                                 id="nav-dropdown"
                             >
-                                <NavDropdown.Item as={Link} to="/shops/list">
-                                    User Database
-                                </NavDropdown.Item>
                                 <NavDropdown.Item eventKey="4.2">
                                     Assign User Access (Admin Only)
                                 </NavDropdown.Item>
