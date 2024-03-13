@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
 
-function ProductsList() {
+function TestProductsList() {
     const [products, setProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
@@ -242,4 +242,4 @@ function ProductsList() {
     )
 }
 
-export default ProductsList
+export default TestProductsList
