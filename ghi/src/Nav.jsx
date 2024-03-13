@@ -11,6 +11,15 @@ function Navs() {
             <Navbar className="bg-body-tertiary" expand="lg">
                 {/* <Container className="d-flex justify-content-between align-items-center"> */}
                 <Container fluid>
+                    <Navbar.Brand as={Link} to="/">
+                        <img
+                            src={brand}
+                            width="240"
+                            height="56.8"
+                            className="d-inline-block align-top"
+                            alt="brand"
+                        />
+                    </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav activeKey="1">
@@ -19,11 +28,14 @@ function Navs() {
                                     Inventory Management
                                 </Nav.Link>
                             </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link eventKey="2" title="/api/orders">
-                                    Order Management
-                                </Nav.Link>
-                            </Nav.Item>
+                            <NavDropdown
+                                title="Order Management"
+                                id="nav-dropdown"
+                            >
+                                <NavDropdown.Item as={Link} to="/orders">
+                                    All Orders
+                                </NavDropdown.Item>
+                            </NavDropdown>
                             <NavDropdown
                                 title="Product Management"
                                 id="nav-dropdown"
