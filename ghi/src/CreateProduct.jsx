@@ -19,6 +19,8 @@ function CreateProduct() {
         fetchSuppliers()
     }, [])
 
+    console.log('I am supplier', suppliers)
+
     const fetchSuppliers = async () => {
         try {
             const response = await fetch('http://localhost:8000/api/profile')
@@ -69,7 +71,6 @@ function CreateProduct() {
             [name]: value,
         })
     }
-    console.log(formData)
 
     return (
         <div>
@@ -188,8 +189,8 @@ function CreateProduct() {
                                             </option>
                                             {suppliers.map((supplier) => (
                                                 <option
-                                                    key={supplier.id}
-                                                    value={supplier.id}
+                                                    key={supplier.user_id}
+                                                    value={supplier.user_id}
                                                 >
                                                     {supplier.first_name}
                                                 </option>

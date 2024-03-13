@@ -113,7 +113,7 @@ class ProductRepository:
                             price,
                             quantity_in_stock,
                             category,
-                            user_id,
+                            supplier_id,
                             alert_threshold
                         )
                         VALUES (%s, %s, %s, %s, %s, %s, %s)
@@ -147,6 +147,6 @@ class ProductRepository:
             price=record[3],
             quantity_in_stock=record[4],
             category=record[5],
-            user_id=record[6],
+            supplier_id=record[6],
             alert_threshold=record[7],
         )
