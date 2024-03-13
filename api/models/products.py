@@ -12,7 +12,7 @@ class ProductIn(BaseModel):
     price: Decimal
     quantity_in_stock: int
     category: str
-    supplier_id: int
+    user_id: int
     alert_threshold: int
 
 
@@ -23,5 +23,5 @@ class ProductOut(BaseModel):
     price: Decimal
     quantity_in_stock: int
     category: str
-    supplier_id: int
+    user_id: int
     alert_threshold: int

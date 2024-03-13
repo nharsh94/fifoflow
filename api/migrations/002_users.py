@@ -11,7 +11,7 @@ steps = [
         # "Down" SQL statement for dropping users table
         """
         DROP TABLE users;
-        """
+        """,
     ],
     [
         # "Up" SQL statement for creating roles table
@@ -24,7 +24,7 @@ steps = [
         # "Down" SQL statement for dropping roles table
         """
         DROP TABLE roles;
-        """
+        """,
     ],
     [
         # "Up" SQL statement for creating profiles table
@@ -44,6 +44,6 @@ steps = [
         # "Down" SQL statement for dropping profiles table
         """
         DROP TABLE profiles;
-        """
-    ]
+        """,
+    ],
 ]
