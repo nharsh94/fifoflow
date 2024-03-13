@@ -1,101 +1,84 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom' // Import useNavigate
+import 'bootstrap/dist/css/bootstrap.min.css'
 
-import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-
-export default function SignUpForm() {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
-    const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
-
-    const handleFormSubmit = async (event) => {
+export default function ForgotPassword() {
+    function sendPasswordResetEmail(event) {
         event.preventDefault()
-        try {
-            setLoading(true)
-            const response = await fetch(
-                'http://localhost:8000/api/user/signup',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ username, password }),
+
+        emailjs
+            .sendForm(
+                'service_g5kc3id',
+                'template_bqlmx5j',
+                event.target,
+                '9Msr9C-Xs_cPMhr2F'
+            )
+            .then(
+                (result) => {
+                    console.log('Email successfully sent!')
+                    // Optionally, display a success message or redirect the user
+                },
+                (error) => {
+                    console.error('Failed to send email:', error.text)
+                    // Optionally, display an error message to the user
                 }
             )
-
-            if (!response.ok) {
-                const errorData = await response.json()
-                throw new Error(errorData.message || 'Failed to sign up')
-            }
-
-            // Assume the sign-up was successful if we reach this point
-            navigate('/')
-        } catch (error) {
-            setError(error.message || 'An unknown error occurred') // Set the error state to display the error message
-        } finally {
-            setLoading(false)
-        }
     }
 
     return (
-        <>
-            <div>
-                <h2>Create an account</h2>
-                <Form
-                    onSubmit={handleFormSubmit}
-                    id="signup-form"
-                    className="center-form"
-                >
-                    <div className="mb-3">
-                        {error && <div className="error">{error}</div>}
-                        <FloatingLabel
-                            controlId="FloatingInput"
-                            label="Username"
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                type="text"
-                                value={username}
-                                onChange={(event) =>
-                                    setUsername(event.target.value)
-                                }
-                                placeholder="Enter username"
-                                required
-                            />
-                        </FloatingLabel>
-                        <FloatingLabel
-                            controlId="FloatingPassword"
-                            label="Password"
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                type="password"
-                                value={password}
-                                onChange={(event) =>
-                                    setPassword(event.target.value)
-                                }
-                                placeholder="Enter Password"
-                                required
-                            />
-                        </FloatingLabel>
-                    </div>
-                    <Button
-                        className="btn btn-outline-light"
-                        variant="primary"
-                        size="lg"
-                        id="submit-btn"
-                        data-replace=""
-                        type="submit"
-                        disabled={loading}
-                    >
-                        {loading ? 'Signing Up...' : 'Sign Up'}
-                    </Button>
-                </Form>
-            </div>
-        </>
+        <div className="container mt-5">
+            <h2>Forgot Password</h2>
+            <form onSubmit={sendPasswordResetEmail} className="mt-3">
+                <div className="mb-3">
+                    <label htmlFor="from_name" className="form-label">
+                        Name
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="from_name"
+                        name="from_name"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="from_email" className="form-label">
+                        Email
+                    </label>
+                    <input
+                        type="email"
+                        className="form-control"
+                        id="from_email"
+                        name="from_email"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="subject" className="form-label">
+                        Subject
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="subject"
+                        name="subject"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="html_message" className="form-label">
+                        Message
+                    </label>
+                    <textarea
+                        className="form-control"
+                        id="html_message"
+                        name="html_message"
+                        rows="3"
+                        required
+                    ></textarea>
+                </div>
+                <button type="submit" className="btn btn-primary">
+                    Send
+                </button>
+            </form>
+        </div>
     )
 }

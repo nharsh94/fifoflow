@@ -1,64 +1,48 @@
 from fastapi import APIRouter, Depends, Response, HTTPException
+from queries.product_database import ProductRepository
 from typing import List, Union, Optional
-
-from queries.product_database import (
-    Error,
-    ProductRepository,
-    ProductIn,
-    ProductOut,
-)
+from models.products import ProductIn, ProductOut, Error
 
 router = APIRouter(tags=["Products"], prefix="/api/products")
 
 
-@router.post("/",
-             response_model=Union[ProductOut, Error],
-             tags=["Products"])
+@router.post("/", response_model=Union[ProductOut, Error])
 def create_products(product: ProductIn, repo: ProductRepository = Depends()):
     return repo.create(product)
 
 
-@router.get("/",
-            response_model=Union[List[ProductOut], Error],
-            tags=["Products"])
-def get_all(
-    repo: ProductRepository = Depends()
-):
+@router.get("/", response_model=Union[List[ProductOut], Error])
+def get_all(repo: ProductRepository = Depends()):
     return repo.get_all()
 
 
-@router.put("/{products_id}",
-            response_model=Union[ProductOut, Error],
-            tags=["Products"])
+@router.put("/{product_id}", response_model=Union[ProductOut, Error])
 def update_product(
-    products_id: int,
-    product: ProductIn,
-    repo: ProductRepository = Depends(),
-) -> Union[Error, ProductOut]:
-    return repo.update(products_id, product)
+    product_id: int, product: ProductIn, repo: ProductRepository = Depends()
+) -> Union[ProductOut, Error]:
+    return repo.update(product_id, product)
 
 
-@router.delete("/{products_id}",
-               response_model=bool,
-               tags=["Products"])
+@router.delete("/{product_id}", response_model=bool)
 def delete_product(
-    products_id: int,
-    repo: ProductRepository = Depends(),
+    product_id: int, repo: ProductRepository = Depends()
 ) -> bool:
-    return repo.delete(products_id)
+    if not repo.delete(product_id):
+        raise HTTPException(
+            status_code=404,
+            detail="Product not found",
+        )
+    return True
 
 
-@router.get("/{products_id}",
-            response_model=Optional[ProductOut],
-            tags=["Products"])
-def get_product(
-    products_id: int,
-    response: Response,
-    repo: ProductRepository = Depends(),
+@router.get("/{product_id}", response_model=Optional[ProductOut])
+def get_one_product(
+    product_id: int, response: Response, repo: ProductRepository = Depends()
 ) -> ProductOut:
-    product = repo.get_one(products_id)
+    product = repo.get_one(product_id)
     if product is None:
         response.status_code = 404
+        return None
     return product
 
 

@@ -17,17 +17,19 @@ import ForgotPassword from './ForgotPassword'
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
 
-import ProductCreate from './TestProductCreate' // By Mel K
-import ProductsList from './TestProductsList'  // By Mel K
+import CreateProduct from './CreateProduct'
+import ProductsList from './ProductsList'
+//
+import TestProductCreate from './TestProductCreate' // By Mel K
+import TestProductsList from './TestProductsList'  // By Mel K
 // import ProductDetails from './ProductDetails'
+//
 
 // import ThreeScene from './ThreeScene'
 
+
 // All your environment variables in vite are in this object
 console.table(import.meta.env)
-
-// When using environment variables, you should do a check to see if
-// they are defined or not and throw an appropriate error message
 const API_HOST = import.meta.env.VITE_API_HOST
 
 if (!API_HOST) {
@@ -65,24 +67,24 @@ function App() {
 
                     <Route path="/user" element={<UserPage />} />
                     <Route path="/signup" element={<SignUpForm />} />
-                    <Route path="/shops">
-                        <Route path="create" element={<ShopCreate />} />
-                        <Route path="list" element={<ShopsList />} />
-                        {/* <Route
-                            path="details"
-                            element={<ShopDetails shopId={123} />}
-                        /> */}
-                    </Route>
-                    <Route path="/products">
-                        <Route path="create1" element={<ProductCreate />} />
-                        <Route path="list1" element={<ProductsList />} />
-                        {/* <Route path="details" element={<ProductDetails />} /> */}
-                    </Route>
                     <Route
                         path="/forgot-password"
                         element={<ForgotPassword />}
                     />
-                    {/* Define more routes as needed */}
+
+                    <Route path="/shops">
+                        <Route path="create" element={<ShopCreate />} />
+                        <Route path="list" element={<ShopsList />} />
+                        {/* <Route path="details" element={<ShopDetails />} /> */}
+                    </Route>
+
+                    <Route path="/products">
+                        <Route path="create" element={<CreateProduct />} />
+                        <Route path="list" element={<ProductsList />} />
+                        <Route path="create1" element={<TestProductCreate />} />
+                        <Route path="list1" element={<TestProductsList />} />
+                        {/* <Route path="details" element={<ProductDetails />} /> */}
+                    </Route>
                 </Routes>
             </div>
         </BrowserRouter>

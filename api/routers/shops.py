@@ -21,18 +21,16 @@ def create_shop(
     return repo.create(shop)
 
 
-@router.get("/",
-            response_model=Union[List[ShopOut], Error],
-            tags=["Shops"])
+@router.get("/", response_model=Union[List[ShopOut], Error], tags=["Shops"])
 def get_all(
     repo: ShopRepository = Depends(),
 ):
     return repo.get_all()
 
 
-@router.put("/{shops_id}",
-            response_model=Union[ShopOut, Error],
-            tags=["Shops"])
+@router.put(
+    "/{shops_id}", response_model=Union[ShopOut, Error], tags=["Shops"]
+)
 def update_shop(
     shops_id: int,
     shop: ShopIn,
@@ -51,9 +49,7 @@ def delete_shop(
     return repo.delete(shops_id)
 
 
-@router.get("/{shops_id}",
-            response_model=Optional[ShopOut],
-            tags=["Shops"])
+@router.get("/{shops_id}", response_model=Optional[ShopOut], tags=["Shops"])
 def get_shop(
     shops_id: int,
     response: Response,

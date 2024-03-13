@@ -1,36 +1,51 @@
 steps = [
     [
         """
+        CREATE TYPE status_type
+        AS ENUM('cancelled', 'submitted', 'approved', 'updated');
+        """,
+        """
+        DROP TYPE status_type ;
+        """
+    ],
+    [
+        """
         CREATE TABLE orders (
             order_id SERIAL PRIMARY KEY,
-            shop_id INT REFERENCES shops(shop_id),
-            employee_id INT references employee_users(employee_id),
-            customer_id INT references customer_users(customer_id),
+            shop_id INT,
+            user_id INT,
             order_date TIMESTAMP,
-            order_item INT,
-            product_id INT references products(product_id),
+            product_id INT,
             quantity INT,
-            total_price DECIMAL(10, 2)
+            total_price DECIMAL(10, 2),
+            status status_type,
+            FOREIGN KEY (shop_id) REFERENCES shops(shop_id),
+            FOREIGN KEY (user_id) REFERENCES profiles(user_id),
+            FOREIGN KEY (product_id) REFERENCES products(product_id)
         );
         """,
         """
         DROP TABLE orders;
-        """
+        """,
     ],
     [
         """
         CREATE TABLE order_items (
             id SERIAL PRIMARY KEY NOT NULL,
-            shop_id INT references shops(shop_id) NOT NULL,
-            order_id INT references orders(order_id) NOT NULL,
-            product_id INT references products(product_id) NOT NULL,
+            shop_id INT NOT NULL,
+            order_id INT NOT NULL,
+            product_id INT NOT NULL,
             quantity INT NOT NULL,
             unit_price DECIMAL(10, 2) NOT NULL,
-            total_price DECIMAL(10, 2) NOT NULL
+            total_price DECIMAL(10, 2) NOT NULL,
+            status status_type,
+            FOREIGN KEY (shop_id) REFERENCES shops(shop_id),
+            FOREIGN KEY (order_id) REFERENCES orders(order_id),
+            FOREIGN KEY (product_id) REFERENCES products(product_id)
         );
         """,
         """
         DROP TABLE order_items;
-        """
-    ]
+        """,
+    ],
 ]

@@ -10,22 +10,21 @@ class OrdersRepository:
                     result = db.execute(
                         """
                         INSERT INTO orders
-                            (shop_id, employee_id, customer_id, order_date,
-                            order_item, product_id, quantity, total_price)
+                            (shop_id, user_id, order_date,
+                            product_id, quantity, total_price, status)
                         VALUES
-                            (%s, %s, %s, %s, %s, %s, %s, %s)
+                            (%s, %s, %s, %s, %s, %s, %s)
                         RETURNING order_id;
                         """,
                         [
                             order.shop_id,
-                            order.employee_id,
-                            order.customer_id,
+                            order.user_id,
                             order.order_date,
-                            order.order_item,
                             order.product_id,
                             order.quantity,
-                            order.total_price
-                        ]
+                            order.total_price,
+                            order.status,
+                        ],
                     )
                     order_id = result.fetchone()[0]
                     return self.order_in_out(order_id, order)
@@ -43,9 +42,9 @@ class OrdersRepository:
                     result = db.execute(
                         """
                         SELECT
-                            order_id, shop_id, employee_id,
-                            customer_id, order_date, order_item,
-                            product_id, quantity, total_price
+                            order_id, shop_id, user_id,
+                            order_date, product_id,
+                            quantity, total_price, status
                         FROM
                             orders
                         WHERE
@@ -64,13 +63,12 @@ class OrdersRepository:
         return OrdersOut(
             order_id=record[0],
             shop_id=record[1],
-            employee_id=record[2],
-            customer_id=record[3],
-            order_date=record[4],
-            order_item=record[5],
-            product_id=record[6],
-            quantity=record[7],
-            total_price=record[8]
+            user_id=record[2],
+            order_date=record[3],
+            product_id=record[4],
+            quantity=record[5],
+            total_price=record[6],
+            status=record[7],
         )
 
     def delete_order(self, order_id: int):
@@ -96,18 +94,24 @@ class OrdersRepository:
                         """
                         UPDATE orders
                         SET shop_id = %s
-                            , employee_id = %s
-                            , customer_id = %s
+                            , user_id = %s
                             , order_date = %s
-                            , order_item = %s
                             , product_id = %s
                             , quantity = %s
                             , total_price = %s
+                            , status = %s
                         WHERE order_id = %s
-                        """
-                        [order.shop_id, order.employee_id, order.customer_id,
-                         order.order_date, order.order_item, order.product_id,
-                         order.quantity, order.total_price, order_id]
+                        """,
+                        [
+                            order.shop_id,
+                            order.user_id,
+                            order.order_date,
+                            order.product_id,
+                            order.quantity,
+                            order.total_price,
+                            order.status,
+                            order_id,
+                        ],
                     )
                     return self.order_in_out(order_id, order)
         except Exception:
@@ -119,9 +123,9 @@ class OrdersRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT order_id, shop_id, employee_id, customer_id,
-                            order_date, order_item, product_id, quantity,
-                            total_price
+                        SELECT order_id, shop_id, user_id, order_date,
+                                product_id, quantity,
+                                total_price, status
                         FROM orders
                         ORDER BY order_id
                         """
@@ -131,13 +135,12 @@ class OrdersRepository:
                         order = OrdersOut(
                             order_id=record[0],
                             shop_id=record[1],
-                            employee_id=record[2],
-                            customer_id=record[3],
-                            order_date=record[4],
-                            order_item=record[5],
-                            product_id=record[6],
-                            quantity=record[7],
-                            total_price=record[8]
+                            user_id=record[2],
+                            order_date=record[3],
+                            product_id=record[4],
+                            quantity=record[5],
+                            total_price=record[6],
+                            status=record[7],
                         )
                         result.append(order)
                     return result
@@ -154,14 +157,20 @@ class OrderItemsRepository:
                         """
                         INSERT INTO order_items
                         (shop_id, order_id, product_id, quantity,
-                        unit_price, total_price)
+                        unit_price, total_price, status)
                         VALUES
-                        (%s, %s, %s, %s, %s, %s)
+                        (%s, %s, %s, %s, %s, %s, %s)
                         RETURNING id
                         """,
-                        [order_item.shop_id, order_item.order_id,
-                            order_item.product_id, order_item.quantity,
-                            order_item.unit_price, order_item.total_price]
+                        [
+                            order_item.shop_id,
+                            order_item.order_id,
+                            order_item.product_id,
+                            order_item.quantity,
+                            order_item.unit_price,
+                            order_item.total_price,
+                            order_item.status,
+                        ],
                     )
                     id = result.fetchone()[0]
                     return self.order_item_in_out(id, order_item)
@@ -181,7 +190,7 @@ class OrderItemsRepository:
                         SELECT
                             id, shop_id, order_id,
                             product_id, quantity, unit_price,
-                            total_price
+                            total_price, status
                         FROM
                             order_items
                         WHERE
@@ -204,7 +213,8 @@ class OrderItemsRepository:
             product_id=record[3],
             quantity=record[4],
             unit_price=record[5],
-            total_price=record[6]
+            total_price=record[6],
+            status=record[7],
         )
 
     def delete_order_item(self, id: int):
@@ -235,11 +245,18 @@ class OrderItemsRepository:
                             quantity = %s,
                             unit_price = %s,
                             total_price = %s
+                            status = %s
                         WHERE id = %s
-                        """
-                        [order_item.shop_id, order_item.order_id,
-                            order_item.product_id, order_item.quantity,
-                            order_item.unit_price, order_item.total_price]
+                        """,
+                        [
+                            order_item.shop_id,
+                            order_item.order_id,
+                            order_item.product_id,
+                            order_item.quantity,
+                            order_item.unit_price,
+                            order_item.total_price,
+                            order_item.status,
+                        ],
                     )
                     return self.order_items_in_out(id, order_item)
         except Exception:
@@ -252,7 +269,7 @@ class OrderItemsRepository:
                     result = db.execute(
                         """
                         SELECT id, shop_id, order_id, product_id,
-                            quantity, unit_price, total_price
+                            quantity, unit_price, total_price, status
                         FROM order_items
                         ORDER BY id
                         """
@@ -266,7 +283,8 @@ class OrderItemsRepository:
                             product_id=record[3],
                             quantity=record[4],
                             unit_price=record[5],
-                            total_price=record[6]
+                            total_price=record[6],
+                            status=record[7],
                         )
                         result.append(order_item)
                     return result
