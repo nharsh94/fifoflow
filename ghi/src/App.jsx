@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ErrorNotification from './ErrorNotification'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
-
 import Nav from './Nav'
 import Construct from './Construct'
 import UserPage from './UserPage'
@@ -19,6 +18,8 @@ import ShopsList from './ShopsList'
 
 import CreateProduct from './CreateProduct'
 import ProductsList from './ProductsList'
+
+import OrderList from './list_orders'
 //
 import TestProductCreate from './TestProductCreate' // By Mel K
 import TestProductsList from './TestProductsList'  // By Mel K
@@ -84,6 +85,8 @@ function App() {
                         <Route path="create1" element={<TestProductCreate />} />
                         <Route path="list1" element={<TestProductsList />} />
                         {/* <Route path="details" element={<ProductDetails />} /> */}
+
+                        <Route path="/orders" element={<OrderList />} />
                     </Route>
                 </Routes>
             </div>
