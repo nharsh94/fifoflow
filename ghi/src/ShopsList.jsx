@@ -1,103 +1,118 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
+import Form from 'react-bootstrap/Form'
+import Table from 'react-bootstrap/Table'
 
 function ShopsList() {
-    const [shops, setShop] = useState([]);
-    const [selectedShop, setSelectedShop] = useState(null);
-    const [showModal, setShowModal] = useState(false);
+    const [shops, setShops] = useState([])
+    const [selectedShop, setSelectedShop] = useState(null)
+    const [showModal, setShowModal] = useState(false)
 
     const getData = async () => {
-            try {
-                const response = await fetch('http://localhost:8000/api/shops');
+        try {
+            const response = await fetch('http://localhost:8000/api/shops')
 
-                if (response.ok) {
-                    const data = await response.json();
-                    setShop(data)
-                } else {
-                    throw new Error(
-                        'Failed to fetch data. Status: ${response.status}'
-                    )
-                }
-            } catch (error) {
-                console.error('Error fetching shop data', error);
+            if (response.ok) {
+                const data = await response.json()
+                setShops(data)
+            } else {
+                throw new Error(
+                    'Failed to fetch data. Status: ${response.status}'
+                )
             }
-        };
+        } catch (error) {
+            console.error('Error fetching shop data', error)
+        }
+    }
 
     useEffect(() => {
         getData()
-    }, []);
+    }, [])
 
     const handleCloseModal = () => {
-        setShowModal(false);
-    };
+        setShowModal(false)
+    }
 
     const handleShowModal = async (shop) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/shops/${shop.shop_id}/`);
+            const response = await fetch(
+                `http://localhost:8000/api/shops/${shop.shop_id}`
+            )
             if (response.ok) {
-                const data = await response.json();
-                setSelectedShop(data);
-                setShowModal(true);
+                const data = await response.json()
+                setSelectedShop(data)
+                setShowModal(true)
             } else {
-                throw new Error(`Failed to fetch shop details. Status: ${response.status}`);
+                throw new Error(
+                    `Failed to fetch shop details. Status: ${response.status}`
+                )
             }
         } catch (error) {
-            console.error('Error fetching shop details', error);
+            console.error('Error fetching shop details', error)
         }
     }
 
     const handleUpdateShop = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/api/shops/${selectedShop.shop_id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(selectedShop),
-            });
+            const response = await fetch(
+                `http://localhost:8000/api/shops/${selectedShop.shop_id}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(selectedShop),
+                }
+            )
 
             if (response.ok) {
-                console.log('Shop updated successfully:', selectedShop);
-                handleCloseModal();
-                getData();
+                console.log('Shop updated successfully:', selectedShop)
+                handleCloseModal()
+                getData()
             } else {
-                throw new Error(`Failed to update shop. Status: ${response.status}`);
+                throw new Error(
+                    `Failed to update shop. Status: ${response.status}`
+                )
             }
         } catch (error) {
-            console.error('Error updating shop', error);
+            console.error('Error updating shop', error)
         }
-    };
+    }
 
     const handleDeleteShop = async () => {
-        const confirmDelete = window.confirm('Are you sure you want to delete this shop?');
+        const confirmDelete = window.confirm(
+            'Are you sure you want to delete this shop?'
+        )
         if (confirmDelete) {
             try {
-                const response = await fetch(`http://localhost:8000/api/shops/${selectedShop.shop_id}`, {
-                    method: 'DELETE',
-                });
+                const response = await fetch(
+                    `http://localhost:8000/api/shops/${selectedShop.shop_id}`,
+                    {
+                        method: 'DELETE',
+                    }
+                )
 
                 if (response.ok) {
-                    console.log('Shop deleted successfully', selectedShop);
-                    getData();
-                    handleCloseModal();
+                    console.log('Shop deleted successfully', selectedShop)
+                    getData()
+                    handleCloseModal()
                 } else {
-                    throw new Error(`Failed to delete shop. Status: ${response.status}`);
+                    throw new Error(
+                        `Failed to delete shop. Status: ${response.status}`
+                    )
                 }
             } catch (error) {
-                console.error('Error deleting shop', error);
+                console.error('Error deleting shop', error)
             }
         }
-
-    };
+    }
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setSelectedShop((prevShop) => ({ ...prevShop, [name]: value }));
-    };
+        const { name, value } = e.target
+        setSelectedShop((prevShop) => ({ ...prevShop, [name]: value }))
+    }
 
     return (
         <>
@@ -153,7 +168,7 @@ function ShopsList() {
                                 value={selectedShop?.shop_name || ''}
                                 onChange={handleInputChange}
                             />
-                            </Form.Group>
+                        </Form.Group>
                         <Form.Group controlId="formAddress">
                             <Form.Label>Address</Form.Label>
                             <Form.Control
@@ -189,7 +204,7 @@ function ShopsList() {
                 </Modal.Footer>
             </Modal>
         </>
-    );
+    )
 }
 
-export default ShopsList;
+export default ShopsList

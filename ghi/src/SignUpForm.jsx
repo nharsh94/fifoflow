@@ -34,23 +34,31 @@ export default function SignUpForm() {
     }
 
     return (
-        <form onSubmit={handleFormSubmit}>
-            {error && <div className="error">{error}</div>}
-            <input
-                type="text"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                placeholder="Enter username"
-                required
-            />
-            <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder="Enter Password"
-                required
-            />
-            <button type="submit">Sign Up</button>
-        </form>
+        <div className="container mt-5">
+            <form onSubmit={handleFormSubmit}>
+                {error && <div className="error">{error}</div>}
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        value={username}
+                        onChange={(event) => setUsername(event.target.value)}
+                        placeholder="Enter username"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                        placeholder="Enter Password"
+                        required
+                    />
+                </div>
+                <button type="submit" className="btn btn-primary">
+                    Send
+                </button>
+            </form>
+        </div>
     )
 }

@@ -1,3 +1,4 @@
+import logging
 from typing import List, Optional, Union
 from queries.pool import pool
 from models.products import ProductIn, ProductOut, Error
@@ -10,21 +11,24 @@ class ProductRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
                         SELECT *
                         FROM products
                         WHERE product_id = %s
                         """,
-                        [product_id]
+                        [product_id],
                     )
-                    record = result.fetchone()
+                    record = db.fetchone()
                     if record is None:
+                        logging.error(
+                            f"Product with ID {product_id} was not found"
+                        )
                         return None
                     return self.record_to_product_out(record)
         except Exception as e:
-            print(e)
-            return {"message": "Could not get that product"}
+            logging.error(f"Could not get product: {e}")
+            return None
 
     def delete(self, product_id: int) -> bool:
         try:
@@ -35,32 +39,31 @@ class ProductRepository:
                         DELETE FROM products
                         WHERE product_id = %s
                         """,
-                        [product_id]
+                        [product_id],
                     )
                     return True
         except Exception as e:
-            print(e)
+            logging.error(f"Error deleting product with ID {product_id}: {e}")
             return False
 
     def update(
-            self,
-            product_id: int,
-            product: ProductIn
-            ) -> Union[List[ProductOut], Error]:
+        self, product_id: int, product: ProductIn
+    ) -> Union[List[ProductOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
                         """
                         UPDATE products
-                        SET name = %s
-                            , description = %s
-                            , price = %s
-                            , quantity_in_stock = %s
-                            , category = %s
-                            , supplier_id = %s
-                            , alert_threshold = %s
+                        SET name = %s,
+                            description = %s,
+                            price = %s,
+                            quantity_in_stock = %s,
+                            category = %s,
+                            supplier_id = %s,
+                            alert_threshold = %s
                         WHERE product_id = %s
+                        RETURNING *
                         """,
                         [
                             product.name,
@@ -70,8 +73,8 @@ class ProductRepository:
                             product.category,
                             product.supplier_id,
                             product.alert_threshold,
-                            product_id
-                        ]
+                            product_id,
+                        ],
                     )
                     return self.product_in_to_out(product_id, product)
         except Exception:
@@ -82,37 +85,39 @@ class ProductRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
                         SELECT *
                         FROM products
                         ORDER BY product_id
                         """
                     )
+                    records = db.fetchall()
                     return [
-                        self.record_to_product_out(record) for record in result
+                        self.record_to_product_out(record)
+                        for record in records
                     ]
         except Exception as e:
-            print(e)
-            return {"message": "Could not get all products"}
+            logging.error(f"Could not get all products: {e}")
+            return []
 
     def create(self, product: ProductIn) -> ProductOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
-                        INSERT INTO products
-                        (name,
-                        description,
-                        price,
-                        quantity_in_stock,
-                        category,
-                        supplier_id,
-                        alert_threshold)
-                        VALUES
-                        (%s, %s, %s, %s, %s, %s,%s)
-                        RETURNING product_id;
+                        INSERT INTO products (
+                            name,
+                            description,
+                            price,
+                            quantity_in_stock,
+                            category,
+                            supplier_id,
+                            alert_threshold
+                        )
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)
+                        RETURNING *
                         """,
                         [
                             product.name,
@@ -121,14 +126,14 @@ class ProductRepository:
                             product.quantity_in_stock,
                             product.category,
                             product.supplier_id,
-                            product.alert_threshold
-                        ]
+                            product.alert_threshold,
+                        ],
                     )
-                    product_id = result.fetchone()[0]
+                    product_id = db.fetchone()[0]
                     return self.product_in_to_out(product_id, product)
         except Exception as e:
-            print(e)
-            return {"message": "Could not create product"}
+            logging.error(f"Error creating product: {e}")
+            return None
 
     def product_in_to_out(self, product_id: int, product: ProductOut):
         old_data = product.dict()
@@ -143,5 +148,5 @@ class ProductRepository:
             quantity_in_stock=record[4],
             category=record[5],
             supplier_id=record[6],
-            alert_threshold=record[7]
+            alert_threshold=record[7],
         )

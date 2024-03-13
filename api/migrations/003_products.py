@@ -18,9 +18,6 @@ steps = [
         # "Down" SQL statement for dropping products table
         """
         DROP TABLE products;
-        """
+        """,
     ]
 ]
-
-
-
