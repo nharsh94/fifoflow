@@ -4,7 +4,6 @@ import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
 
 import { Link } from 'react-router-dom'
-import brand from './assets/FIFOFlow_transparent_x1.png'
 
 function Navs() {
     return (
@@ -12,21 +11,12 @@ function Navs() {
             <Navbar className="bg-body-tertiary" expand="lg">
                 {/* <Container className="d-flex justify-content-between align-items-center"> */}
                 <Container fluid>
-                    <Navbar.Brand as={Link} to="/">
-                        <img
-                            src={brand}
-                            width="240"
-                            height="56.8"
-                            className="d-inline-block align-top"
-                            alt="brand"
-                        />
-                    </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav activeKey="1">
                             <Nav.Item>
                                 <Nav.Link eventKey="1" href="#/home">
-                                    InVentory Management
+                                    Inventory Management
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
