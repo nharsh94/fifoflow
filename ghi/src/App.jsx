@@ -13,11 +13,14 @@ import Construct from './Construct'
 import UserPage from './UserPage'
 import SignUpForm from './SignUpForm'
 import ForgotPassword from './ForgotPassword'
+
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
+
+import ProductCreate from './TestProductCreate' // By Mel K
+import ProductsList from './TestProductsList'  // By Mel K
 // import ProductDetails from './ProductDetails'
-import ProductCreate from './ProductCreate'
-import ProductsList from './ProductsList'
+
 // import ThreeScene from './ThreeScene'
 
 // All your environment variables in vite are in this object
@@ -71,8 +74,8 @@ function App() {
                         /> */}
                     </Route>
                     <Route path="/products">
-                        <Route path="create" element={<ProductCreate />} />
-                        <Route path="list" element={<ProductsList />} />
+                        <Route path="create1" element={<ProductCreate />} />
+                        <Route path="list1" element={<ProductsList />} />
                         {/* <Route path="details" element={<ProductDetails />} /> */}
                     </Route>
                     <Route
