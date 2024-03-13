@@ -16,6 +16,10 @@
 body {
     background-color: hsl(72.3,37.1%,95%);
 }
+Nav.Link {
+    margin-right: 10em;
+}
+
 .logo {
     max-width: 70%;
     height: auto;

@@ -55,7 +55,6 @@ function Construct({ info }) {
             } else {
                 console.error('Login error:', error)
             }
-            // Handle login error here (e.g., showing an error message)
         }
     }
 
