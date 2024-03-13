@@ -52,9 +52,8 @@ function App() {
     return (
         <BrowserRouter>
             <div className="App">
-                <Nav />
                 <Header />
-                <Navigation />
+                <Nav />
                 <ErrorNotification error={error} />
                 <Routes>
                     <Route path="/" element={<Construct info={{}} />} />
@@ -83,9 +82,8 @@ function App() {
                         <Route path="create" element={<CreateProduct />} />
                         <Route path="list" element={<ProductsList />} />
                         {/* <Route path="details" element={<ProductDetails />} /> */}
-
-                        <Route path="/orders" element={<OrderList />} />
                     </Route>
+                    <Route path="/orders" element={<OrderList />} />
                     {/* Define more routes as needed */}
                 </Routes>
             </div>
