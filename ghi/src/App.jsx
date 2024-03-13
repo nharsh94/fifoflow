@@ -21,7 +21,6 @@ import OrderCreate from './order_form'
 import CreateProduct from './CreateProduct'
 import ProductsList from './ProductsList'
 
-import OrderList from './list_orders'
 //
 import TestProductCreate from './TestProductCreate' // By Mel K
 import TestProductsList from './TestProductsList'  // By Mel K
@@ -96,8 +95,6 @@ function App() {
                         <Route path="create1" element={<TestProductCreate />} />
                         <Route path="list1" element={<TestProductsList />} />
                         {/* <Route path="details" element={<ProductDetails />} /> */}
-
-                        <Route path="/orders" element={<OrderList />} />
                     </Route>
                     {/* Define more routes as needed */}
                 </Routes>

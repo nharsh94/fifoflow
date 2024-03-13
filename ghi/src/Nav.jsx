@@ -37,10 +37,10 @@ function Navs() {
                                 title="Order Management"
                                 id="nav-dropdown"
                             >
-                                <NavDropdown.Item as={Link} to="/orders">
+                                <NavDropdown.Item as={NavLink} to="/orders">
                                     All Orders
                                 </NavDropdown.Item>
-                                <NavDropdown.Item as={Link} to="/create-order">
+                                <NavDropdown.Item as={NavLink} to="/create-order">
                                     Create an Order
                                 </NavDropdown.Item>
                             </NavDropdown>
