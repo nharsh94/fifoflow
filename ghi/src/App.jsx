@@ -10,10 +10,13 @@ import ProductsList from './ProductsList'
 import Nav from './Nav'
 import Construct from './Construct'
 import UserPage from './UserPage'
-import SignUpForm from './SignUpForm'
+import SignUpUserForm from './SignUpUserForm'
 import ForgotPassword from './ForgotPassword'
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
+import AssignRole from './AssignRole.jsx'
+import CreateProfile from './CreateProfile'
+import { UserProvider } from './UserContext'
 
 console.table(import.meta.env)
 const API_HOST = import.meta.env.VITE_API_HOST
@@ -48,29 +51,33 @@ function App() {
 
     return (
         <BrowserRouter>
-            <div className="App">
-                <Header />
-                <Navigation />
-                <ErrorNotification error={error} />
-                <Routes>
-                    <Route path="/" element={<Construct info={{}} />} />
+            <UserProvider>
+                <div className="App">
+                    <Header />
+                    <Navigation />
+                    <ErrorNotification error={error} />
+                    <Routes>
+                        <Route path="/" element={<Construct info={{}} />} />
 
-                    <Route path="/user" element={<UserPage />} />
-                    <Route path="/signup" element={<SignUpForm />} />
-                    <Route path="/shops">
-                        <Route path="create" element={<ShopCreate />} />
-                        <Route path="list" element={<ShopsList />} />
-                    </Route>
-                    <Route
-                        path="/forgot-password"
-                        element={<ForgotPassword />}
-                    />
-                    <Route path="/products">
-                        <Route path="create" element={<CreateProduct />} />
-                        <Route path="list" element={<ProductsList />} />
-                    </Route>
-                </Routes>
-            </div>
+                        <Route path="/user" element={<UserPage />} />
+                        <Route path="/signup" element={<SignUpUserForm />} />
+                        <Route path="/role" element={<AssignRole />} />
+                        <Route path="/profile" element={<CreateProfile />} />
+                        <Route path="/shops">
+                            <Route path="create" element={<ShopCreate />} />
+                            <Route path="list" element={<ShopsList />} />
+                        </Route>
+                        <Route
+                            path="/forgot-password"
+                            element={<ForgotPassword />}
+                        />
+                        <Route path="/products">
+                            <Route path="create" element={<CreateProduct />} />
+                            <Route path="list" element={<ProductsList />} />
+                        </Route>
+                    </Routes>
+                </div>
+            </UserProvider>
         </BrowserRouter>
     )
 }
