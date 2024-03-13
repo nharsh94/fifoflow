@@ -68,7 +68,7 @@ class ProductRepository:
                             price = %s,
                             quantity_in_stock = %s,
                             category = %s,
-                            user_id = %s,
+                            supplier_id = %s,
                             alert_threshold = %s
                         WHERE product_id = %s
                         RETURNING *
@@ -121,7 +121,7 @@ class ProductRepository:
                             price,
                             quantity_in_stock,
                             category,
-                            user_id,
+                            supplier_id,
                             alert_threshold
                         )
                         VALUES (%s, %s, %s, %s, %s, %s, %s)
@@ -133,7 +133,7 @@ class ProductRepository:
                             product.price,
                             product.quantity_in_stock,
                             product.category,
-                            product.user_id,
+                            product.supplier_id,
                             product.alert_threshold,
                         ],
                     )

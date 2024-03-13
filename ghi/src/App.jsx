@@ -2,6 +2,8 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Header from './Header'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import Header from './Header'
 import ErrorNotification from './ErrorNotification'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
@@ -74,6 +76,27 @@ function App() {
                     </Routes>
                 </div>
             </UserProvider>
+                    <Route path="/user" element={<UserPage />} />
+                    <Route path="/signup" element={<SignUpForm />} />
+                    <Route
+                        path="/forgot-password"
+                        element={<ForgotPassword />}
+                    />
+
+                    <Route path="/shops">
+                        <Route path="create" element={<ShopCreate />} />
+                        <Route path="list" element={<ShopsList />} />
+                        {/* <Route path="details" element={<ShopDetails />} /> */}
+                    </Route>
+
+                    <Route path="/products">
+                        <Route path="create" element={<CreateProduct />} />
+                        <Route path="list" element={<ProductsList />} />
+                    </Route>
+                    <Route path="/orders" element={<OrderList />} />
+                    {/* Define more routes as needed */}
+                </Routes>
+            </div>
         </BrowserRouter>
     )
 }

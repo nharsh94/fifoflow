@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
-import FloatingLabel from 'react-bootstrap/esm/FloatingLabel';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 const stateOptions = [
     { label: 'Alabama', value: 'AL' },
@@ -62,11 +62,10 @@ const stateOptions = [
     { label: 'Puerto Rico', value: 'PR' },
     { label: 'United States Minor Outlying Islands', value: 'UM' },
     { label: 'U.S. Virgin Islands', value: 'VI' },
-];
+]
 
-
-function ShopCreate(){
-    const [formSuccess, setFormSuccess] = useState(false);
+function ShopCreate() {
+    const [formSuccess, setFormSuccess] = useState(false)
     const [formData, setFormData] = useState({
         shop_name: '',
         street_address: '',
@@ -74,32 +73,32 @@ function ShopCreate(){
         selectedState: '',
         zip_code: '',
         phone: '',
-    });
+    })
 
     const handleStateChange = (e) => {
         const selectedValue = e.target.value
         setFormData((prevState) => ({
             ...prevState,
             selectedState: selectedValue,
-        }));
-    };
+        }))
+    }
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
-        const fullAddress = `${formData.street_address}, ${formData.city}, ${formData.selectedState}, ${formData.zip_code}`;
-        const url = 'http://localhost:8000/api/shops/';
+        event.preventDefault()
+        const fullAddress = `${formData.street_address}, ${formData.city}, ${formData.selectedState}, ${formData.zip_code}`
+        const url = 'http://localhost:8000/api/shops/'
 
         const fetchConfig = {
-            method: "post",
+            method: 'post',
             body: JSON.stringify({
                 ...formData,
                 address: fullAddress,
             }),
             headers: {
-                'Content-Type' : 'application/json',
+                'Content-Type': 'application/json',
             },
-        };
-        const response = await fetch(url, fetchConfig);
+        }
+        const response = await fetch(url, fetchConfig)
         if (response.ok) {
             setFormData({
                 shop_name: '',
@@ -111,28 +110,28 @@ function ShopCreate(){
             })
             setFormSuccess(true)
         }
-    };
+    }
 
     const handleFormChange = (e, inputName) => {
         let value = e.target.value
 
         if (inputName === 'phone') {
-        value = value.replace(/\D/g, '')
+            value = value.replace(/\D/g, '')
 
-        if (value.length >= 3) {
-            value = value.replace(/(\d{3})(?=\d)/, '$1-')
-        }
-        if (value.length >= 7) {
-            value = value.replace(/(\d{3})-(\d{3})(?=\d)/, '$1-$2-')
-        }
+            if (value.length >= 3) {
+                value = value.replace(/(\d{3})(?=\d)/, '$1-')
+            }
+            if (value.length >= 7) {
+                value = value.replace(/(\d{3})-(\d{3})(?=\d)/, '$1-$2-')
+            }
 
-        value = value.slice(0, 12)
-    }
+            value = value.slice(0, 12)
+        }
         setFormData((prevState) => ({
             ...prevState,
             [inputName]: value,
         }))
-    };
+    }
     let messageClasses = 'alert alert-success d-none mb-0'
     let formClasses = ''
     if (formSuccess) {
@@ -225,17 +224,14 @@ function ShopCreate(){
                                 }
                             />
                         </FloatingLabel>
-                        <FloatingLabel
-                            controlId="phone"
-                            label="Phone"
-                        >
+                        <FloatingLabel controlId="phone" label="Phone">
                             <Form.Control
                                 type="tel"
                                 placeholder="phone"
                                 value={formData.phone}
                                 onChange={(e) => handleFormChange(e, 'phone')}
                                 pattern="\d{3}-\d{3}-\d{4}"
-                                title='Enter a valid phone number (e.g., 123-456-7890)'
+                                title="Enter a valid phone number (e.g., 123-456-7890)"
                             />
                         </FloatingLabel>
                     </div>
@@ -255,7 +251,6 @@ function ShopCreate(){
             </div>
         </>
     )
-
 }
 
-export default ShopCreate;
+export default ShopCreate
