@@ -14,6 +14,7 @@ class ProductIn(BaseModel):
     category: str
     supplier_id: int
     alert_threshold: int
+    deleted_flag:  bool = False
 
 
 class ProductOut(BaseModel):
@@ -25,3 +26,4 @@ class ProductOut(BaseModel):
     category: str
     supplier_id: int
     alert_threshold: int
+    deleted_flag: bool

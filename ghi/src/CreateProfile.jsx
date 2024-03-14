@@ -15,6 +15,8 @@ export default function CreateProfile() {
         email: '',
         phone: '',
     })
+
+    console.log(profileData)
     const [error, setError] = useState('')
 
     const handleChange = (event) => {
@@ -32,8 +34,7 @@ export default function CreateProfile() {
                 },
                 body: JSON.stringify({
                     user_id: profileData.user_id,
-                    role_id: profileData.role_id,
-                    role_name: profileData.role_name,
+                    role: profileData.role_name,
                     first_name: profileData.first_name,
                     last_name: profileData.last_name,
                     email: profileData.email,
@@ -47,7 +48,7 @@ export default function CreateProfile() {
                 throw new Error(errorData.message || 'Failed to create profile')
             }
 
-            navigate('/home') // Navigate to the dashboard
+            navigate('/user') // Navigate to the dashboard
         } catch (error) {
             setError(error.message || 'An unknown error occurred')
         }
@@ -101,7 +102,10 @@ export default function CreateProfile() {
                         required
                     />
                 </div>
-                <button type="submit" className="btn-create-profile">
+                <button
+                    type="submit"
+                    className="btn btn-primary btn-create-profile"
+                >
                     Create Profile
                 </button>
             </form>
