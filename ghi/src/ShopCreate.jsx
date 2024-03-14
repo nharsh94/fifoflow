@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { Navigate } from 'react-router-dom'
+
 
 import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
 import Form from 'react-bootstrap/Form'
@@ -64,7 +66,7 @@ const stateOptions = [
     { label: 'U.S. Virgin Islands', value: 'VI' },
 ]
 
-function ShopCreate() {
+function ShopCreate( {isLoggedIn} ) {
     const [formSuccess, setFormSuccess] = useState(false)
     const [formData, setFormData] = useState({
         shop_name: '',
@@ -74,6 +76,10 @@ function ShopCreate() {
         zip_code: '',
         phone: '',
     })
+
+        if (!isLoggedIn) {
+            return <Navigate to="/" replace />
+        }
 
     const handleStateChange = (e) => {
         const selectedValue = e.target.value
