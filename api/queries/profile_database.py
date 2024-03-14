@@ -55,7 +55,7 @@ class ProfileRepository:
                         UPDATE profiles
                         SET
                             user_id = %s
-                            , role_id = %s
+                            , role = %s
                             , first_name = %s
                             , last_name = %s
                             , email = %s
@@ -64,7 +64,7 @@ class ProfileRepository:
                         """,
                         [
                             profile.user_id,
-                            profile.role_id,
+                            profile.role,
                             profile.first_name,
                             profile.last_name,
                             profile.email,
@@ -105,7 +105,7 @@ class ProfileRepository:
                         INSERT INTO profiles
                         (
                         user_id,
-                        role_id,
+                        role,
                         first_name,
                         last_name,
                         email,
@@ -117,7 +117,7 @@ class ProfileRepository:
                         """,
                         [
                             profile.user_id,
-                            profile.role_id,
+                            profile.role,
                             profile.first_name,
                             profile.last_name,
                             profile.email,
@@ -139,7 +139,7 @@ class ProfileRepository:
         return ProfileOut(
             id=record[0],
             user_id=record[1],
-            role_id=record[2],
+            role=record[2],
             first_name=record[3],
             last_name=record[4],
             email=record[5],

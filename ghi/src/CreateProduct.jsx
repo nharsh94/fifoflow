@@ -26,8 +26,10 @@ function CreateProduct() {
             const response = await fetch('http://localhost:8000/api/profile')
             if (response.ok) {
                 const suppliersData = await response.json()
-                console.log(suppliersData)
-                setSuppliers(suppliersData)
+                const suppliersFiltered = suppliersData.filter(
+                    (user) => user.role === 'Supplier'
+                )
+                setSuppliers(suppliersFiltered)
             } else {
                 console.error('Failed to fetch suppliers')
             }

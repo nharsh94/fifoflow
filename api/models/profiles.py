@@ -7,7 +7,7 @@ class Error(BaseModel):
 
 class ProfileIn(BaseModel):
     user_id: int
-    role_id: int
+    role: str
     first_name: str
     last_name: str
     email: str
@@ -17,7 +17,7 @@ class ProfileIn(BaseModel):
 class ProfileOut(BaseModel):
     id: int
     user_id: int
-    role_id: int
+    role: str
     first_name: str
     last_name: str
     email: str
