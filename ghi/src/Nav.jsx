@@ -2,8 +2,7 @@ import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
-
-import { NavNavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 // import brand from './assets/FIFOFlow_transparent_x1.png'
 
@@ -41,7 +40,10 @@ function Navs() {
                                 <NavDropdown.Item as={NavLink} to="/orders">
                                     All Orders
                                 </NavDropdown.Item>
-                                <NavDropdown.Item as={NavLink} to="/create-order">
+                                <NavDropdown.Item
+                                    as={NavLink}
+                                    to="/create-order"
+                                >
                                     Create an Order
                                 </NavDropdown.Item>
                             </NavDropdown>

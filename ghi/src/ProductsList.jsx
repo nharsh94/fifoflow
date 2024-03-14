@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-// import { toast, ToastContainer } from 'react-toastify'
-// import 'react-toastify/dist/ReactToastify.css'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
@@ -221,7 +221,7 @@ function ProductsList() {
                             />
                         </Form.Group>
                         <Form.Group controlId="formQuantity">
-                            <Form.Label>Quantiy In Stock</Form.Label>
+                            <Form.Label>Quantity In Stock</Form.Label>
                             <Form.Control
                                 type="int"
                                 placeholder="Enter quantity"

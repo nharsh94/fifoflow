@@ -87,7 +87,8 @@ function OrderCreate() {
                 product_id: '',
                 quantity: '',
             })
-        }location.reload()
+        }
+        location.reload()
     }
 
     useEffect(() => {
