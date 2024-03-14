@@ -71,7 +71,7 @@ export default function SignUpUserForm() {
                 </div>
                 <button
                     type="submit"
-                    className="btn btn-primary"
+                    className="btn-signup-user"
                     disabled={isLoading}
                 >
                     {isLoading ? 'Signing Up...' : 'Sign Up'}

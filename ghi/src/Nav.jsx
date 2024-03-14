@@ -34,7 +34,7 @@ function Navs() {
                             </Nav.Item>
                             <NavDropdown
                                 className="px-2"
-                                title="Products"
+                                title="Orders"
                                 id="nav-dropdown"
                             >
                                 <NavDropdown.Item as={NavLink} to="/orders">
@@ -102,7 +102,7 @@ function Navs() {
                                 title="User Management"
                                 id="nav-dropdown"
                             >
-                                <NavDropdown.Item as={NavLink} to="/shops/list">
+                                <NavDropdown.Item as={NavLink} to="/user">
                                     User Database
                                 </NavDropdown.Item>
                                 <NavDropdown.Item eventKey="4.2">

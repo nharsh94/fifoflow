@@ -21,7 +21,7 @@ input[type='password'] {
     border: 1px solid #ccc;
 }
 
-button[type='submit'] {
+.btn-signup-user {
     width: 100%;
     padding: 10px;
     background-color: #007bff;
@@ -61,7 +61,7 @@ button[type='submit']:hover {
 .btn-assign-role {
     width: 100%;
     padding: 10px;
-    background-color: #28a745;
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;

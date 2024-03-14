@@ -47,7 +47,7 @@ export default function CreateProfile() {
                 throw new Error(errorData.message || 'Failed to create profile')
             }
 
-            navigate('/user') // Navigate to the dashboard
+            navigate('/home') // Navigate to the dashboard
         } catch (error) {
             setError(error.message || 'An unknown error occurred')
         }
@@ -101,10 +101,7 @@ export default function CreateProfile() {
                         required
                     />
                 </div>
-                <button
-                    type="submit"
-                    className="btn btn-primary btn-create-profile"
-                >
+                <button type="submit" className="btn-create-profile">
                     Create Profile
                 </button>
             </form>

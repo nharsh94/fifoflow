@@ -91,10 +91,7 @@ export default function AssignRole() {
                         ))}
                     </select>
                 </div>
-                <button
-                    type="submit"
-                    className="btn btn-primary btn-assign-role"
-                >
+                <button type="submit" className="btn-assign-role">
                     Assign Role
                 </button>
             </form>
