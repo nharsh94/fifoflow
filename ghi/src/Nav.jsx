@@ -11,15 +11,6 @@ function Navs() {
         <>
             <Navbar bg="dark" expand="lg" variant="dark">
                 <Container fluid>
-                    {/* <Navbar.Brand as={NavLink} to="/">
-                        <img
-                            src={brand}
-                            width="240"
-                            height="56.8"
-                            className="d-inline-block align-top"
-                            alt="brand"
-                        />
-                    </Navbar.Brand> */}
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav activeKey="/home">
@@ -34,7 +25,7 @@ function Navs() {
                             </Nav.Item>
                             <NavDropdown
                                 className="px-2"
-                                title="Products"
+                                title="Orders"
                                 id="nav-dropdown"
                             >
                                 <NavDropdown.Item as={NavLink} to="/orders">
@@ -63,16 +54,6 @@ function Navs() {
                                     to="/products/list"
                                 >
                                     Product Database
-                                </NavDropdown.Item>
-                                <NavDropdown.Item
-                                    as={NavLink}
-                                    to="/products/details"
-                                >
-                                    Product Details
-                                </NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item eventKey="4.4">
-                                    Separated link
                                 </NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown
