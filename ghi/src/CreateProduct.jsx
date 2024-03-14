@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function CreateProduct() {
     const [formData, setFormData] = useState({
@@ -12,10 +14,8 @@ function CreateProduct() {
     })
 
     const [suppliers, setSuppliers] = useState([])
-    const [addSuccess, setAddSuccess] = useState(false)
 
     useEffect(() => {
-        // Fetch suppliers when component mounts
         fetchSuppliers()
     }, [])
 
@@ -51,6 +51,7 @@ function CreateProduct() {
         }
         const response = await fetch(url, fetchConfig)
         if (response.ok) {
+            toast.success('Product successfully added!')
             setFormData({
                 name: '',
                 description: '',
@@ -60,7 +61,6 @@ function CreateProduct() {
                 supplier_id: 0,
                 alert_threshold: 0,
             })
-            addSuccess(true)
         }
     }
 
@@ -74,24 +74,12 @@ function CreateProduct() {
 
     return (
         <div>
+            <ToastContainer />
             <div className="container-fluid my-5">
                 <div className="row justify-content-center">
                     <div className="col-md-6">
                         <div className="card shadow">
                             <div className="card-body">
-                                {addSuccess && (
-                                    <div
-                                        className="alert alert-success alert-dismissible fade show"
-                                        role="alert"
-                                    >
-                                        Product successfully added!
-                                        <button
-                                            type="button"
-                                            className="btn-close"
-                                            onClick={() => setAddSuccess(false)}
-                                        ></button>
-                                    </div>
-                                )}
                                 <h1 className="card-title text-center mb-4">
                                     Add Product
                                 </h1>
@@ -109,6 +97,7 @@ function CreateProduct() {
                                             type="text"
                                             className="form-control"
                                             name="name"
+                                            placeholder="Name"
                                         />
                                     </div>
                                     <div className="mb-3">
@@ -123,53 +112,8 @@ function CreateProduct() {
                                             onChange={handleChange}
                                             className="form-control"
                                             name="description"
+                                            placeholder="Description of item if any"
                                         ></textarea>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label
-                                            htmlFor="price"
-                                            className="form-label"
-                                        >
-                                            Price
-                                        </label>
-                                        <input
-                                            value={formData.price}
-                                            onChange={handleChange}
-                                            type="number"
-                                            className="form-control"
-                                            name="price"
-                                            step="0.01"
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label
-                                            htmlFor="quantity_in_stock"
-                                            className="form-label"
-                                        >
-                                            Quantity in Stock:
-                                        </label>
-                                        <input
-                                            value={formData.quantity_in_stock}
-                                            onChange={handleChange}
-                                            type="text"
-                                            className="form-control"
-                                            name="quantity_in_stock"
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label
-                                            htmlFor="category"
-                                            className="form-label"
-                                        >
-                                            Category:
-                                        </label>
-                                        <input
-                                            value={formData.category}
-                                            onChange={handleChange}
-                                            type="text"
-                                            className="form-control"
-                                            name="category"
-                                        />
                                     </div>
                                     <div className="mb-3">
                                         <label
@@ -197,22 +141,6 @@ function CreateProduct() {
                                             ))}
                                         </select>
                                     </div>
-                                    <div className="mb-3">
-                                        <label
-                                            htmlFor="alert_threshold"
-                                            className="form-label"
-                                        >
-                                            Alert Threshold:
-                                        </label>
-                                        <input
-                                            value={formData.alert_threshold}
-                                            onChange={handleChange}
-                                            type="text"
-                                            className="form-control"
-                                            name="alert_threshold"
-                                        />
-                                    </div>
-
                                     <button
                                         className="btn btn-lg btn-primary"
                                         type="submit"
