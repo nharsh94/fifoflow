@@ -6,15 +6,15 @@ import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-route
 // import ErrorNotification from './ErrorNotification'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
-
-// import Header from './Header'
 import Nav from './Nav'
 
 import Construct from './Construct'
 import UserPage from './UserPage'
-import SignUpForm from './SignUpForm'
+import SignUpUserForm from './SignUpUserForm'
 import ForgotPassword from './ForgotPassword'
-
+import AssignRole from './AssignRole.jsx'
+import CreateProfile from './CreateProfile'
+import { UserProvider } from './UserContext'
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
 
@@ -22,14 +22,22 @@ import CreateProduct from './CreateProduct'
 import ProductsList from './ProductsList'
 
 import OrderList from './list_orders'
+import OrderCreate from './order_form'
+
 //
 import TestProductCreate from './TestProductCreate' // By Mel K
-import TestProductsList from './TestProductsList'  // By Mel K
+import TestProductsList from './TestProductsList' // By Mel K
 // import ProductDetails from './ProductDetails'
-//
+// import ThreeScene from './ThreeScene'
 
+console.table(import.meta.env)
+const API_HOST = import.meta.env.VITE_API_HOST
 
-function Navigation({isLoggedIn}) {
+if (!API_HOST) {
+    throw new Error('VITE_API_HOST is not defined')
+}
+
+function Navigation() {
     const location = useLocation()
     const showNavRoutes = ['/user', '/shops', '/products', '/orders']
     const shouldShowNav = showNavRoutes.some((route) =>
@@ -48,47 +56,36 @@ function App() {
 
 
     return (
-        <>
-            <BrowserRouter>
+        <BrowserRouter>
+            <UserProvider>
                 <div className="App">
-                    {/* {isLoggedIn && <Nav isLoggedIn={isLoggedIn} />} */}
-                    {/* <Header /> */}
-                    <Navigation isLoggedIn={isLoggedIn} />
+                    <Header />
+                    <Navigation />
+                    <ErrorNotification error={error} />
                     <Routes>
-                        <Route
-                            path="/"
-                            element={
-                                <Construct
-                                    info={{}}
-                                    setIsLoggedIn={setIsLoggedIn}
-                                    isLoggedIn={isLoggedIn}
-                                />
-                            }
-                        />
+                        <Route path="/" element={<Construct info={{}} />} />
+                        <Route path="/orders" element={<OrderList />} />
+                        <Route path="/create-order" element={<OrderCreate />} />
+                        <Route path="/user" element={<UserPage />} />
+                        <Route path="/signup" element={<SignUpUserForm />} />
+                        <Route path="/role" element={<AssignRole />} />
+                        <Route path="/profile" element={<CreateProfile />} />
+                        <Route path="/shops">
+                            <Route path="create" element={<ShopCreate />} />
+                            <Route path="list" element={<ShopsList />} />
+                            {/* <Route path="details" element={<ShopDetails shopId={123} />} /> */}
+                        </Route>
+                        {/* <Route path="/threescene" element={<ThreeScene />} /> */}
 
-                        <Route path="/signup" element={<SignUpForm />} />
+                        <Route path="/user" element={<UserPage />} />
                         <Route
                             path="/forgot-password"
                             element={<ForgotPassword />}
                         />
-                        <Route
-                            path="/user"
-                            element={<UserPage isLoggedIn={isLoggedIn} />}
-                        />
-
-                        <Route path="/shops">
-                            <Route
-                                path="create"
-                                element={<ShopCreate isLoggedIn={isLoggedIn} />}
-                            />
-                            <Route path="list" element={<ShopsList />} />
-                            {/* <Route path="details" element={<ShopDetails />} /> */}
-                        </Route>
 
                         <Route path="/products">
                             <Route path="create" element={<CreateProduct />} />
                             <Route path="list" element={<ProductsList />} />
-
                             <Route
                                 path="create1"
                                 element={<TestProductCreate />}
@@ -97,17 +94,13 @@ function App() {
                                 path="list1"
                                 element={<TestProductsList />}
                             />
+                            {/* <Route path="details" element={<ProductDetails />} /> */}
                         </Route>
-
-                        <Route path="/orders" element={<OrderList />} />
-                        <Route
-                            path="/"
-                            element={<Navigate to="/construct" replace />}
-                        />
+                        {/* Define more routes as needed */}
                     </Routes>
                 </div>
-            </BrowserRouter>
-        </>
+            </UserProvider>
+        </BrowserRouter>
     )
 }
 export default App
