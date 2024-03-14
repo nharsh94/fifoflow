@@ -17,7 +17,10 @@ function ProductsList() {
 
             if (response.ok) {
                 const data = await response.json()
-                setProducts(data)
+                const filteredProducts = data.filter(
+                    (product) => !product.deleted_flag
+                )
+                setProducts(filteredProducts)
             } else {
                 throw new Error(
                     'Failed to fetch data. Status: ${response.status}'
@@ -83,10 +86,15 @@ function ProductsList() {
     }
     const handleDeleteConfirmation = async () => {
         try {
+            const updatedProduct = { ...selectedProdcut, deleted_flag: true }
             const response = await fetch(
                 `http://localhost:8000/api/products/${selectedProdcut.product_id}`,
                 {
-                    method: 'DELETE',
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedProduct),
                 }
             )
 

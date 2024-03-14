@@ -61,7 +61,8 @@ class ProductRepository:
                             quantity_in_stock = %s,
                             category = %s,
                             supplier_id = %s,
-                            alert_threshold = %s
+                            alert_threshold = %s,
+                            deleted_flag = %s
                         WHERE product_id = %s
                         RETURNING *
                         """,
@@ -73,6 +74,7 @@ class ProductRepository:
                             product.category,
                             product.supplier_id,
                             product.alert_threshold,
+                            product.deleted_flag,
                             product_id,
                         ],
                     )
@@ -149,4 +151,5 @@ class ProductRepository:
             category=record[5],
             supplier_id=record[6],
             alert_threshold=record[7],
+            deleted_flag=record[8]
         )
