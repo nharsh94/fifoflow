@@ -21,15 +21,22 @@ function Navs() {
                                     Inventory
                                 </Nav.Link>
                             </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link
-                                    className="px-3"
+                            <NavDropdown
+                                className="px-2"
+                                title="Orders"
+                                id="nav-dropdown"
+                            >
+                                <NavDropdown.Item as={NavLink} to="/orders">
+                                    All Orders
+                                </NavDropdown.Item>
+                                <NavDropdown.Item
                                     as={NavLink}
-                                    to="/api/orders"
+                                    to="/create-order"
                                 >
-                                    Ordering
-                                </Nav.Link>
-                            </Nav.Item>
+                                    Create an Order
+                                </NavDropdown.Item>
+                            </NavDropdown>
+
                             <NavDropdown
                                 className="px-2"
                                 title="Products"
