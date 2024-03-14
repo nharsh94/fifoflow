@@ -221,7 +221,7 @@ function ProductsList() {
                             />
                         </Form.Group>
                         <Form.Group controlId="formQuantity">
-                            <Form.Label>Quantiy In Stock</Form.Label>
+                            <Form.Label>Quantity In Stock</Form.Label>
                             <Form.Control
                                 type="int"
                                 placeholder="Enter quantity"

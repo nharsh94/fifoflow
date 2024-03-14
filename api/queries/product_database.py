@@ -79,7 +79,7 @@ class ProductRepository:
                             product.price,
                             product.quantity_in_stock,
                             product.category,
-                            product.user_id,
+                            product.supplier_id,
                             product.alert_threshold,
                             product_id,
                         ],
