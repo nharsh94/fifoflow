@@ -6,7 +6,7 @@ steps = [
         """,
         """
         DROP TYPE status_type ;
-        """
+        """,
     ],
     [
         """

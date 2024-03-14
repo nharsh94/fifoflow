@@ -2,15 +2,19 @@ from fastapi import APIRouter, Depends, Response
 from queries.orders_queries import OrderItemsRepository, OrdersRepository
 from typing import List, Union, Optional
 from models.orders import (
-    OrderItemsIn, OrderItemsOut,
-    OrdersIn, OrdersOut, Error
+    OrderItemsIn,
+    OrderItemsOut,
+    OrdersIn,
+    OrdersOut,
+    Error,
 )
 
 router = APIRouter(prefix="/api")
 
 
-@router.post("/orders", response_model=Union[OrdersOut, Error],
-             tags=["Orders"])
+@router.post(
+    "/orders", response_model=Union[OrdersOut, Error], tags=["Orders"]
+)
 def create_order(
     order: OrdersIn,
     repo: OrdersRepository = Depends(),
@@ -18,16 +22,20 @@ def create_order(
     return repo.create_order(order)
 
 
-@router.get("/orders", response_model=Union[List[OrdersOut], Error],
-            tags=["Orders"])
+@router.get(
+    "/orders", response_model=Union[List[OrdersOut], Error], tags=["Orders"]
+)
 def get_all_orders(
     repo: OrdersRepository = Depends(),
 ):
     return repo.get_all_orders()
 
 
-@router.put("/orders/{order_id}", response_model=Union[OrdersOut, Error],
-            tags=["Orders"])
+@router.put(
+    "/orders/{order_id}",
+    response_model=Union[OrdersOut, Error],
+    tags=["Orders"],
+)
 def update_orders(
     order_id: int,
     order: OrdersIn,
@@ -36,8 +44,7 @@ def update_orders(
     return repo.update_order(order_id, order)
 
 
-@router.delete("/orders/{order_id}", response_model=bool,
-               tags=["Orders"])
+@router.delete("/orders/{order_id}", response_model=bool, tags=["Orders"])
 def delete_order(
     order_id: int,
     repo: OrdersRepository = Depends(),
@@ -45,8 +52,9 @@ def delete_order(
     return repo.delete_order(order_id)
 
 
-@router.get("/orders/{order_id}", response_model=Optional[OrdersOut],
-            tags=["Orders"])
+@router.get(
+    "/orders/{order_id}", response_model=Optional[OrdersOut], tags=["Orders"]
+)
 def get_one_order(
     order_id: int,
     response: Response,
@@ -58,8 +66,11 @@ def get_one_order(
     return order
 
 
-@router.post("/order-items", response_model=Union[OrderItemsOut, Error],
-             tags=["Orders Items"])
+@router.post(
+    "/order-items",
+    response_model=Union[OrderItemsOut, Error],
+    tags=["Orders Items"],
+)
 def create_order_item(
     order_item: OrderItemsIn,
     response: Response,
@@ -68,16 +79,22 @@ def create_order_item(
     return repo.create_order_item(order_item)
 
 
-@router.get("/order-items", response_model=Union[List[OrderItemsOut], Error],
-            tags=["Orders Items"])
+@router.get(
+    "/order-items",
+    response_model=Union[List[OrderItemsOut], Error],
+    tags=["Orders Items"],
+)
 def get_all_order_items(
     repo: OrderItemsRepository = Depends(),
 ):
     return repo.get_all_order_items()
 
 
-@router.put("/orders-items/{id}", response_model=Union[OrdersOut, Error],
-            tags=["Orders Items"])
+@router.put(
+    "/orders-items/{id}",
+    response_model=Union[OrdersOut, Error],
+    tags=["Orders Items"],
+)
 def update_order_items(
     id: int,
     order_item: OrderItemsIn,
@@ -94,8 +111,11 @@ def delete_order_item(
     return repo.delete_order_item(id)
 
 
-@router.get("/order-items/{id}", response_model=Optional[OrderItemsOut],
-            tags=["Orders Items"])
+@router.get(
+    "/order-items/{id}",
+    response_model=Optional[OrderItemsOut],
+    tags=["Orders Items"],
+)
 def get_one_order_item(
     id: int,
     response: Response,
