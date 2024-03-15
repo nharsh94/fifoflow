@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react'
+import { Navigate } from 'react-router-dom'
+
 
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
 
-function TestProductsList() {
+function TestProductsList({isLoggedIn}) {
     const [products, setProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
+
+        if (!isLoggedIn) {
+            return <Navigate to="/" replace />
+        }
 
     const getData = async () => {
         try {

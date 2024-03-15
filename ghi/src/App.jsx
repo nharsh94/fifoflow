@@ -1,9 +1,8 @@
 // This makes VSCode check types as if you are using TypeScript
 //@ts-check
 import React from 'react'
-// import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'
-// import ErrorNotification from './ErrorNotification'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 
@@ -11,12 +10,15 @@ import './App.css'
 import Nav from './Nav'
 
 import Construct from './Construct'
-import UserPage from './UserPage'
-import SignUpUserForm from './SignUpUserForm'
+// import SignUpUserForm from './SignUpUserForm'
+import SignUpForm from './SignUpForm'
 import ForgotPassword from './ForgotPassword'
-import AssignRole from './AssignRole.jsx'
-import CreateProfile from './CreateProfile'
-import { UserProvider } from './UserContext'
+// import AssignRole from './AssignRole.jsx'
+// import CreateProfile from './CreateProfile'
+// import { UserProvider } from './UserContext'
+
+import UserPage from './UserPage'
+
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
 
@@ -24,12 +26,13 @@ import CreateProduct from './CreateProduct'
 import ProductsList from './ProductsList'
 
 import OrderList from './list_orders'
-import OrderCreate from './order_form'
+// import OrderCreate from './order_form'
 
 //
 import TestProductCreate from './TestProductCreate' // By Mel K
 import TestProductsList from './TestProductsList' // By Mel K
 // import ProductDetails from './ProductDetails'
+
 
 
 function Navigation({isLoggedIn}) {
@@ -42,12 +45,16 @@ function Navigation({isLoggedIn}) {
     return isLoggedIn && shouldShowNav ?<Nav isLoggedIn={isLoggedIn} /> : null
 }
 
-const isAuthenticated = () => {
-    return localStorage.getItem('token') !== null
-}
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+    useEffect(() => {
+        const isAuthenticated = () => {
+            return localStorage.getItem('token') !== null
+        }
+
+        setIsLoggedIn(isAuthenticated())
+    }, [])
 
 
     return (
@@ -55,14 +62,12 @@ function App() {
             <BrowserRouter>
                 <div className="App">
                     {/* {isLoggedIn && <Nav isLoggedIn={isLoggedIn} />} */}
-                    {/* <Header /> */}
                     <Navigation isLoggedIn={isLoggedIn} />
                     <Routes>
                         <Route
                             path="/"
                             element={
                                 <Construct
-                                    info={{}}
                                     setIsLoggedIn={setIsLoggedIn}
                                     isLoggedIn={isLoggedIn}
                                 />
@@ -84,8 +89,13 @@ function App() {
                                 path="create"
                                 element={<ShopCreate isLoggedIn={isLoggedIn} />}
                             />
-                            <Route path="list" element={<ShopsList />} />
-                            {/* <Route path="details" element={<ShopDetails />} /> */}
+                            <Route
+                                path="list"
+                                element={<ShopsList isLoggedIn={isLoggedIn} />}
+                            />
+                            {/* <Route
+                                path="details"
+                                element={<ShopDetails isLoggedIn={isLoggedIn}/>} /> */}
                         </Route>
 
                         <Route path="/products">
@@ -94,11 +104,17 @@ function App() {
 
                             <Route
                                 path="create1"
-                                element={<TestProductCreate />}
+                                element={
+                                    <TestProductCreate
+                                        isLoggedIn={isLoggedIn}
+                                    />
+                                }
                             />
                             <Route
                                 path="list1"
-                                element={<TestProductsList />}
+                                element={
+                                    <TestProductsList isLoggedIn={isLoggedIn} />
+                                }
                             />
                         </Route>
 

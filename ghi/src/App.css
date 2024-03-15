@@ -28,16 +28,14 @@ Nav.Link {
     color: whitesmoke;
 }
 .form-floating {
-    width: 25rem;
-    padding-bottom: 3px;
+    width: 20rem;
+    /* padding-bottom: 6px; */
 }
 .side-by-side-buttons {
     display: flex;
-    /* margin-top: 10px; */
     align-items: center;
 }
 .side-by-side-buttons a {
-    /* margin-right: 10px; */
     color: #316ff6;
     text-decoration: none;
 }
@@ -66,3 +64,8 @@ Nav.Link {
     align-items: center;
     justify-content: center;
 }
+.custom-shadow {
+    box-shadow: 10px 10px 5px hsl(72.3,37.1%,80%);
+    border-radius: 5px;
+}
+
