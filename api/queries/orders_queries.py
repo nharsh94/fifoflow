@@ -108,7 +108,6 @@ class OrdersRepository:
                         [
                             order.shop_id,
                             order.user_id,
-                            order.order_date,
                             order.product_id,
                             order.quantity,
                             order.total_price,
@@ -117,8 +116,9 @@ class OrdersRepository:
                         ],
                     )
                     return self.order_in_out(order_id, order)
-        except Exception:
-            return {"message": "Failed to update order"}
+        except Exception as e:
+            return (f"Error updating order: {e}")
+            # return {"message": "Failed to update order"}
 
     def get_all_orders(self):
         try:
