@@ -17,7 +17,10 @@ function ProductsList() {
 
             if (response.ok) {
                 const data = await response.json()
-                setProducts(data)
+                const filteredProducts = data.filter(
+                    (product) => !product.deleted_flag
+                )
+                setProducts(filteredProducts)
             } else {
                 throw new Error(
                     'Failed to fetch data. Status: ${response.status}'
@@ -81,11 +84,38 @@ function ProductsList() {
             console.error('Error updating product', error)
         }
     }
+    const handleDeleteConfirmation = async () => {
+        try {
+            const updatedProduct = { ...selectedProdcut, deleted_flag: true }
+            const response = await fetch(
+                `http://localhost:8000/api/products/${selectedProdcut.product_id}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedProduct),
+                }
+            )
+
+            if (response.ok) {
+                console.log('Product deleted successfully', selectedProdcut)
+                getData()
+                handleCloseModal()
+                toast.dismiss()
+            } else {
+                throw new Error(
+                    `Failed to delete product. Status: ${response.status}`
+                )
+            }
+        } catch (error) {
+            console.error('Error deleting product', error)
+        }
+    }
 
     const handleDeleteProduct = async () => {
-        // Display a toast notification with custom buttons
         toast.warn(<Msg />, {
-            position: toast.POSITION.TOP_CENTER,
+            position: 'top-center',
             autoClose: false,
             closeButton: false,
             draggable: false,
@@ -109,31 +139,6 @@ function ProductsList() {
         </div>
     )
 
-    const handleDeleteConfirmation = async () => {
-        // Proceed with delete action
-        try {
-            const response = await fetch(
-                `http://localhost:8000/api/products/${selectedProdcut.product_id}`,
-                {
-                    method: 'DELETE',
-                }
-            )
-
-            if (response.ok) {
-                console.log('Product deleted successfully', selectedProdcut)
-                getData()
-                handleCloseModal()
-                toast.dismiss()
-            } else {
-                throw new Error(
-                    `Failed to delete product. Status: ${response.status}`
-                )
-            }
-        } catch (error) {
-            console.error('Error deleting product', error)
-        }
-    }
-
     const handleInputChange = (e) => {
         const { name, value } = e.target
         setSelectedProduct((prevProduct) => ({ ...prevProduct, [name]: value }))
@@ -148,12 +153,9 @@ function ProductsList() {
                         <tr>
                             <th>Product ID</th>
                             <th>Name</th>
-                            <th>Description</th>
                             <th>Price</th>
-                            <th>Quantity in Stock</th>
-                            <th>Category</th>
-                            <th>Supplier</th>
-                            <th>alert_threshold</th>
+                            <th>Description</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -162,21 +164,33 @@ function ProductsList() {
                                 <tr key={product.product_id}>
                                     <td>{product.product_id}</td>
                                     <td>{product.name}</td>
-                                    <td>{product.description}</td>
                                     <td>{`$${product.price}`}</td>
-                                    <td>{product.quantity_in_stock}</td>
-                                    <td>{product.category}</td>
-                                    <td>{product.supplier_id}</td>
-                                    <td>{product.alert_threshold}</td>
+                                    <td>{product.description}</td>
                                     <td>
-                                        <Button
-                                            variant="primary"
-                                            onClick={() =>
-                                                handleShowModal(product)
-                                            }
-                                        >
-                                            Edit
-                                        </Button>
+                                        {product.description &&
+                                        product.category &&
+                                        product.alert_threshold &&
+                                        (product.quantity_in_stock > 1 ||
+                                            product.quantity_in_stock ===
+                                                '') ? (
+                                            <Button
+                                                variant="primary"
+                                                onClick={() =>
+                                                    handleShowModal(product)
+                                                }
+                                            >
+                                                Details
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                variant="primary"
+                                                onClick={() =>
+                                                    handleShowModal(product)
+                                                }
+                                            >
+                                                Edit
+                                            </Button>
+                                        )}
                                     </td>
                                 </tr>
                             )
@@ -186,7 +200,15 @@ function ProductsList() {
             </div>
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Product</Modal.Title>
+                    <Modal.Title>
+                        {selectedProdcut &&
+                        selectedProdcut.description &&
+                        selectedProdcut.quantity_in_stock &&
+                        selectedProdcut.category &&
+                        selectedProdcut.alert_threshold
+                            ? 'Product Details'
+                            : 'Edit Product'}
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -274,7 +296,7 @@ function ProductsList() {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <ToastContainer /> {/* Render the ToastContainer component */}
+            <ToastContainer />
         </>
     )
 }
