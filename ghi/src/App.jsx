@@ -20,10 +20,11 @@ import ShopsList from './ShopsList'
 
 import CreateProduct from './CreateProduct'
 import ProductsList from './ProductsList'
+import AllProducts from './AllProducts'
 
 import OrderList from './list_orders'
 import OrderCreate from './order_form'
-
+import CreateSupplier from './CreateSupplier'
 //
 import TestProductCreate from './TestProductCreate' // By Mel K
 import TestProductsList from './TestProductsList' // By Mel K
@@ -80,7 +81,16 @@ function App() {
                         <Route path="/create-order" element={<OrderCreate />} />
                         <Route path="/signup" element={<SignUpUserForm />} />
                         <Route path="/role" element={<AssignRole />} />
-                        <Route path="/profile" element={<CreateProfile />} />
+                        <Route path="profile">
+                            <Route
+                                path="/profile"
+                                element={<CreateProfile />}
+                            />
+                            <Route
+                                path="/profile/supplier"
+                                element={<CreateSupplier />}
+                            />
+                        </Route>
                         <Route path="/shops">
                             <Route path="create" element={<ShopCreate />} />
                             <Route path="list" element={<ShopsList />} />
@@ -98,6 +108,7 @@ function App() {
                         <Route path="/products">
                             <Route path="create" element={<CreateProduct />} />
                             <Route path="list" element={<ProductsList />} />
+                            <Route path="all" element={<AllProducts />} />
                             <Route
                                 path="create1"
                                 element={<TestProductCreate />}
