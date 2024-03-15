@@ -1,15 +1,15 @@
 // This makes VSCode check types as if you are using TypeScript
 //@ts-check
 import React from 'react'
-// import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'
-// import ErrorNotification from './ErrorNotification'
+import { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import Header from './Header'
+import ErrorNotification from './ErrorNotification'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 import Nav from './Nav'
-
 import Construct from './Construct'
-import UserPage from './UserPage'
+import HomePage from './HomePage'
 import SignUpUserForm from './SignUpUserForm'
 import ForgotPassword from './ForgotPassword'
 import AssignRole from './AssignRole.jsx'
@@ -27,6 +27,7 @@ import OrderCreate from './order_form'
 //
 import TestProductCreate from './TestProductCreate' // By Mel K
 import TestProductsList from './TestProductsList' // By Mel K
+import UsersList from './UsersList'
 // import ProductDetails from './ProductDetails'
 // import ThreeScene from './ThreeScene'
 
@@ -39,21 +40,32 @@ if (!API_HOST) {
 
 function Navigation() {
     const location = useLocation()
-    const showNavRoutes = ['/user', '/shops', '/products', '/orders']
-    const shouldShowNav = showNavRoutes.some((route) =>
-        location.pathname.startsWith(route)
+    return (
+        location.pathname !== '/' &&
+        location.pathname !== '/signup' &&
+        location.pathname !== '/role' &&
+        location.pathname !== '/profile' && <Nav />
     )
-    // return location.pathname !== '/' && <Nav isLoggedIn={isLoggedIn} />
-    return isLoggedIn && shouldShowNav ?<Nav isLoggedIn={isLoggedIn} /> : null
-}
-
-const isAuthenticated = () => {
-    return localStorage.getItem('token') !== null
 }
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+    const [error, setError] = useState(null)
 
+    useEffect(() => {
+        async function getData() {
+            let url = `${API_HOST}/api/launch-details`
+            console.log('fastapi url: ', url)
+            let response = await fetch(url)
+
+            if (response.ok) {
+                console.log('Data fetched successfully!')
+            } else {
+                console.log('Error fetching data')
+                setError('No fetched data')
+            }
+        }
+        getData()
+    }, [])
 
     return (
         <BrowserRouter>
@@ -66,7 +78,6 @@ function App() {
                         <Route path="/" element={<Construct info={{}} />} />
                         <Route path="/orders" element={<OrderList />} />
                         <Route path="/create-order" element={<OrderCreate />} />
-                        <Route path="/user" element={<UserPage />} />
                         <Route path="/signup" element={<SignUpUserForm />} />
                         <Route path="/role" element={<AssignRole />} />
                         <Route path="/profile" element={<CreateProfile />} />
@@ -77,7 +88,8 @@ function App() {
                         </Route>
                         {/* <Route path="/threescene" element={<ThreeScene />} /> */}
 
-                        <Route path="/user" element={<UserPage />} />
+                        <Route path="/home" element={<HomePage />} />
+                        <Route path="/user" element={<UsersList />} />
                         <Route
                             path="/forgot-password"
                             element={<ForgotPassword />}
