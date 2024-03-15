@@ -174,7 +174,7 @@ function ProductsList() {
                                             product.quantity_in_stock ===
                                                 '') ? (
                                             <Button
-                                                variant="primary"
+                                                variant="success"
                                                 onClick={() =>
                                                     handleShowModal(product)
                                                 }
