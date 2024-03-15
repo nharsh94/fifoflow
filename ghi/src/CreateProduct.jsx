@@ -100,6 +100,7 @@ function CreateProduct() {
                                             className="form-control"
                                             name="name"
                                             placeholder="Name"
+                                            required
                                         />
                                     </div>
                                     <div className="mb-3">
@@ -129,6 +130,7 @@ function CreateProduct() {
                                             onChange={handleChange}
                                             className="form-control"
                                             name="supplier_id"
+                                            required
                                         >
                                             <option value="">
                                                 Select a Supplier

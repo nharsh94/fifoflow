@@ -55,6 +55,14 @@ function Navs() {
                                 >
                                     Product Database
                                 </NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item
+                                    eventKey="4.4"
+                                    as={NavLink}
+                                    to="/products/all"
+                                >
+                                    All Products
+                                </NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown
                                 className="px-2"
