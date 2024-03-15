@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom'
 export default function CreateSupplierProfile() {
     const navigate = useNavigate()
 
-    const [users, setUsers] = useState([]) // State to hold the list of users
-    const [selectedUserId, setSelectedUserId] = useState('') // State to hold the selected user's ID
+    const [users, setUsers] = useState([])
+    const [selectedUserId, setSelectedUserId] = useState('')
     const [profileData, setProfileData] = useState({
         role: 'Supplier',
         first_name: '',
@@ -24,7 +24,7 @@ export default function CreateSupplierProfile() {
                 if (!response.ok) throw new Error('Failed to fetch users')
                 const data = await response.json()
                 console.log('Fetched users:', data)
-                setUsers(data) // Assuming the response is an array of users
+                setUsers(data)
             } catch (error) {
                 setError('Failed to fetch users. Please try again later.')
                 console.error('Error fetching users:', error)
@@ -91,7 +91,6 @@ export default function CreateSupplierProfile() {
                     </select>
                 </div>
 
-                {/* Form fields for supplier profile details */}
                 <div className="mb-3">
                     <input
                         type="text"
