@@ -14,15 +14,6 @@ function Navs() {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav activeKey="/home">
-                            <Nav.Item>
-                                <Nav.Link
-                                    className="px-3"
-                                    as={NavLink}
-                                    to="/home"
-                                >
-                                    Inventory
-                                </Nav.Link>
-                            </Nav.Item>
                             <NavDropdown
                                 className="px-2"
                                 title="Orders"
@@ -54,6 +45,14 @@ function Navs() {
                                     to="/products/list"
                                 >
                                     Product Database
+                                </NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item
+                                    eventKey="4.4"
+                                    as={NavLink}
+                                    to="/products/all"
+                                >
+                                    All Products
                                 </NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown

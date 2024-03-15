@@ -20,6 +20,7 @@ import ShopsList from './ShopsList'
 
 import CreateProduct from './CreateProduct'
 import ProductsList from './ProductsList'
+import AllProducts from './AllProducts'
 
 import OrderList from './list_orders'
 import OrderCreate from './order_form'
@@ -107,6 +108,7 @@ function App() {
                         <Route path="/products">
                             <Route path="create" element={<CreateProduct />} />
                             <Route path="list" element={<ProductsList />} />
+                            <Route path="all" element={<AllProducts />} />
                             <Route
                                 path="create1"
                                 element={<TestProductCreate />}

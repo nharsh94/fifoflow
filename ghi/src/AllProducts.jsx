@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
 
-function ProductsList() {
+function AllProducts() {
     const [products, setProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
@@ -17,10 +17,7 @@ function ProductsList() {
 
             if (response.ok) {
                 const data = await response.json()
-                const filteredProducts = data.filter(
-                    (product) => !product.deleted_flag
-                )
-                setProducts(filteredProducts)
+                setProducts(data)
             } else {
                 throw new Error(
                     'Failed to fetch data. Status: ${response.status}'
@@ -139,6 +136,61 @@ function ProductsList() {
         </div>
     )
 
+    const handleAddConfirmation = async () => {
+        try {
+            const updatedProduct = { ...selectedProduct, deleted_flag: false }
+            const response = await fetch(
+                `http://localhost:8000/api/products/${selectedProduct.product_id}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedProduct),
+                }
+            )
+
+            if (response.ok) {
+                console.log('Product added successfully', selectedProduct)
+                getData()
+                handleCloseModal()
+                toast.dismiss()
+            } else {
+                throw new Error(
+                    `Failed to add product. Status: ${response.status}`
+                )
+            }
+        } catch (error) {
+            console.error('Error adding product', error)
+        }
+    }
+
+    const handleAddProduct = async () => {
+        toast.warn(<MsgtoAdd />, {
+            position: 'top-center',
+            autoClose: false,
+            closeButton: false,
+            draggable: false,
+            closeOnClick: false,
+        })
+    }
+
+    const MsgtoAdd = ({ closeToast }) => (
+        <div>
+            Are you sure you want to Add this product?
+            <br></br>
+            <button
+                className={'btn btn-primary'}
+                onClick={handleAddConfirmation}
+            >
+                Yes
+            </button>
+            <button className={'btn btn-danger'} onClick={closeToast}>
+                No
+            </button>
+        </div>
+    )
+
     const handleInputChange = (e) => {
         const { name, value } = e.target
         setSelectedProduct((prevProduct) => ({ ...prevProduct, [name]: value }))
@@ -155,46 +207,41 @@ function ProductsList() {
                             <th>Name</th>
                             <th>Price</th>
                             <th>Description</th>
+                            <th>Deleted</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product) => {
-                            return (
-                                <tr key={product.product_id}>
-                                    <td>{product.product_id}</td>
-                                    <td>{product.name}</td>
-                                    <td>{`$${product.price}`}</td>
-                                    <td>{product.description}</td>
-                                    <td>
-                                        {product.description &&
-                                        product.category &&
-                                        product.alert_threshold &&
-                                        (product.quantity_in_stock > 1 ||
-                                            product.quantity_in_stock ===
-                                                '') ? (
-                                            <Button
-                                                variant="primary"
-                                                onClick={() =>
-                                                    handleShowModal(product)
-                                                }
-                                            >
-                                                Details
-                                            </Button>
-                                        ) : (
-                                            <Button
-                                                variant="primary"
-                                                onClick={() =>
-                                                    handleShowModal(product)
-                                                }
-                                            >
-                                                Edit
-                                            </Button>
-                                        )}
-                                    </td>
-                                </tr>
-                            )
-                        })}
+                        {products.map((product) => (
+                            <tr key={product.product_id}>
+                                <td>{product.product_id}</td>
+                                <td>{product.name}</td>
+                                <td>{`$${product.price}`}</td>
+                                <td>{product.description}</td>
+                                <td>{product.deleted_flag ? 'Yes' : 'No'}</td>
+                                <td>
+                                    {product.deleted_flag ? (
+                                        <Button
+                                            variant="secondary"
+                                            onClick={() =>
+                                                handleShowModal(product)
+                                            }
+                                        >
+                                            View
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="primary"
+                                            onClick={() =>
+                                                handleShowModal(product)
+                                            }
+                                        >
+                                            Edit
+                                        </Button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </Table>
             </div>
@@ -288,11 +335,17 @@ function ProductsList() {
                     <Button variant="secondary" onClick={handleCloseModal}>
                         Close
                     </Button>
+                    {selectedProduct && selectedProduct.deleted_flag ? (
+                        <Button variant="success" onClick={handleAddProduct}>
+                            Add Product
+                        </Button>
+                    ) : (
+                        <Button variant="danger" onClick={handleDeleteProduct}>
+                            Delete Product
+                        </Button>
+                    )}
                     <Button variant="primary" onClick={handleUpdateProduct}>
                         Save Changes
-                    </Button>
-                    <Button variant="danger" onClick={handleDeleteProduct}>
-                        Delete Product
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -301,4 +354,4 @@ function ProductsList() {
     )
 }
 
-export default ProductsList
+export default AllProducts
