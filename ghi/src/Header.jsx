@@ -5,7 +5,7 @@ import logoUrl from './assets/FIFOFlow_transparent_x1.png'
 
 const Header = () => (
     <div className="header">
-        <Link to="/user">
+        <Link to="/home">
             <img src={logoUrl} alt="FIFOFlow Logo" />
         </Link>
     </div>
