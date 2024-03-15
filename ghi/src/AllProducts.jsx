@@ -8,7 +8,7 @@ import Table from 'react-bootstrap/Table'
 
 function AllProducts() {
     const [products, setProducts] = useState([])
-    const [selectedProdcut, setSelectedProduct] = useState(null)
+    const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
 
     const getData = async () => {
@@ -58,18 +58,18 @@ function AllProducts() {
     const handleUpdateProduct = async () => {
         try {
             const response = await fetch(
-                `http://localhost:8000/api/products/${selectedProdcut.product_id}`,
+                `http://localhost:8000/api/products/${selectedProduct.product_id}`,
                 {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(selectedProdcut),
+                    body: JSON.stringify(selectedProduct),
                 }
             )
 
             if (response.ok) {
-                console.log('Product updated successfully:', selectedProdcut)
+                console.log('Product updated successfully:', selectedProduct)
                 handleCloseModal()
                 getData()
             } else {
@@ -83,9 +83,9 @@ function AllProducts() {
     }
     const handleDeleteConfirmation = async () => {
         try {
-            const updatedProduct = { ...selectedProdcut, deleted_flag: true }
+            const updatedProduct = { ...selectedProduct, deleted_flag: true }
             const response = await fetch(
-                `http://localhost:8000/api/products/${selectedProdcut.product_id}`,
+                `http://localhost:8000/api/products/${selectedProduct.product_id}`,
                 {
                     method: 'PUT',
                     headers: {
@@ -96,7 +96,7 @@ function AllProducts() {
             )
 
             if (response.ok) {
-                console.log('Product deleted successfully', selectedProdcut)
+                console.log('Product deleted successfully', selectedProduct)
                 getData()
                 handleCloseModal()
                 toast.dismiss()
@@ -138,9 +138,9 @@ function AllProducts() {
 
     const handleAddConfirmation = async () => {
         try {
-            const updatedProduct = { ...selectedProdcut, deleted_flag: false }
+            const updatedProduct = { ...selectedProduct, deleted_flag: false }
             const response = await fetch(
-                `http://localhost:8000/api/products/${selectedProdcut.product_id}`,
+                `http://localhost:8000/api/products/${selectedProduct.product_id}`,
                 {
                     method: 'PUT',
                     headers: {
@@ -151,7 +151,7 @@ function AllProducts() {
             )
 
             if (response.ok) {
-                console.log('Product added successfully', selectedProdcut)
+                console.log('Product added successfully', selectedProduct)
                 getData()
                 handleCloseModal()
                 toast.dismiss()
@@ -248,11 +248,11 @@ function AllProducts() {
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        {selectedProdcut &&
-                        selectedProdcut.description &&
-                        selectedProdcut.quantity_in_stock &&
-                        selectedProdcut.category &&
-                        selectedProdcut.alert_threshold
+                        {selectedProduct &&
+                        selectedProduct.description &&
+                        selectedProduct.quantity_in_stock &&
+                        selectedProduct.category &&
+                        selectedProduct.alert_threshold
                             ? 'Product Details'
                             : 'Edit Product'}
                     </Modal.Title>
@@ -265,7 +265,7 @@ function AllProducts() {
                                 type="text"
                                 placeholder="Enter product name"
                                 name="name"
-                                value={selectedProdcut?.name || ''}
+                                value={selectedProduct?.name || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -275,7 +275,7 @@ function AllProducts() {
                                 type="text"
                                 placeholder="Enter description"
                                 name="description"
-                                value={selectedProdcut?.description || ''}
+                                value={selectedProduct?.description || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -285,7 +285,7 @@ function AllProducts() {
                                 type="text"
                                 placeholder="Enter price"
                                 name="price"
-                                value={selectedProdcut?.price || ''}
+                                value={selectedProduct?.price || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -295,7 +295,7 @@ function AllProducts() {
                                 type="int"
                                 placeholder="Enter quantity"
                                 name="quantity_in_stock"
-                                value={selectedProdcut?.quantity_in_stock || ''}
+                                value={selectedProduct?.quantity_in_stock || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -305,7 +305,7 @@ function AllProducts() {
                                 type="text"
                                 placeholder="Enter Category"
                                 name="category"
-                                value={selectedProdcut?.category || ''}
+                                value={selectedProduct?.category || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -315,7 +315,7 @@ function AllProducts() {
                                 type="text"
                                 placeholder="Enter Supplier"
                                 name="supplier_id"
-                                value={selectedProdcut?.supplier_id || ''}
+                                value={selectedProduct?.supplier_id || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -325,7 +325,7 @@ function AllProducts() {
                                 type="text"
                                 placeholder="Enter alert threshold"
                                 name="alert_threshold"
-                                value={selectedProdcut?.alert_threshold || ''}
+                                value={selectedProduct?.alert_threshold || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -335,7 +335,7 @@ function AllProducts() {
                     <Button variant="secondary" onClick={handleCloseModal}>
                         Close
                     </Button>
-                    {selectedProdcut && selectedProdcut.deleted_flag ? (
+                    {selectedProduct && selectedProduct.deleted_flag ? (
                         <Button variant="success" onClick={handleAddProduct}>
                             Add Product
                         </Button>
