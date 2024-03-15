@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 import Nav from './Nav'
 import Construct from './Construct'
-import UserPage from './UserPage'
+import HomePage from './HomePage'
 import SignUpUserForm from './SignUpUserForm'
 import ForgotPassword from './ForgotPassword'
 import AssignRole from './AssignRole.jsx'
@@ -24,10 +24,11 @@ import AllProducts from './AllProducts'
 
 import OrderList from './list_orders'
 import OrderCreate from './order_form'
-
+import CreateSupplier from './CreateSupplier'
 //
 import TestProductCreate from './TestProductCreate' // By Mel K
 import TestProductsList from './TestProductsList' // By Mel K
+import UsersList from './UsersList'
 // import ProductDetails from './ProductDetails'
 // import ThreeScene from './ThreeScene'
 
@@ -40,7 +41,12 @@ if (!API_HOST) {
 
 function Navigation() {
     const location = useLocation()
-    return location.pathname !== '/' && <Nav />
+    return (
+        location.pathname !== '/' &&
+        location.pathname !== '/signup' &&
+        location.pathname !== '/role' &&
+        location.pathname !== '/profile' && <Nav />
+    )
 }
 
 function App() {
@@ -73,10 +79,18 @@ function App() {
                         <Route path="/" element={<Construct info={{}} />} />
                         <Route path="/orders" element={<OrderList />} />
                         <Route path="/create-order" element={<OrderCreate />} />
-                        <Route path="/user" element={<UserPage />} />
                         <Route path="/signup" element={<SignUpUserForm />} />
                         <Route path="/role" element={<AssignRole />} />
-                        <Route path="/profile" element={<CreateProfile />} />
+                        <Route path="profile">
+                            <Route
+                                path="/profile"
+                                element={<CreateProfile />}
+                            />
+                            <Route
+                                path="/profile/supplier"
+                                element={<CreateSupplier />}
+                            />
+                        </Route>
                         <Route path="/shops">
                             <Route path="create" element={<ShopCreate />} />
                             <Route path="list" element={<ShopsList />} />
@@ -84,7 +98,8 @@ function App() {
                         </Route>
                         {/* <Route path="/threescene" element={<ThreeScene />} /> */}
 
-                        <Route path="/user" element={<UserPage />} />
+                        <Route path="/home" element={<HomePage />} />
+                        <Route path="/user" element={<UsersList />} />
                         <Route
                             path="/forgot-password"
                             element={<ForgotPassword />}

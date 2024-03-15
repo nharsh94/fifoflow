@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
 function CreateProduct() {
     const [formData, setFormData] = useState({
         name: '',
@@ -12,15 +11,11 @@ function CreateProduct() {
         supplier_id: 0,
         alert_threshold: 0,
     })
-
     const [suppliers, setSuppliers] = useState([])
-
     useEffect(() => {
         fetchSuppliers()
     }, [])
-
     console.log('I am supplier', suppliers)
-
     const fetchSuppliers = async () => {
         try {
             const response = await fetch('http://localhost:8000/api/profile')
@@ -37,11 +32,9 @@ function CreateProduct() {
             console.error('Error fetching suppliers:', error)
         }
     }
-
     const handleSubmit = async (event) => {
         event.preventDefault()
         const url = 'http://localhost:8000/api/products'
-
         const fetchConfig = {
             method: 'post',
             body: JSON.stringify({
@@ -65,7 +58,6 @@ function CreateProduct() {
             })
         }
     }
-
     const handleChange = (event) => {
         const { name, value } = event.target
         setFormData({
@@ -73,7 +65,6 @@ function CreateProduct() {
             [name]: value,
         })
     }
-
     return (
         <div>
             <ToastContainer />
@@ -160,5 +151,4 @@ function CreateProduct() {
         </div>
     )
 }
-
 export default CreateProduct

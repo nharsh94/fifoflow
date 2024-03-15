@@ -16,7 +16,7 @@ class RoleRepository:
                         FROM roles
                         WHERE role_id = %s
                         """,
-                        [role_id]
+                        [role_id],
                     )
                     role = db.fetchone()
                     if not role:
@@ -35,7 +35,7 @@ class RoleRepository:
                         DELETE FROM roles
                         WHERE role_id = %s
                         """,
-                        [role_id]
+                        [role_id],
                     )
                     return True
         except Exception as e:
@@ -43,10 +43,8 @@ class RoleRepository:
             return False
 
     def update(
-            self,
-            role_id: int,
-            role: RoleIn
-            ) -> Union[List[RoleOut], Error]:
+        self, role_id: int, role: RoleIn
+    ) -> Union[List[RoleOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -57,10 +55,7 @@ class RoleRepository:
                             role_name = %s
                         WHERE role_id = %s
                         """,
-                        [
-                            role.role_name,
-                            role_id
-                        ]
+                        [role.role_name, role_id],
                     )
                     return self.role_in_to_out(role_id, role)
         except Exception as e:
@@ -79,8 +74,7 @@ class RoleRepository:
                         """
                     )
                     return [
-                        self.record_to_role_out(record)
-                        for record in result
+                        self.record_to_role_out(record) for record in result
                     ]
         except Exception as e:
             print(e)
@@ -100,9 +94,7 @@ class RoleRepository:
                         (%s)
                         RETURNING role_id;
                         """,
-                        [
-                            role.role_name
-                        ]
+                        [role.role_name],
                     )
                     inserted_id = db.fetchone()[0]
                     return self.role_in_to_out(inserted_id, role)
@@ -115,7 +107,4 @@ class RoleRepository:
         return RoleOut(role_id=role_id, **old_data)
 
     def record_to_role_out(self, record):
-        return RoleOut(
-            role_id=record[0],
-            role_name=record[1]
-        )
+        return RoleOut(role_id=record[0], role_name=record[1])
