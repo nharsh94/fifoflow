@@ -13,3 +13,5 @@
 -   [x] 03/06/2024: User Login and creation has been fleshed out on Construct.jsx. Authentication is on the back-end, importing to frontend.
 
 -   [x] 03/08/2024: Altered database schema to include foreign key relationships. Issues are on Gitlab, along with documentation for future reference.
+
+-   [x] 03/14/2024: Added Create a Supplier for product creation, sign-up is functional (with context), and users are able to be viewed by admins. Forgot-password is linked to email-js.
