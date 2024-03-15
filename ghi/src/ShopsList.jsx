@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
 
-function ShopsList({isLoggedIn}) {
+function ShopsList() {
     if (!isLoggedIn) {
         return <Navigate to="/" replace />
     }

@@ -13,7 +13,7 @@ from models.jwt import JWTPayload, JWTUserData
 
 from queries.user_database import UserWithPw
 
-# If you ever need to change the hashing algorith, you can change it here
+# If you ever need to change the hashing algorithm, you can change it here
 ALGORITHM = ALGORITHMS.HS256
 
 # We pull this from the environment
@@ -90,6 +90,7 @@ def hash_password(plain_password) -> str:
         plain_password.encode("utf-8"), bcrypt.gensalt()
     ).decode()
 
+JWT_EXPIRATION_TIME_HOURS = 1
 
 def generate_jwt(user: UserWithPw) -> str:
     """
@@ -98,8 +99,7 @@ def generate_jwt(user: UserWithPw) -> str:
     We store the user as a JWTUserData converted to a dictionary
     in the payload of the JWT
     """
-    exp = timegm((datetime.utcnow() + timedelta(hours=1)).utctimetuple())
-    jwt_data = JWTPayload(
+    exp = timegm((datetime.now() + timedelta(hours=JWT_EXPIRATION_TIME_HOURS)).utctimetuple())    jwt_data = JWTPayload(
         exp=exp,
         sub=user.username,
         user=JWTUserData(username=user.username, id=user.id),

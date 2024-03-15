@@ -66,7 +66,7 @@ const stateOptions = [
     { label: 'U.S. Virgin Islands', value: 'VI' },
 ]
 
-function ShopCreate( {isLoggedIn} ) {
+function ShopCreate() {
     const [formSuccess, setFormSuccess] = useState(false)
     const [formData, setFormData] = useState({
         shop_name: '',

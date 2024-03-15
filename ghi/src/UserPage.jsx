@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 
 
-function UserPage({ isLoggedIn }) {
+function UserPage() {
+    const token = localStorage.getItem('token')
 
-    if (!isLoggedIn) {
+    if (!token) {
         return <Navigate to="/" replace />
     }
 

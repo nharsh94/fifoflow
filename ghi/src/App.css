@@ -29,10 +29,11 @@ Nav.Link {
 }
 .form-floating {
     width: 20rem;
-    /* padding-bottom: 6px; */
+    padding: 6px 0px 0px 0px;
 }
 .side-by-side-buttons {
     display: flex;
+    flex-direction: column;
     align-items: center;
 }
 .side-by-side-buttons a {
@@ -50,7 +51,9 @@ Nav.Link {
     /* border: 1px solid black; */
     background-color: #0064e0;
     width: 8rem;
-    padding: 6px 12px;
+    padding: 4px 9px;
+    margin-bottom: 5px;
+    margin-top: 10px;
     text-decoration: none;
 }
 @media (max-width: 768px) {
@@ -68,4 +71,8 @@ Nav.Link {
     box-shadow: 10px 10px 5px hsl(72.3,37.1%,80%);
     border-radius: 5px;
 }
-
+/* .form-wrapper {
+    background-color: #404821;
+    box-shadow: 10px 10px 5px hsl(72.3,37.1%,13%);
+    border-radius: 5px;
+} */

@@ -7,13 +7,13 @@ import Tooltip from 'react-bootstrap/Tooltip'
 import Button from 'react-bootstrap/Button'
 
 import { NavLink } from 'react-router-dom'
+// const token = localStorage.getItem('token')
 
 import brand from './assets/FIFOFlow_transparent_x1.png'
 
 function Navs({ isLoggedIn }) {
-    return (
+    return isLoggedIn ? (
         <>
-            {isLoggedIn && (
                 <Navbar bg="dark" expand="lg" variant="dark">
                     <Container fluid>
                         <Navbar.Brand as={NavLink} to="/user">
@@ -145,8 +145,7 @@ function Navs({ isLoggedIn }) {
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
-            )}
         </>
-    )
+    ) : null
 }
 export default Navs

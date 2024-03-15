@@ -1,7 +1,7 @@
 // This makes VSCode check types as if you are using TypeScript
 //@ts-check
 import React from 'react'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
@@ -33,100 +33,86 @@ import TestProductCreate from './TestProductCreate' // By Mel K
 import TestProductsList from './TestProductsList' // By Mel K
 // import ProductDetails from './ProductDetails'
 
+import useToken from './useToken'
 
 
-function Navigation({isLoggedIn}) {
-    const location = useLocation()
-    const showNavRoutes = ['/user', '/shops', '/products', '/orders']
-    const shouldShowNav = showNavRoutes.some((route) =>
-        location.pathname.startsWith(route)
-    )
-    // return location.pathname !== '/' && <Nav isLoggedIn={isLoggedIn} />
-    return isLoggedIn && shouldShowNav ?<Nav isLoggedIn={isLoggedIn} /> : null
-}
+
+// function Navigation({isLoggedIn}) {
+//     const location = useLocation()
+//     const showNavRoutes = ['/user', '/shops', '/products', '/orders']
+//     const shouldShowNav = showNavRoutes.some((route) =>
+//         location.pathname.startsWith(route)
+//     )
+//     return isLoggedIn && shouldShowNav ?<Nav isLoggedIn={isLoggedIn} /> : null
+// }
 
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+    const { token, setToken } = useToken()
+
     useEffect(() => {
         const isAuthenticated = () => {
             return localStorage.getItem('token') !== null
         }
 
-        setIsLoggedIn(isAuthenticated())
-    }, [])
-
+        if (isAuthenticated()) {
+            setToken(localStorage.getItem('token'))
+        }
+    }, [setToken])
 
     return (
-        <>
-            <BrowserRouter>
-                <div className="App">
-                    {/* {isLoggedIn && <Nav isLoggedIn={isLoggedIn} />} */}
-                    <Navigation isLoggedIn={isLoggedIn} />
-                    <Routes>
+        <BrowserRouter>
+            <div className="App">
+                {/* {isLoggedIn && <Nav isLoggedIn={isLoggedIn} />} */}
+                <Nav isLoggedIn={token} />
+                <Routes>
+                    <Route path="/" element={<Construct />} />
+                    <Route path="/signup" element={<SignUpForm />} />
+                    <Route
+                        path="/forgot-password"
+                        element={<ForgotPassword />}
+                    />
+                    <Route path="/user" element={<UserPage />} />
+
+                    <Route
+                        path="/shops/*"
+                        element={token ? <ShopRoutes /> : <Navigate to="/" />}
+                    />
+
+                    <Route path="/products">
+                        <Route path="create" element={<CreateProduct />} />
+                        <Route path="list" element={<ProductsList />} />
+
                         <Route
-                            path="/"
-                            element={
-                                <Construct
-                                    setIsLoggedIn={setIsLoggedIn}
-                                    isLoggedIn={isLoggedIn}
-                                />
-                            }
-                        />
-
-                        <Route path="/signup" element={<SignUpForm />} />
-                        <Route
-                            path="/forgot-password"
-                            element={<ForgotPassword />}
+                            path="create1"
+                            element={<TestProductCreate isLoggedIn={token} />}
                         />
                         <Route
-                            path="/user"
-                            element={<UserPage isLoggedIn={isLoggedIn} />}
+                            path="list1"
+                            element={<TestProductsList isLoggedIn={token} />}
                         />
+                    </Route>
 
-                        <Route path="/shops">
-                            <Route
-                                path="create"
-                                element={<ShopCreate isLoggedIn={isLoggedIn} />}
-                            />
-                            <Route
-                                path="list"
-                                element={<ShopsList isLoggedIn={isLoggedIn} />}
-                            />
-                            {/* <Route
-                                path="details"
-                                element={<ShopDetails isLoggedIn={isLoggedIn}/>} /> */}
-                        </Route>
+                    <Route path="/orders" element={<OrderList />} />
+                    <Route
+                        path="/"
+                        element={<Navigate to="/construct" replace />}
+                    />
+                </Routes>
+            </div>
+        </BrowserRouter>
 
-                        <Route path="/products">
-                            <Route path="create" element={<CreateProduct />} />
-                            <Route path="list" element={<ProductsList />} />
+    )
+}
 
-                            <Route
-                                path="create1"
-                                element={
-                                    <TestProductCreate
-                                        isLoggedIn={isLoggedIn}
-                                    />
-                                }
-                            />
-                            <Route
-                                path="list1"
-                                element={
-                                    <TestProductsList isLoggedIn={isLoggedIn} />
-                                }
-                            />
-                        </Route>
-
-                        <Route path="/orders" element={<OrderList />} />
-                        <Route
-                            path="/"
-                            element={<Navigate to="/construct" replace />}
-                        />
-                    </Routes>
-                </div>
-            </BrowserRouter>
-        </>
+function ShopRoutes() {
+    return (
+        <Routes>
+            <Route path="/" element={<Navigate to="/shops/create" />} />
+            <Route path="create" element={<ShopCreate />} />
+            <Route path="list" element={<ShopsList />} />
+            {/* Add more routes as needed */}
+        </Routes>
     )
 }
 export default App
