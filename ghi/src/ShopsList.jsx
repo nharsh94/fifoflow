@@ -4,11 +4,14 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
+import Search from './Search'
 
 function ShopsList() {
     const [shops, setShops] = useState([])
     const [selectedShop, setSelectedShop] = useState(null)
     const [showModal, setShowModal] = useState(false)
+    const [searchQuery, setSearchQuery] = useState('')
+    const [filteredShops, setFilteredShops] = useState([])
 
     const getData = async () => {
         try {
@@ -17,6 +20,7 @@ function ShopsList() {
             if (response.ok) {
                 const data = await response.json()
                 setShops(data)
+                setFilteredShops(data)
             } else {
                 throw new Error(
                     'Failed to fetch data. Status: ${response.status}'
@@ -114,10 +118,22 @@ function ShopsList() {
         setSelectedShop((prevShop) => ({ ...prevShop, [name]: value }))
     }
 
+    const handleSearch = (e) => {
+        const query = e.target.value.toLowerCase()
+        setSearchQuery(query)
+
+        const filteredShops = shops.filter((shop) =>
+            shop.shop_name.toLowerCase().includes(query)
+        )
+        // Update state with filtered products
+        setFilteredShops(filteredShops)
+    }
+
     return (
         <>
             <div>
                 <h1>Shops</h1>
+                <Search value={searchQuery} onChange={handleSearch} />
                 <Table striped bordered hover>
                     <thead>
                         <tr>
@@ -129,7 +145,7 @@ function ShopsList() {
                         </tr>
                     </thead>
                     <tbody>
-                        {shops.map((shop) => {
+                        {filteredShops.map((shop) => {
                             return (
                                 <tr key={shop.shop_id}>
                                     <td>{shop.shop_id}</td>

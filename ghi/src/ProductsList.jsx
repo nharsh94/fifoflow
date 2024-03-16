@@ -5,11 +5,24 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
+import Sort from './Sort'
+import Pagination from './PaginationComponent'
+import SearchComponent from './Search'
+import { useUser } from './UserContext'
 
 function ProductsList() {
+    const { role } = useUser()
+    console.log(role)
     const [products, setProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
+    const [sortConfig, setSortConfig] = useState({
+        key: null,
+        direction: 'asc',
+    })
+    const [searchQuery, setSearchQuery] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
+    const [productsPerPage] = useState(5)
 
     const getData = async () => {
         try {
@@ -17,13 +30,13 @@ function ProductsList() {
 
             if (response.ok) {
                 const data = await response.json()
-                const filteredProducts = data.filter(
+                const filteredData = data.filter(
                     (product) => !product.deleted_flag
                 )
-                setProducts(filteredProducts)
+                setProducts(filteredData)
             } else {
                 throw new Error(
-                    'Failed to fetch data. Status: ${response.status}'
+                    `Failed to fetch data. Status: ${response.status}`
                 )
             }
         } catch (error) {
@@ -84,9 +97,13 @@ function ProductsList() {
             console.error('Error updating product', error)
         }
     }
+
     const handleDeleteConfirmation = async () => {
         try {
-            const updatedProduct = { ...selectedProduct, deleted_flag: true }
+            const updatedProduct = {
+                ...selectedProduct,
+                deleted_flag: true,
+            }
             const response = await fetch(
                 `http://localhost:8000/api/products/${selectedProduct.product_id}`,
                 {
@@ -126,7 +143,7 @@ function ProductsList() {
     const Msg = ({ closeToast }) => (
         <div>
             Are you sure you want to delete this product?
-            <br></br>
+            <br />
             <button
                 className={'btn btn-primary'}
                 onClick={handleDeleteConfirmation}
@@ -141,62 +158,140 @@ function ProductsList() {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
-        setSelectedProduct((prevProduct) => ({ ...prevProduct, [name]: value }))
+        setSelectedProduct((prevProduct) => ({
+            ...prevProduct,
+            [name]: value,
+        }))
     }
+
+    const requestSort = (key) => {
+        let direction = 'asc'
+        if (
+            sortConfig &&
+            sortConfig.key === key &&
+            sortConfig.direction === 'asc'
+        ) {
+            direction = 'desc'
+        }
+        setSortConfig({ key, direction })
+    }
+    const handleResetSort = () => {
+        setSortConfig({
+            key: null,
+            direction: 'asc',
+        })
+    }
+
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value)
+    }
+
+    const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+
+    const sortedProducts = [...filteredProducts].sort((a, b) => {
+        if (sortConfig && sortConfig.key) {
+            if (a[sortConfig.key] < b[sortConfig.key]) {
+                return sortConfig.direction === 'asc' ? -1 : 1
+            }
+            if (a[sortConfig.key] > b[sortConfig.key]) {
+                return sortConfig.direction === 'asc' ? 1 : -1
+            }
+        }
+        return 0
+    })
+
+    const indexOfLastProduct = currentPage * productsPerPage
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage
+    const currentProducts = sortedProducts.slice(
+        indexOfFirstProduct,
+        indexOfLastProduct
+    )
+
+    const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
+
+    const handlePaginationClick = (pageNumber) => setCurrentPage(pageNumber)
 
     return (
         <>
             <div>
                 <h1>Products</h1>
+                <SearchComponent value={searchQuery} onChange={handleSearch} />
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Product ID</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Description</th>
+                            <Sort
+                                label="Product ID"
+                                onClick={() => requestSort('product_id')}
+                                sortConfig={sortConfig}
+                                field="product_id"
+                            />
+                            <Sort
+                                label="Name"
+                                onClick={() => requestSort('name')}
+                                sortConfig={sortConfig}
+                                field="name"
+                            />
+                            <Sort
+                                label="Price"
+                                onClick={() => requestSort('price')}
+                                sortConfig={sortConfig}
+                                field="price"
+                            />
+                            <Sort
+                                label="Description"
+                                onClick={() => requestSort('description')}
+                                sortConfig={sortConfig}
+                                field="description"
+                            />
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product) => {
-                            return (
-                                <tr key={product.product_id}>
-                                    <td>{product.product_id}</td>
-                                    <td>{product.name}</td>
-                                    <td>{`$${product.price}`}</td>
-                                    <td>{product.description}</td>
-                                    <td>
-                                        {product.description &&
-                                        product.category &&
-                                        product.alert_threshold &&
-                                        (product.quantity_in_stock > 1 ||
-                                            product.quantity_in_stock ===
-                                                '') ? (
-                                            <Button
-                                                variant="success"
-                                                onClick={() =>
-                                                    handleShowModal(product)
-                                                }
-                                            >
-                                                Details
-                                            </Button>
-                                        ) : (
-                                            <Button
-                                                variant="primary"
-                                                onClick={() =>
-                                                    handleShowModal(product)
-                                                }
-                                            >
-                                                Edit
-                                            </Button>
-                                        )}
-                                    </td>
-                                </tr>
-                            )
-                        })}
+                        {currentProducts.map((product) => (
+                            <tr key={product.product_id}>
+                                <td>{product.product_id}</td>
+                                <td>{product.name}</td>
+                                <td>{`$${product.price}`}</td>
+                                <td>{product.description}</td>
+                                <td>
+                                    {product.description &&
+                                    product.category &&
+                                    product.alert_threshold &&
+                                    (product.quantity_in_stock > 1 ||
+                                        product.quantity_in_stock === '') ? (
+                                        <Button
+                                            variant="success"
+                                            onClick={() =>
+                                                handleShowModal(product)
+                                            }
+                                        >
+                                            Details
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="primary"
+                                            onClick={() =>
+                                                handleShowModal(product)
+                                            }
+                                        >
+                                            Edit
+                                        </Button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </Table>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePaginationClick}
+                />
+                <Button variant="secondary" onClick={handleResetSort}>
+                    Reset Sorting
+                </Button>
             </div>
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
