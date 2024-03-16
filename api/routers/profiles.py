@@ -34,11 +34,11 @@ def delete_profile(user_id: int,
     return repo.delete(user_id)
 
 
-@router.get("/{id}", response_model=Optional[ProfileOut])
-def get_one_profile(id: int,
+@router.get("/{user_id}", response_model=Optional[ProfileOut])
+def get_one_profile(user_id: int,
                     response: Response,
                     repo: ProfileRepository = Depends()) -> ProfileOut:
-    profile = repo.get_one(id)
+    profile = repo.get_one(user_id)
     if profile is None:
         response.status_code = 404
     return profile

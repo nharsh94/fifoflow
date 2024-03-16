@@ -86,8 +86,11 @@ function OrderCreate() {
                 user_id: '',
                 product_id: '',
                 quantity: '',
+                total_price: '',
+                status: 'submitted',
             })
-        }location.reload()
+        }
+        location.reload()
     }
 
     useEffect(() => {

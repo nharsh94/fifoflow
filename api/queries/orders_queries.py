@@ -23,7 +23,7 @@ class OrdersRepository:
                             order.product_id,
                             order.quantity,
                             order.total_price,
-                            order.status
+                            order.status,
                         ],
                     )
                     row = result.fetchone()
@@ -33,11 +33,11 @@ class OrdersRepository:
         except Exception:
             return {"message": "Order failed to create"}
 
-    def order_in_out(self, order_id: int, order_date: datetime,
-                     order: OrdersIn):
+    def order_in_out(
+        self, order_id: int, order_date: datetime, order: OrdersIn
+    ):
         old_data = order.dict()
-        return OrdersOut(order_id=order_id,
-                         order_date=order_date, ** old_data)
+        return OrdersOut(order_id=order_id, order_date=order_date, **old_data)
 
     def get_one_order(self, order_id: int):
         try:

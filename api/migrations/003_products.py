@@ -11,6 +11,7 @@ steps = [
             category VARCHAR(100) NOT NULL,
             supplier_id INT NOT NULL,
             alert_threshold INT NOT NULL,
+            deleted_flag BOOLEAN NOT NULL DEFAULT false,
             FOREIGN KEY (supplier_id)
             REFERENCES profiles(user_id)
         );

@@ -13,15 +13,7 @@ class ProductRepository:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        SELECT product_id
-                            , name
-                            , description
-                            , price
-                            , quantity_in_stock
-                            , category
-                            , alert_threshold
-                            , stock_alert
-                            , shop_name
+                        SELECT *
                         FROM products
                         WHERE product_id = %s
                         """,
@@ -69,7 +61,8 @@ class ProductRepository:
                             quantity_in_stock = %s,
                             category = %s,
                             supplier_id = %s,
-                            alert_threshold = %s
+                            alert_threshold = %s,
+                            deleted_flag = %s
                         WHERE product_id = %s
                         RETURNING *
                         """,
@@ -79,8 +72,9 @@ class ProductRepository:
                             product.price,
                             product.quantity_in_stock,
                             product.category,
-                            product.user_id,
+                            product.supplier_id,
                             product.alert_threshold,
+                            product.deleted_flag,
                             product_id,
                         ],
                     )
@@ -157,36 +151,5 @@ class ProductRepository:
             category=record[5],
             supplier_id=record[6],
             alert_threshold=record[7],
+            deleted_flag=record[8]
         )
-
-    def set_stock_alert(self, products_id: int, value: bool) -> bool:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    db.execute(
-                        """
-                        UPDATE products
-                        SET stock_alert = %s
-                        WHERE product_id = %s
-                        """,
-                        [value, products_id],
-                    )
-                    return True
-        except Exception:
-            return False
-
-    def get_stock_alert(self, products_id: int) -> bool:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    result = db.execute(
-                        """
-                        SELECT stock_alert
-                        FROM products
-                        WHERE product_id = %s
-                        """,
-                        [products_id],
-                    )
-                    return result.fetchone()[0]
-        except Exception:
-            return False
