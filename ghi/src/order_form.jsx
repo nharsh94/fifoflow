@@ -103,7 +103,7 @@ function OrderCreate() {
                         <div className="form-floating mb-3">
                             <select
                                 onChange={handleFormChange}
-                                value={FormData.shop_id}
+                                value={formData.shop_id}
                                 required
                                 name="shop_id"
                                 id="shop_id"
@@ -125,7 +125,7 @@ function OrderCreate() {
                         <div className="form-floating mb-3">
                             <select
                                 onChange={handleFormChange}
-                                value={FormData.user_id}
+                                value={formData.user_id}
                                 required
                                 name="user_id"
                                 id="user_id"
@@ -147,7 +147,7 @@ function OrderCreate() {
                         <div className="form-floating mb-3">
                             <select
                                 onChange={handleFormChange}
-                                value={FormData.product_id}
+                                value={formData.product_id}
                                 required
                                 name="product_id"
                                 id="product_id"
@@ -169,7 +169,7 @@ function OrderCreate() {
                         <div className="form-floating mb-3">
                             <input
                                 onChange={handleFormChange}
-                                value={FormData.quantity}
+                                value={formData.quantity}
                                 placeholder="Quantity"
                                 required
                                 type="number"
