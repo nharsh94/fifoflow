@@ -22,6 +22,7 @@ import ForgotPassword from './ForgotPassword'
 {
     /* User Routes */
 }
+import CreateSupplier from './CreateSupplier'
 import AssignRole from './AssignRole.jsx'
 import CreateProfile from './CreateProfile'
 import HomePage from './HomePage'
@@ -103,11 +104,16 @@ function App() {
                             />
                             <Route path="/role" element={<AssignRole />} />
                             <Route path="/user" element={<UsersList />} />
-                            <Route
-                                path="/profile"
-                                element={<CreateProfile />}
-                            />
-
+                            <Route path="profile">
+                                <Route
+                                    path="/profile"
+                                    element={<CreateProfile />}
+                                />
+                                <Route
+                                    path="/profile/supplier"
+                                    element={<CreateSupplier />}
+                                />
+                            </Route>
                             {/* Shops Routes */}
                             <Route path="/shops">
                                 <Route

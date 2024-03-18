@@ -73,10 +73,7 @@ function Navs({ isLoggedIn }) {
                                     title="Orders"
                                     id="nav-dropdown"
                                 >
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/create"
-                                    >
+                                    <NavDropdown.Item as={NavLink} to="/create">
                                         Add Order To Flow
                                     </NavDropdown.Item>
                                     <NavDropdown.Item as={NavLink} to="/list">
@@ -180,12 +177,15 @@ function Navs({ isLoggedIn }) {
                                     <NavDropdown.Item as={NavLink} to="/role">
                                         Assign Role (Admin Only)
                                     </NavDropdown.Item>
+                                    {userData &&
+                                            userData.role === 'Admin' && (
                                     <NavDropdown.Item
                                         as={NavLink}
-                                        to="/profile/profile"
+                                        to="/profile/supplier"
                                     >
-                                        Create Profile (Admin Only)
+                                        Create a Supplier (Admin)
                                     </NavDropdown.Item>
+                                            )}
                                     <NavDropdown.Item as={NavLink} to="/home">
                                         User Database (Admin Only)
                                     </NavDropdown.Item>
