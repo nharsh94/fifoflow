@@ -1,6 +1,14 @@
 # FIFOFlow
 
-![FIFOFlow Logo](FIFOFlow_transparent_x.png)
+![Stock Inventory Image](https://t4.ftcdn.net/jpg/04/21/45/51/360_F_421455125_uq2szZSTeL8LoFZ6QJPBt95Hz8xDgECQ.jpg)
+
+FIFOFlow was designed to reduce the headache that is the inventory system. As a Database Administrator, you'll be able to track and manage:
+
+-   Products
+-   Shops
+-   Orders
+
+The point of FIFOFlow is to have your inventory when you need it, without the need for a college degree ~or more wasted manpower hours~.
 
 ## Getting started
 
@@ -22,16 +30,6 @@ Before this app will work, you will need to complete:
 [React](https://react.dev/): Used for creation of user interface.
 <br>
 [Toastify](https://www.npmjs.com/package/react-toastify): Allows the addition of clean, easy-to-use notifications.
-
-### Overview
-
-FIFOFlow was designed to reduce the headache that is the inventory system. As a Database Administrator, you'll be able to track and manage:
-
--   Products
--   Shops
--   Orders
-
-The point of FIFOFlow is to have your inventory when you need it, without the need for a college degree or more wasted manpower hours.
 
 <!-- ## Deliverables
 
