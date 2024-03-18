@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
@@ -6,8 +6,10 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/js/bootstrap.bundle'
 import 'react-json-pretty/themes/monikai.css'
+import { useUser } from './UserContext'
 
 function Construct({ info }) {
+    const { setUserData } = useUser()
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -46,9 +48,46 @@ function Construct({ info }) {
                 throw new Error('Login failed')
             }
 
-            const data = await response.json()
-            console.log('Login successful:', data)
-            navigate('/user')
+            const authData = await response.json()
+            console.log(authData)
+
+            const profileResponse = await fetch(
+                `http://localhost:8000/api/profile/${authData.id}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${authData.access_token}`,
+                    },
+                }
+            )
+
+            if (!profileResponse.ok) {
+                throw new Error('Failed to retrieve user profile')
+            }
+
+            const profileData = await profileResponse.json()
+
+            localStorage.setItem(
+                'userData',
+                JSON.stringify({
+                    user_id: authData.id,
+                    username: authData.username,
+                    first_name: profileData.first_name,
+                    last_name: profileData.last_name,
+                    role: profileData.role,
+                })
+            )
+
+            setUserData({
+                user_id: authData.id,
+                username: authData.username,
+                first_name: profileData.first_name,
+                last_name: profileData.last_name,
+                role: profileData.role,
+            })
+
+            console.log('Login successful:', authData)
+            navigate('/home')
         } catch (error) {
             if (error instanceof TypeError) {
                 console.error('Network error:', error)

@@ -15,7 +15,6 @@ function CreateProduct() {
     useEffect(() => {
         fetchSuppliers()
     }, [])
-    console.log('I am supplier', suppliers)
     const fetchSuppliers = async () => {
         try {
             const response = await fetch('http://localhost:8000/api/profile')

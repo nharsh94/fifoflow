@@ -5,11 +5,24 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
+import Sort from './Sort'
+import Pagination from './PaginationComponent'
+import Search from './Search'
+import { useUser } from './UserContext'
 
 function AllProducts() {
+    const { userData } = useUser()
+    console.log(userData)
     const [products, setProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
+    const [sortConfig, setSortConfig] = useState({
+        key: null,
+        direction: 'asc',
+    })
+    const [searchQuery, setSearchQuery] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
+    const [productsPerPage] = useState(5)
 
     const getData = async () => {
         try {
@@ -196,23 +209,119 @@ function AllProducts() {
         setSelectedProduct((prevProduct) => ({ ...prevProduct, [name]: value }))
     }
 
+    const requestSort = (key) => {
+        let direction = 'asc'
+        if (
+            sortConfig &&
+            sortConfig.key === key &&
+            sortConfig.direction === 'asc'
+        ) {
+            direction = 'desc'
+        }
+        setSortConfig({ key, direction })
+    }
+    const handleResetSort = () => {
+        setSortConfig({
+            key: null,
+            direction: 'asc',
+        })
+    }
+
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value)
+    }
+
+    const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+
+    const sortedProducts = [...filteredProducts].sort((a, b) => {
+        if (sortConfig && sortConfig.key) {
+            if (a[sortConfig.key] < b[sortConfig.key]) {
+                return sortConfig.direction === 'asc' ? -1 : 1
+            }
+            if (a[sortConfig.key] > b[sortConfig.key]) {
+                return sortConfig.direction === 'asc' ? 1 : -1
+            }
+        }
+        return 0
+    })
+
+    const indexOfLastProduct = currentPage * productsPerPage
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage
+    const currentProducts = sortedProducts.slice(
+        indexOfFirstProduct,
+        indexOfLastProduct
+    )
+
+    const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
+
+    const handlePaginationClick = (pageNumber) => setCurrentPage(pageNumber)
+
     return (
         <>
             <div>
-                <h1>Products</h1>
-                <Table striped bordered hover>
+                <h1>All Products</h1>
+                <Search value={searchQuery} onChange={handleSearch} />
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        marginBottom: '10px',
+                        paddingRight: '10px',
+                    }}
+                >
+                    <span
+                        style={{ marginRight: '5px', cursor: 'pointer' }}
+                        onClick={handleResetSort}
+                    >
+                        Reset
+                    </span>
+                    <i
+                        className="bi bi-funnel-fill"
+                        onClick={handleResetSort}
+                        style={{ cursor: 'pointer' }}
+                    ></i>
+                </div>
+                <Table responsive striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Product ID</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Description</th>
-                            <th>Deleted</th>
+                            <Sort
+                                label="Product ID"
+                                onClick={() => requestSort('product_id')}
+                                sortConfig={sortConfig}
+                                field="product_id"
+                            />
+                            <Sort
+                                label="Name"
+                                onClick={() => requestSort('name')}
+                                sortConfig={sortConfig}
+                                field="name"
+                            />
+                            <Sort
+                                label="Price"
+                                onClick={() => requestSort('price')}
+                                sortConfig={sortConfig}
+                                field="price"
+                            />
+                            <Sort
+                                label="Description"
+                                onClick={() => requestSort('description')}
+                                sortConfig={sortConfig}
+                                field="description"
+                            />
+                            <Sort
+                                label="Deleted"
+                                onClick={() => requestSort('deleted_flag')}
+                                sortConfig={sortConfig}
+                                field="deleted_flag"
+                            />
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product) => (
+                        {currentProducts.map((product) => (
                             <tr key={product.product_id}>
                                 <td>{product.product_id}</td>
                                 <td>{product.name}</td>
@@ -220,23 +329,39 @@ function AllProducts() {
                                 <td>{product.description}</td>
                                 <td>{product.deleted_flag ? 'Yes' : 'No'}</td>
                                 <td>
-                                    {product.deleted_flag ? (
+                                    {product.description &&
+                                    product.category &&
+                                    product.alert_threshold &&
+                                    (product.quantity_in_stock > 1 ||
+                                        product.quantity_in_stock === '') ? (
                                         <Button
-                                            variant="secondary"
+                                            variant={
+                                                product.deleted_flag
+                                                    ? 'secondary'
+                                                    : 'success'
+                                            }
                                             onClick={() =>
                                                 handleShowModal(product)
                                             }
                                         >
-                                            View
+                                            {product.deleted_flag
+                                                ? 'View'
+                                                : 'Details'}
                                         </Button>
                                     ) : (
                                         <Button
-                                            variant="primary"
+                                            variant={
+                                                product.deleted_flag
+                                                    ? 'secondary'
+                                                    : 'primary'
+                                            }
                                             onClick={() =>
                                                 handleShowModal(product)
                                             }
                                         >
-                                            Edit
+                                            {product.deleted_flag
+                                                ? 'View'
+                                                : 'Edit'}
                                         </Button>
                                     )}
                                 </td>
@@ -244,6 +369,11 @@ function AllProducts() {
                         ))}
                     </tbody>
                 </Table>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePaginationClick}
+                />
             </div>
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
