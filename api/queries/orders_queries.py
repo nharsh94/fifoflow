@@ -39,7 +39,7 @@ class OrdersRepository:
         self, order_id: int, order_date: datetime, order: OrdersIn
     ):
         old_data = order.dict()
-        return OrdersOut(order_id=order_id, order_date=order_date, **old_data)
+        return OrdersOut(order_id=order_id, **old_data)
 
     def order_in_out_update(self, order_id: int, order: OrdersIn):
         old_data = order.dict()
@@ -111,6 +111,7 @@ class OrdersRepository:
                             , status = %s
                             , order_date = %s
                         WHERE order_id = %s
+                        RETURNING *
                         """,
                         [
                             order.shop_id,
