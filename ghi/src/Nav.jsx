@@ -119,14 +119,20 @@ function Navs() {
                                     >
                                         Create a Supplier (Admin)
                                     </NavDropdown.Item>
+                                    <NavDropdown.Item
+                                        as={NavLink}
+                                        to="/profile/customer"
+                                    >
+                                        Create a Customer (Admin)
+                                    </NavDropdown.Item>
                                     <NavDropdown.Item eventKey="4.2">
                                         Assign User Access (Admin Only)
                                     </NavDropdown.Item>
                                     <NavDropdown.Item
                                         as={NavLink}
-                                        to="/shops/create"
+                                        to="/profile/list"
                                     >
-                                        Register User (Admin Only)
+                                        Profile Database
                                     </NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item eventKey="4.4">
