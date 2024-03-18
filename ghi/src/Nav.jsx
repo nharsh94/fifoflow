@@ -117,7 +117,7 @@ function Navs() {
                                         as={NavLink}
                                         to="/profile/list"
                                     >
-                                        Profile Database
+                                        Profile Database (Admin)
                                     </NavDropdown.Item>
                                     <NavDropdown.Item
                                         as={NavLink}
