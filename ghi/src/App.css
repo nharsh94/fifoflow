@@ -22,7 +22,7 @@ body {
     padding: 10px 20px 10px; /* Add padding to create space around the form */
 }
 .container-list {
-    max-width: 1050px; /* Set a maximum width for the container */
+    max-width: 1150px; /* Set a maximum width for the container */
     margin: 0 auto; /* Center the container horizontally */
     padding: 10px 20px 10px; /* Add padding to create space around the form */
 }
@@ -45,7 +45,6 @@ Nav.Link {
 }
 .form-floating {
     width: 20rem;
-    /* padding-top: 6px; */
 }
 .side-by-side-buttons {
     display: flex;

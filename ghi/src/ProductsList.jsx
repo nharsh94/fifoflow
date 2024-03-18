@@ -5,11 +5,21 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
+import Sort from './Sort'
+import Pagination from './PaginationComponent'
+import SearchComponent from './Search'
 
 function ProductsList() {
     const [products, setProducts] = useState([])
-    const [selectedProdcut, setSelectedProduct] = useState(null)
+    const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
+    const [sortConfig, setSortConfig] = useState({
+        key: null,
+        direction: 'asc',
+    })
+    const [searchQuery, setSearchQuery] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
+    const [productsPerPage] = useState(5)
 
     const getData = async () => {
         try {
@@ -17,10 +27,13 @@ function ProductsList() {
 
             if (response.ok) {
                 const data = await response.json()
-                setProducts(data)
+                const filteredData = data.filter(
+                    (product) => !product.deleted_flag
+                )
+                setProducts(filteredData)
             } else {
                 throw new Error(
-                    'Failed to fetch data. Status: ${response.status}'
+                    `Failed to fetch data. Status: ${response.status}`
                 )
             }
         } catch (error) {
@@ -58,18 +71,18 @@ function ProductsList() {
     const handleUpdateProduct = async () => {
         try {
             const response = await fetch(
-                `http://localhost:8000/api/products/${selectedProdcut.product_id}`,
+                `http://localhost:8000/api/products/${selectedProduct.product_id}`,
                 {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(selectedProdcut),
+                    body: JSON.stringify(selectedProduct),
                 }
             )
 
             if (response.ok) {
-                console.log('Product updated successfully:', selectedProdcut)
+                console.log('Product updated successfully:', selectedProduct)
                 handleCloseModal()
                 getData()
             } else {
@@ -82,45 +95,25 @@ function ProductsList() {
         }
     }
 
-    const handleDeleteProduct = async () => {
-        // Display a toast notification with custom buttons
-        toast.warn(<Msg />, {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: false,
-            closeButton: false,
-            draggable: false,
-            closeOnClick: false,
-        })
-    }
-
-    const Msg = ({ closeToast }) => (
-        <div>
-            Are you sure you want to delete this product?
-            <br></br>
-            <button
-                className={'btn btn-primary'}
-                onClick={handleDeleteConfirmation}
-            >
-                Yes
-            </button>
-            <button className={'btn btn-danger'} onClick={closeToast}>
-                No
-            </button>
-        </div>
-    )
-
     const handleDeleteConfirmation = async () => {
-        // Proceed with delete action
         try {
+            const updatedProduct = {
+                ...selectedProduct,
+                deleted_flag: true,
+            }
             const response = await fetch(
-                `http://localhost:8000/api/products/${selectedProdcut.product_id}`,
+                `http://localhost:8000/api/products/${selectedProduct.product_id}`,
                 {
-                    method: 'DELETE',
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedProduct),
                 }
             )
 
             if (response.ok) {
-                console.log('Product deleted successfully', selectedProdcut)
+                console.log('Product deleted successfully', selectedProduct)
                 getData()
                 handleCloseModal()
                 toast.dismiss()
@@ -134,41 +127,167 @@ function ProductsList() {
         }
     }
 
+    const handleDeleteProduct = async () => {
+        toast.warn(<Msg />, {
+            position: 'top-center',
+            autoClose: false,
+            closeButton: false,
+            draggable: false,
+            closeOnClick: false,
+        })
+    }
+
+    const Msg = ({ closeToast }) => (
+        <div>
+            Are you sure you want to delete this product?
+            <br />
+            <button
+                className={'btn btn-primary'}
+                onClick={handleDeleteConfirmation}
+            >
+                Yes
+            </button>
+            <button className={'btn btn-danger'} onClick={closeToast}>
+                No
+            </button>
+        </div>
+    )
+
     const handleInputChange = (e) => {
         const { name, value } = e.target
-        setSelectedProduct((prevProduct) => ({ ...prevProduct, [name]: value }))
+        setSelectedProduct((prevProduct) => ({
+            ...prevProduct,
+            [name]: value,
+        }))
     }
+
+    const requestSort = (key) => {
+        let direction = 'asc'
+        if (
+            sortConfig &&
+            sortConfig.key === key &&
+            sortConfig.direction === 'asc'
+        ) {
+            direction = 'desc'
+        }
+        setSortConfig({ key, direction })
+    }
+    const handleResetSort = () => {
+        setSortConfig({
+            key: null,
+            direction: 'asc',
+        })
+    }
+
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value)
+    }
+
+    const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+
+    const sortedProducts = [...filteredProducts].sort((a, b) => {
+        if (sortConfig && sortConfig.key) {
+            if (a[sortConfig.key] < b[sortConfig.key]) {
+                return sortConfig.direction === 'asc' ? -1 : 1
+            }
+            if (a[sortConfig.key] > b[sortConfig.key]) {
+                return sortConfig.direction === 'asc' ? 1 : -1
+            }
+        }
+        return 0
+    })
+
+    const indexOfLastProduct = currentPage * productsPerPage
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage
+    const currentProducts = sortedProducts.slice(
+        indexOfFirstProduct,
+        indexOfLastProduct
+    )
+
+    const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
+
+    const handlePaginationClick = (pageNumber) => setCurrentPage(pageNumber)
 
     return (
         <>
             <div>
                 <h1>Products</h1>
-                <Table striped bordered hover>
+                <SearchComponent value={searchQuery} onChange={handleSearch} />
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        marginBottom: '10px',
+                        paddingRight: '10px',
+                    }}
+                >
+                    <span
+                        style={{ marginRight: '5px', cursor: 'pointer' }}
+                        onClick={handleResetSort}
+                    >
+                        Reset
+                    </span>
+                    <i
+                        className="bi bi-funnel-fill"
+                        onClick={handleResetSort}
+                        style={{ cursor: 'pointer' }}
+                    ></i>
+                </div>
+                <Table responsive striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Product ID</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Quantity in Stock</th>
-                            <th>Category</th>
-                            <th>Supplier</th>
-                            <th>alert_threshold</th>
+                            <Sort
+                                label="Product ID"
+                                onClick={() => requestSort('product_id')}
+                                sortConfig={sortConfig}
+                                field="product_id"
+                            />
+                            <Sort
+                                label="Name"
+                                onClick={() => requestSort('name')}
+                                sortConfig={sortConfig}
+                                field="name"
+                            />
+                            <Sort
+                                label="Price"
+                                onClick={() => requestSort('price')}
+                                sortConfig={sortConfig}
+                                field="price"
+                            />
+                            <Sort
+                                label="Description"
+                                onClick={() => requestSort('description')}
+                                sortConfig={sortConfig}
+                                field="description"
+                            />
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product) => {
-                            return (
-                                <tr key={product.product_id}>
-                                    <td>{product.product_id}</td>
-                                    <td>{product.name}</td>
-                                    <td>{product.description}</td>
-                                    <td>{`$${product.price}`}</td>
-                                    <td>{product.quantity_in_stock}</td>
-                                    <td>{product.category}</td>
-                                    <td>{product.supplier_id}</td>
-                                    <td>{product.alert_threshold}</td>
-                                    <td>
+                        {currentProducts.map((product) => (
+                            <tr key={product.product_id}>
+                                <td>{product.product_id}</td>
+                                <td>{product.name}</td>
+                                <td>{`$${product.price}`}</td>
+                                <td>{product.description}</td>
+                                <td>
+                                    {product.description &&
+                                    product.category &&
+                                    product.alert_threshold &&
+                                    (product.quantity_in_stock > 1 ||
+                                        product.quantity_in_stock === '') ? (
+                                        <Button
+                                            variant="success"
+                                            onClick={() =>
+                                                handleShowModal(product)
+                                            }
+                                        >
+                                            Details
+                                        </Button>
+                                    ) : (
                                         <Button
                                             variant="primary"
                                             onClick={() =>
@@ -177,16 +296,29 @@ function ProductsList() {
                                         >
                                             Edit
                                         </Button>
-                                    </td>
-                                </tr>
-                            )
-                        })}
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </Table>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePaginationClick}
+                />
             </div>
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Product</Modal.Title>
+                    <Modal.Title>
+                        {selectedProduct &&
+                        selectedProduct.description &&
+                        selectedProduct.quantity_in_stock &&
+                        selectedProduct.category &&
+                        selectedProduct.alert_threshold
+                            ? 'Product Details'
+                            : 'Edit Product'}
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -196,7 +328,7 @@ function ProductsList() {
                                 type="text"
                                 placeholder="Enter product name"
                                 name="name"
-                                value={selectedProdcut?.name || ''}
+                                value={selectedProduct?.name || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -206,7 +338,7 @@ function ProductsList() {
                                 type="text"
                                 placeholder="Enter description"
                                 name="description"
-                                value={selectedProdcut?.description || ''}
+                                value={selectedProduct?.description || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -216,7 +348,7 @@ function ProductsList() {
                                 type="text"
                                 placeholder="Enter price"
                                 name="price"
-                                value={selectedProdcut?.price || ''}
+                                value={selectedProduct?.price || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -226,7 +358,7 @@ function ProductsList() {
                                 type="int"
                                 placeholder="Enter quantity"
                                 name="quantity_in_stock"
-                                value={selectedProdcut?.quantity_in_stock || ''}
+                                value={selectedProduct?.quantity_in_stock || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -236,7 +368,7 @@ function ProductsList() {
                                 type="text"
                                 placeholder="Enter Category"
                                 name="category"
-                                value={selectedProdcut?.category || ''}
+                                value={selectedProduct?.category || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -246,7 +378,7 @@ function ProductsList() {
                                 type="text"
                                 placeholder="Enter Supplier"
                                 name="supplier_id"
-                                value={selectedProdcut?.supplier_id || ''}
+                                value={selectedProduct?.supplier_id || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -256,7 +388,7 @@ function ProductsList() {
                                 type="text"
                                 placeholder="Enter alert threshold"
                                 name="alert_threshold"
-                                value={selectedProdcut?.alert_threshold || ''}
+                                value={selectedProduct?.alert_threshold || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
@@ -274,7 +406,7 @@ function ProductsList() {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <ToastContainer /> {/* Render the ToastContainer component */}
+            <ToastContainer />
         </>
     )
 }

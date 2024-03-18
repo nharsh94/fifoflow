@@ -122,7 +122,8 @@ function TestProductsList({isLoggedIn}) {
 
     return (
         <>
-            <div>
+            <div className="container-list">
+            <div className="signup-form-wrapper custom-shadow1">
                 <h1>Products in Flow</h1>
                 <Table striped bordered hover>
                     <thead>
@@ -162,6 +163,7 @@ function TestProductsList({isLoggedIn}) {
                         })}
                     </tbody>
                 </Table>
+            </div>
             </div>
 
             <Modal show={showModal} onHide={handleCloseModal}>

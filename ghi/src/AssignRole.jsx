@@ -1,69 +1,37 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import './SignUp.css'
 
 export default function AssignRole() {
-    const [roles, setRoles] = useState([])
+    const [roles] = useState([
+        { role_id: 1, role_name: 'Admin' },
+        { role_id: 2, role_name: 'Manager' },
+        { role_id: 3, role_name: 'Employee' },
+        { role_id: 4, role_name: 'Supplier' },
+        { role_id: 5, role_name: 'Customer' },
+    ])
     const [selectedRoleId, setSelectedRoleId] = useState('')
-    const [error, setError] = useState('')
+    const [error] = useState('')
     const navigate = useNavigate()
     const location = useLocation()
-    const { user_id } = location.state || {}
-
-    useEffect(() => {
-        const fetchRoles = async () => {
-            try {
-                const response = await fetch('http://localhost:8000/api/role')
-                if (!response.ok) throw new Error('Failed to fetch roles')
-
-                const rolesData = await response.json()
-                setRoles(rolesData)
-            } catch (error) {
-                setError(
-                    error.message || 'An error occurred while fetching roles'
-                )
-            }
-        }
-
-        fetchRoles()
-    }, [])
+    const { user_id, username } = location.state || {}
 
     const handleFormSubmit = async (event) => {
         event.preventDefault()
-        try {
-            const selectedRole = roles.find(
-                (role) => role.role_id.toString() === selectedRoleId
-            )
-            if (!selectedRole) throw new Error('Invalid role selected')
 
-            const response = await fetch('http://localhost:8000/api/role', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    role_id: selectedRole.role_id,
-                    role_name: selectedRole.role_name,
-                }),
-            })
-            console.log(response)
+        const selectedRole = roles.find(
+            (role) => role.role_id.toString() === selectedRoleId
+        )
+        if (!selectedRole) throw new Error('Invalid role selected')
 
-            if (!response.ok) {
-                const errorData = await response.json()
-                throw new Error(errorData.message || 'Failed to assign role')
-            }
-
-            navigate('/profile', {
-                state: {
-                    user_id,
-                    role_id: selectedRole.role_id,
-                    role_name: selectedRole.role_name,
-                },
-            })
-        } catch (error) {
-            setError(
-                error.message ||
-                    'An unknown error occurred while assigning role'
-            )
-        }
+        navigate('/profile', {
+            state: {
+                user_id,
+                username,
+                role_id: selectedRoleId.role_id,
+                role_name: selectedRole.role_name,
+            },
+        })
     }
 
     return (

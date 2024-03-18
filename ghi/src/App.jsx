@@ -1,71 +1,90 @@
 // This makes VSCode check types as if you are using TypeScript
 //@ts-check
 import React from 'react'
-import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    useLocation,
+    Navigate,
+} from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 import Nav from './Nav'
-
-{/* Authentication Routes */}
+import ErrorNotification from './ErrorNotification'
+{
+    /* Authentication Routes */
+}
 import Construct from './Construct'
 import SignUpUserForm from './SignUpUserForm'
 import ForgotPassword from './ForgotPassword'
-
-{/* User Routes */}
+{
+    /* User Routes */
+}
 import AssignRole from './AssignRole.jsx'
 import CreateProfile from './CreateProfile'
 import HomePage from './HomePage'
 import UsersList from './UsersList'
 import { UserProvider } from './UserContext'
-
-{/* Shop Routes */}
+{
+    /* Shop Routes */
+}
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
 import ShopDetails from './ShopDetails'
-
-{/* Product Routes */}
+{
+    /* Product Routes */
+}
 import CreateProduct from './CreateProduct'
 import ProductsList from './ProductsList'
-
-{/* Order Routes */}
-import OrderList from './list_orders'
-import OrderCreate from './order_form'
-
-{/* Demo Routes */}
+import AllProducts from './AllProducts'
+{
+    /* Order Routes */
+}
+import OrderList from './OrderList'
+import OrderCreate from './OrderCreate'
+{
+    /* Demo Routes */
+}
 import SignUpForm from './SignUpForm'
 import TestProductCreate from './TestProductCreate' // By Mel K
 import TestProductsList from './TestProductsList' // By Mel K
 
 
-
-function Navigation({isLoggedIn}) {
+function Navigation({ isLoggedIn }) {
     const location = useLocation()
     const showNavRoutes = ['/home', '/user', '/shops', '/products', '/orders']
     const shouldShowNav = showNavRoutes.some((route) =>
         location.pathname.startsWith(route)
     )
-    return isLoggedIn && shouldShowNav ?<Nav isLoggedIn={isLoggedIn} /> : null
+    return isLoggedIn && shouldShowNav ? <Nav isLoggedIn={isLoggedIn} /> : null
 }
 
-
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+    const [error, setError] = useState(null)
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false)
+
     useEffect(() => {
         const isAuthenticated = () => {
             return localStorage.getItem('token') !== null
         }
 
-        setIsLoggedIn(isAuthenticated())
+        try {
+            setError(null)
+            setIsLoggedIn(isAuthenticated())
+        } catch (error) {
+            setError(error.message)
+        }
     }, [])
-
 
     return (
         <>
-            <BrowserRouter>
-                <UserProvider>
+            <UserProvider>
+                <BrowserRouter>
                     <div className="App">
                         <Navigation isLoggedIn={isLoggedIn} />
+                        <ErrorNotification error={error} />
                         <Routes>
                             <Route path="/" element={<Construct />} />
                             {/* Authentication Routes */}
@@ -117,8 +136,12 @@ function App() {
                                     element={<CreateProduct />}
                                 />
                                 <Route path="list" element={<ProductsList />} />
+                                <Route path="all" element={<AllProducts />} />
                                 {/* Demo Routes */}
-                            <Route path="signup1" element={<SignUpForm />} />
+                                <Route
+                                    path="signup1"
+                                    element={<SignUpForm />}
+                                />
                                 <Route
                                     path="create1"
                                     element={
@@ -137,16 +160,13 @@ function App() {
                                 />
                             </Route>
                             {/* Orders Routes */}
-                            <Route path="/orders" element={<OrderList />} />
-                            <Route
-                                path="/create-order"
-                                element={<OrderCreate />}
-                            />
-                            <Route
-                                path="/list"
-                                element={<OrderCreate />}
-                            />
-
+                            <Route path="/orders-items">
+                                <Route path="list" element={<OrderList />} />
+                                <Route
+                                    path="create"
+                                    element={<OrderCreate />}
+                                />
+                            </Route>
                             {/* Default Redirect */}
                             <Route
                                 path="/"
@@ -154,8 +174,8 @@ function App() {
                             />
                         </Routes>
                     </div>
-                </UserProvider>
-            </BrowserRouter>
+                </BrowserRouter>
+            </UserProvider>
         </>
     )
 }

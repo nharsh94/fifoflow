@@ -1,8 +1,10 @@
 import { Navigate, NavLink } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import './HomePage.css'
+import { useUser } from './UserContext'
 
 function HomePage({ isLoggedIn }) {
+    const { userData } = useUser()
     if (!isLoggedIn) {
         return <Navigate to="/" replace />
     }
@@ -10,7 +12,9 @@ function HomePage({ isLoggedIn }) {
     return (
         <>
             <div className="user-page">
-                <h1>Welcome!</h1>
+                <h1>
+                    Welcome, {userData.first_name} {userData.last_name}!
+                </h1>
                 <div className="home-links">
                     <Button
                         variant="primary"

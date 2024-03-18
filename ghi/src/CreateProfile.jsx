@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useUser } from './UserContext'
 
 export default function CreateProfile() {
+    const { userData, setUserData } = useUser()
+    console.log('I am being logged', userData)
     const navigate = useNavigate()
     const location = useLocation()
-    const { user_id, role_id, role_name } = location.state || {}
+    const { user_id, username, role_id, role_name } = location.state || {}
 
     const [profileData, setProfileData] = useState({
         user_id,
@@ -15,6 +18,8 @@ export default function CreateProfile() {
         email: '',
         phone: '',
     })
+
+    console.log(profileData)
     const [error, setError] = useState('')
 
     const handleChange = (event) => {
@@ -32,8 +37,7 @@ export default function CreateProfile() {
                 },
                 body: JSON.stringify({
                     user_id: profileData.user_id,
-                    role_id: profileData.role_id,
-                    role_name: profileData.role_name,
+                    role: profileData.role_name,
                     first_name: profileData.first_name,
                     last_name: profileData.last_name,
                     email: profileData.email,
@@ -47,7 +51,29 @@ export default function CreateProfile() {
                 throw new Error(errorData.message || 'Failed to create profile')
             }
 
-            navigate('/user') // Navigate to the dashboard
+            const responseData = await response.json()
+            // Save all relevant data to local storage
+            localStorage.setItem(
+                'userData',
+                JSON.stringify({
+                    user_id: user_id,
+                    username: username,
+                    first_name: responseData.first_name,
+                    last_name: responseData.last_name,
+                    role: role_name,
+                })
+            )
+
+            // Update state or context with the newly created profile data
+            setUserData({
+                user_id: user_id,
+                username: username,
+                first_name: responseData.first_name,
+                last_name: responseData.last_name,
+                role: role_name,
+            })
+
+            navigate('/home') // Navigate to the dashboard
         } catch (error) {
             setError(error.message || 'An unknown error occurred')
         }

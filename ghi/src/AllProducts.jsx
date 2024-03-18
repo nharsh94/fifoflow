@@ -8,8 +8,11 @@ import Table from 'react-bootstrap/Table'
 import Sort from './Sort'
 import Pagination from './PaginationComponent'
 import Search from './Search'
+import { useUser } from './UserContext'
 
 function AllProducts() {
+    const { userData } = useUser()
+    console.log(userData)
     const [products, setProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
@@ -260,7 +263,28 @@ function AllProducts() {
             <div>
                 <h1>All Products</h1>
                 <Search value={searchQuery} onChange={handleSearch} />
-                <Table striped bordered hover>
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        marginBottom: '10px',
+                        paddingRight: '10px',
+                    }}
+                >
+                    <span
+                        style={{ marginRight: '5px', cursor: 'pointer' }}
+                        onClick={handleResetSort}
+                    >
+                        Reset
+                    </span>
+                    <i
+                        className="bi bi-funnel-fill"
+                        onClick={handleResetSort}
+                        style={{ cursor: 'pointer' }}
+                    ></i>
+                </div>
+                <Table responsive striped bordered hover>
                     <thead>
                         <tr>
                             <Sort
@@ -305,23 +329,39 @@ function AllProducts() {
                                 <td>{product.description}</td>
                                 <td>{product.deleted_flag ? 'Yes' : 'No'}</td>
                                 <td>
-                                    {product.deleted_flag ? (
+                                    {product.description &&
+                                    product.category &&
+                                    product.alert_threshold &&
+                                    (product.quantity_in_stock > 1 ||
+                                        product.quantity_in_stock === '') ? (
                                         <Button
-                                            variant="secondary"
+                                            variant={
+                                                product.deleted_flag
+                                                    ? 'secondary'
+                                                    : 'success'
+                                            }
                                             onClick={() =>
                                                 handleShowModal(product)
                                             }
                                         >
-                                            View
+                                            {product.deleted_flag
+                                                ? 'View'
+                                                : 'Details'}
                                         </Button>
                                     ) : (
                                         <Button
-                                            variant="primary"
+                                            variant={
+                                                product.deleted_flag
+                                                    ? 'secondary'
+                                                    : 'primary'
+                                            }
                                             onClick={() =>
                                                 handleShowModal(product)
                                             }
                                         >
-                                            Edit
+                                            {product.deleted_flag
+                                                ? 'View'
+                                                : 'Edit'}
                                         </Button>
                                     )}
                                 </td>
@@ -334,9 +374,6 @@ function AllProducts() {
                     totalPages={totalPages}
                     onPageChange={handlePaginationClick}
                 />
-                <Button variant="secondary" onClick={handleResetSort}>
-                    Reset Sorting
-                </Button>
             </div>
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>

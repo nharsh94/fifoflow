@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUser } from './UserContext'
 import './SignUp.css'
 
 export default function SignUpUserForm() {
@@ -8,7 +7,6 @@ export default function SignUpUserForm() {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const { setUserId } = useUser()
     const navigate = useNavigate()
 
     const handleSubmit = async (event) => {
@@ -35,8 +33,9 @@ export default function SignUpUserForm() {
             console.log(data)
 
             if (data.id) {
-                setUserId(data.id)
-                navigate('/role', { state: { user_id: data.id } })
+                navigate('/role', {
+                    state: { user_id: data.id, username: data.username },
+                })
             } else {
                 throw new Error('User ID not found in response')
             }
