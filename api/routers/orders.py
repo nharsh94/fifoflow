@@ -38,9 +38,9 @@ def get_all_orders(
 )
 def update_orders(
     order_id: int,
-    order: OrdersOut,
+    order: OrdersIn,
     repo: OrdersRepository = Depends(),
-) -> Union[Error, OrdersOut]:
+) -> Union[OrdersOut, Error]:
     return repo.update_order(order_id, order)
 
 
