@@ -43,7 +43,13 @@ function Navs() {
                                     id="nav-dropdown"
                                 >
                                     <NavDropdown.Item as={NavLink} to="/orders">
-                                        All Orders
+                                        Orders
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item
+                                        as={NavLink}
+                                        to="/order-history"
+                                    >
+                                        Order History
                                     </NavDropdown.Item>
                                     <NavDropdown.Item
                                         as={NavLink}
