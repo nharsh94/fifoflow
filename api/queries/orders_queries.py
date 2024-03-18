@@ -108,7 +108,6 @@ class OrdersRepository:
                         [
                             order.shop_id,
                             order.user_id,
-                            order.order_date,
                             order.product_id,
                             order.quantity,
                             order.total_price,

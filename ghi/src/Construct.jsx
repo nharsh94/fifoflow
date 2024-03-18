@@ -6,15 +6,13 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/js/bootstrap.bundle'
 import 'react-json-pretty/themes/monikai.css'
-import styles from './Construct.module.css'
 
 import logo from './assets/FIFOFlow_transparent_x1.png'
 
-function Construct({ setIsLoggedIn, isLoggedIn }) {
+function Construct() {
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -42,8 +40,8 @@ function Construct({ setIsLoggedIn, isLoggedIn }) {
 
             const data = await response.json()
             console.log('Login successful:', data)
-            setIsLoggedIn(true)
-            navigate('/user')
+            // setIsLoggedIn(true)
+            navigate('/home')
         } catch (error) {
             if (error instanceof TypeError) {
                 console.error('Network error:', error)
@@ -55,24 +53,25 @@ function Construct({ setIsLoggedIn, isLoggedIn }) {
 
     return (
         <>
-            {!isLoggedIn && (
-                <div className="App">
-                    <header className="App-header">
-                        <img className="logo" src={logo} alt="FIFOFlow Logo" />
-                        <h5 className="motto">
-                            An open-source, automated system for managing your
-                            logistical nightmares!
-                        </h5>
+            <div className="App">
+                <header className="App-header">
+                    <img className="logo" src={logo} alt="FIFOFlow Logo" />
+                    <h5 className="motto">
+                        An open-source, automated system for managing your
+                        logistical nightmares!
+                    </h5>
+                    <div className="signup-form-wrapper custom-shadow1">
                         <Form
-                            className={styles.formFloating}
                             id="user_login"
                             className="user"
-                            onSubmit={handleSubmit}>
+                            onSubmit={handleSubmit}
+                        >
                             <div className="mb-3">
                                 <FloatingLabel
                                     controlId="floatingInput"
                                     label="Username"
-                                    >
+                                    className="mb-1 custom-shadow"
+                                >
                                     <Form.Control
                                         type="text"
                                         placeholder="username"
@@ -80,12 +79,13 @@ function Construct({ setIsLoggedIn, isLoggedIn }) {
                                         onChange={(e) =>
                                             setUsername(e.target.value)
                                         }
-                                        />
+                                    />
                                 </FloatingLabel>
                                 <FloatingLabel
                                     controlId="floatingPassword"
                                     label="Password"
-                                    >
+                                    className="mb-1 custom-shadow"
+                                >
                                     <Form.Control
                                         type="password"
                                         placeholder="Password"
@@ -93,38 +93,36 @@ function Construct({ setIsLoggedIn, isLoggedIn }) {
                                         onChange={(e) =>
                                             setPassword(e.target.value)
                                         }
-                                        />
+                                    />
                                 </FloatingLabel>
                             </div>
                             <Button
                                 className="btn btn-lg"
                                 variant="primary"
-                                id="login-btn"
+                                id="account-btn"
                                 data-replace=""
                                 type="submit"
-                                >
+                            >
                                 Log in
                             </Button>{' '}
                         </Form>
-                        <div className="side-by-side-buttons">
-                            <button
-                                className="btn btn-link"
-                                id="forgot-password-btn"
-                            >
-                                <Link to="/forgot-password">
-                                    Forgot password?
-                                </Link>
-                            </button>
-                            <button
-                                className="btn btn-link"
-                                id="create-account-btn"
-                            >
-                                <Link to="/signup">Sign up</Link>
-                            </button>
-                        </div>
-                    </header>
-                </div>
-            )}
+                    </div>
+                    <div className="side-by-side-buttons">
+                        <button
+                            className="btn btn-link"
+                            id="forgot-password-btn"
+                        >
+                            <Link to="/forgot-password">Forgot password?</Link>
+                        </button>
+                        <button
+                            className="btn btn-link"
+                            id="create-account-btn"
+                        >
+                            <Link to="/signup">Sign up</Link>
+                        </button>
+                    </div>
+                </header>
+            </div>
         </>
     )
 }

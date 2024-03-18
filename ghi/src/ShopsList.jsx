@@ -6,14 +6,13 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
 
-function ShopsList({isLoggedIn}) {
+function ShopsList({ isLoggedIn }) {
     if (!isLoggedIn) {
         return <Navigate to="/" replace />
     }
     const [shops, setShops] = useState([])
     const [selectedShop, setSelectedShop] = useState(null)
     const [showModal, setShowModal] = useState(false)
-
 
     const getData = async () => {
         try {
@@ -121,41 +120,43 @@ function ShopsList({isLoggedIn}) {
 
     return (
         <>
-            <div>
-                <h1>Shops</h1>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Shop ID</th>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Phone</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {shops.map((shop) => {
-                            return (
-                                <tr key={shop.shop_id}>
-                                    <td>{shop.shop_id}</td>
-                                    <td>{shop.shop_name}</td>
-                                    <td>{shop.address}</td>
-                                    <td>{shop.phone}</td>
-                                    <td>
-                                        <Button
-                                            variant="primary"
-                                            onClick={() =>
-                                                handleShowModal(shop)
-                                            }
-                                        >
-                                            Edit
-                                        </Button>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </Table>
+            <div className="container-list">
+                <div className="signup-form-wrapper custom-shadow1">
+                    <h1>Shops</h1>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>Shop ID</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Phone</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {shops.map((shop) => {
+                                return (
+                                    <tr key={shop.shop_id}>
+                                        <td>{shop.shop_id}</td>
+                                        <td>{shop.shop_name}</td>
+                                        <td>{shop.address}</td>
+                                        <td>{shop.phone}</td>
+                                        <td>
+                                            <Button
+                                                variant="primary"
+                                                onClick={() =>
+                                                    handleShowModal(shop)
+                                                }
+                                            >
+                                                Edit
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </Table>
+                </div>
             </div>
 
             <Modal show={showModal} onHide={handleCloseModal}>

@@ -16,7 +16,7 @@ function Navs({ isLoggedIn }) {
             {isLoggedIn && (
                 <Navbar bg="dark" expand="lg" variant="dark">
                     <Container fluid>
-                        <Navbar.Brand as={NavLink} to="/user">
+                        <Navbar.Brand as={NavLink} to="/home">
                             <OverlayTrigger
                                 placement="bottom"
                                 overlay={
@@ -59,6 +59,40 @@ function Navs({ isLoggedIn }) {
                                 </Nav.Item>
                                 <NavDropdown
                                     className="px-2"
+                                    title="Orders"
+                                    id="nav-dropdown"
+                                >
+                                    <NavDropdown.Item
+                                        as={NavLink}
+                                        to="/orders/create-order"
+                                    >
+                                        Add Order To Flow
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item
+                                        as={NavLink}
+                                        to="/orders"
+                                    >
+                                        Orders List
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item
+                                        as={NavLink}
+                                        to="/orders/list"
+                                    >
+                                        Orders(WIP)
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item
+                                        as={NavLink}
+                                        to="/products/details"
+                                    >
+                                        Orders(WIP)
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item eventKey="4.4">
+                                        Separated link
+                                    </NavDropdown.Item>
+                                </NavDropdown>
+                                <NavDropdown
+                                    className="px-2"
                                     title="Products"
                                     id="nav-dropdown"
                                 >
@@ -72,13 +106,19 @@ function Navs({ isLoggedIn }) {
                                         as={NavLink}
                                         to="/products/create1"
                                     >
-                                        Add Product To Flow(test)
+                                        Add Product To Flow(Alt)
                                     </NavDropdown.Item>
                                     <NavDropdown.Item
                                         as={NavLink}
                                         to="/products/list"
                                     >
                                         Product Database
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item
+                                        as={NavLink}
+                                        to="/products/list1"
+                                    >
+                                        Product Database(Alt)
                                     </NavDropdown.Item>
                                     <NavDropdown.Item
                                         as={NavLink}
@@ -123,18 +163,21 @@ function Navs({ isLoggedIn }) {
                                 >
                                     <NavDropdown.Item
                                         as={NavLink}
-                                        to="/shops/list"
+                                        to="/role"
                                     >
-                                        User Database
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item eventKey="4.2">
-                                        Assign User Access (Admin Only)
+                                       Assign Role (Admin Only)
                                     </NavDropdown.Item>
                                     <NavDropdown.Item
                                         as={NavLink}
-                                        to="/shops/create"
+                                        to="/profile/profile"
                                     >
-                                        Register User (Admin Only)
+                                        Create Profile (Admin Only)
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item
+                                        as={NavLink}
+                                        to="/home"
+                                    >
+                                        User Database (Admin Only)
                                     </NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item eventKey="4.4">
