@@ -8,11 +8,8 @@ import Table from 'react-bootstrap/Table'
 import Sort from './Sort'
 import Pagination from './PaginationComponent'
 import SearchComponent from './Search'
-import { useUser } from './UserContext'
 
 function ProductsList() {
-    const { role } = useUser()
-    console.log(role)
     const [products, setProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
@@ -218,7 +215,28 @@ function ProductsList() {
             <div>
                 <h1>Products</h1>
                 <SearchComponent value={searchQuery} onChange={handleSearch} />
-                <Table striped bordered hover>
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        marginBottom: '10px',
+                        paddingRight: '10px',
+                    }}
+                >
+                    <span
+                        style={{ marginRight: '5px', cursor: 'pointer' }}
+                        onClick={handleResetSort}
+                    >
+                        Reset
+                    </span>
+                    <i
+                        className="bi bi-funnel-fill"
+                        onClick={handleResetSort}
+                        style={{ cursor: 'pointer' }}
+                    ></i>
+                </div>
+                <Table responsive striped bordered hover>
                     <thead>
                         <tr>
                             <Sort
@@ -289,9 +307,6 @@ function ProductsList() {
                     totalPages={totalPages}
                     onPageChange={handlePaginationClick}
                 />
-                <Button variant="secondary" onClick={handleResetSort}>
-                    Reset Sorting
-                </Button>
             </div>
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>

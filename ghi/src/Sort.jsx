@@ -1,10 +1,14 @@
+import 'bootstrap-icons/font/bootstrap-icons.css'
+
 function Sort({ label, onClick, sortConfig, field }) {
     const isSorted = sortConfig && sortConfig.key === field
-    const arrowIcon = isSorted
-        ? sortConfig.direction === 'asc'
-            ? '↑'
-            : '↓'
-        : ''
+    const arrowIcon = isSorted ? (
+        sortConfig.direction === 'asc' ? (
+            <i className="bi bi-sort-up"></i>
+        ) : (
+            <i className="bi bi-sort-down-alt"></i>
+        )
+    ) : null
     const errorMessage =
         sortConfig.errorField === field ? 'Error sorting column' : ''
 
@@ -13,16 +17,14 @@ function Sort({ label, onClick, sortConfig, field }) {
             <span>
                 {label} {arrowIcon}
             </span>
-            <button
-                onClick={onClick}
-                className="btn btn-primary"
-                style={{ marginLeft: '5px' }}
-            >
-                Sort{' '}
-                {errorMessage && (
-                    <span style={{ color: 'red' }}> - {errorMessage}</span>
-                )}
-            </button>
+            <i
+                className="bi bi-funnel"
+                onClick={() => onClick(field)}
+                style={{ marginLeft: '5px', cursor: 'pointer' }}
+            ></i>
+            {errorMessage && (
+                <span style={{ color: 'red' }}> - {errorMessage}</span>
+            )}
         </th>
     )
 }
