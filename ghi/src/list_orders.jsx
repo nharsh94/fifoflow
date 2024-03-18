@@ -49,13 +49,14 @@ function OrderList() {
     }, [])
 
     const handleCancel = async (id) => {
-        const url = 'http://localhost:8000/api/orders/' + id
+        const url = `http://localhost:8000/api/orders/${id}`
+        console.log(url)
         const response = await fetch(url)
         const data = await response.json()
         data['status'] = 'cancelled'
-        console.log(data)
+        console.log('this is happening in handleCancel', data)
         const cancelConfig = {
-            method: 'put',
+            method: 'PUT',
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
@@ -63,7 +64,14 @@ function OrderList() {
         }
         await fetch(url, cancelConfig)
 
-        // location.reload()
+        setOrders((prevOrders) =>
+            prevOrders.map((order) => {
+                if (order.order_id === id) {
+                    return { ...order, status: 'cancelled' }
+                }
+                return order
+            })
+        )
     }
     const handleSearch = (e) => {
         const inputValue = e.target.value.toLowerCase()

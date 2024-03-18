@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 from decimal import Decimal
 
@@ -14,6 +14,7 @@ class OrdersIn(BaseModel):
     quantity: int
     total_price: Decimal
     status: str
+    order_date: datetime = Field(default_factory=datetime.now)
 
 
 class OrdersOut(BaseModel):
