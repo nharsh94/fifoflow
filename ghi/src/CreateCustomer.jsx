@@ -9,7 +9,7 @@ export default function CreateSupplierProfile() {
     const [users, setUsers] = useState([])
     const [selectedUserId, setSelectedUserId] = useState('')
     const [profileData, setProfileData] = useState({
-        role: 'Supplier',
+        role: 'Customer',
         first_name: '',
         last_name: '',
         email: '',
@@ -63,7 +63,7 @@ export default function CreateSupplierProfile() {
                 const errorData = await response.json()
                 console.error('Error details:', errorData)
                 throw new Error(
-                    errorData.message || 'Failed to create supplier profile'
+                    errorData.message || 'Failed to create customer profile'
                 )
             }
 
@@ -75,7 +75,7 @@ export default function CreateSupplierProfile() {
 
     return (
         <div className="container mt-5">
-            <h1>Create a Supplier</h1>
+            <h1>Create a Customer</h1>
             <Form onSubmit={handleFormSubmit}>
                 {error && <div className="alert alert-danger">{error}</div>}
                 <div className="mb-3">
@@ -146,7 +146,7 @@ export default function CreateSupplierProfile() {
                     data-replace=""
                     type="submit"
                 >
-                    Create Supplier Profile
+                    Create Customer Profile
                 </Button>
             </Form>
         </div>

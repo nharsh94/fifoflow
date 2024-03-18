@@ -140,7 +140,7 @@ function ShopCreate() {
     }
     return (
         <>
-            <div>
+            <div className="container mt-5">
                 <h1>Add Shop to Flow</h1>
                 <Form
                     onSubmit={handleSubmit}

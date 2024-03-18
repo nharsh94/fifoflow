@@ -25,10 +25,12 @@ import AllProducts from './AllProducts'
 import OrderList from './list_orders'
 import OrderCreate from './order_form'
 import CreateSupplier from './CreateSupplier'
+import CreateCustomer from './CreateCustomer'
 //
 import TestProductCreate from './TestProductCreate' // By Mel K
 import TestProductsList from './TestProductsList' // By Mel K
 import UsersList from './UsersList'
+import ProfileDatabase from './ProfileDatabase'
 // import ProductDetails from './ProductDetails'
 // import ThreeScene from './ThreeScene'
 
@@ -88,8 +90,16 @@ function App() {
                                 element={<CreateProfile />}
                             />
                             <Route
+                                path="/profile/list"
+                                element={<ProfileDatabase />}
+                            />
+                            <Route
                                 path="/profile/supplier"
                                 element={<CreateSupplier />}
+                            />
+                            <Route
+                                path="/profile/customer"
+                                element={<CreateCustomer />}
                             />
                         </Route>
                         <Route path="/shops">
