@@ -99,13 +99,14 @@ function TestProductCreate({isLoggedIn}) {
 
     return (
         <>
-            <div>
-                <h1>Create Product</h1>
+            <div className="container">
+                <div className="signup-form-wrapper custom-shadow1">
+                <h1>Add Product</h1>
                 <Form onSubmit={handleSubmit} className="center-form">
                     <FloatingLabel
                         controlId="FloatingName"
                         label="Product Name"
-                        className="mb-3 custom-shadow"
+                        className="mb-1 custom-shadow"
                     >
                         <Form.Control
                             type="text"
@@ -117,7 +118,7 @@ function TestProductCreate({isLoggedIn}) {
                     <FloatingLabel
                         controlId="FloatingDescription"
                         label="Description"
-                        className="mb-3 custom-shadow"
+                        className="mb-1 custom-shadow"
                     >
                         <Form.Control
                             type="text"
@@ -129,7 +130,7 @@ function TestProductCreate({isLoggedIn}) {
                     <FloatingLabel
                         controlId="FloatingPrice"
                         label="Price"
-                        className="mb-3 custom-shadow"
+                        className="mb-1 custom-shadow"
                     >
                         <Form.Control
                             type="number"
@@ -141,7 +142,7 @@ function TestProductCreate({isLoggedIn}) {
                     <FloatingLabel
                         controlId="FloatingQIS"
                         label="Quantity in Stock"
-                        className="mb-3 custom-shadow"
+                        className="mb-1 custom-shadow"
                     >
                         <Form.Control
                             type="number"
@@ -155,7 +156,7 @@ function TestProductCreate({isLoggedIn}) {
                     <FloatingLabel
                         controlId="FloatingCategory"
                         label="Category"
-                        className="mb-3 custom-shadow"
+                        className="mb-1 custom-shadow"
                     >
                         <Form.Control
                             type="text"
@@ -167,7 +168,7 @@ function TestProductCreate({isLoggedIn}) {
                     <FloatingLabel
                         controlId="FloatingShop"
                         label="Shop"
-                        className="mb-3 custom-shadow"
+                        className="mb-1 custom-shadow"
                     >
                         <Form.Select
                             value={formData.shop_name}
@@ -187,7 +188,7 @@ function TestProductCreate({isLoggedIn}) {
                         </Form.Select>
                     </FloatingLabel>
                     <Button
-                        className="btn btn-outline-light"
+                        className="btn btn-outline-light mt-1"
                         variant="secondary"
                         id="submit-btn"
                         data-replace=""
@@ -196,6 +197,7 @@ function TestProductCreate({isLoggedIn}) {
                         Submit
                     </Button>{' '}
                 </Form>
+                </div>
                 <div className={messageClasses} id="success-message">
                     Product added successfully!
                 </div>

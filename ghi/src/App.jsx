@@ -2,117 +2,187 @@
 //@ts-check
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    useLocation,
+    Navigate,
+} from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
-
-// import Header from './Header'
 import Nav from './Nav'
-
+import ErrorNotification from './ErrorNotification'
+{
+    /* Authentication Routes */
+}
 import Construct from './Construct'
-// import SignUpUserForm from './SignUpUserForm'
-import SignUpForm from './SignUpForm'
+import SignUpUserForm from './SignUpUserForm'
 import ForgotPassword from './ForgotPassword'
-// import AssignRole from './AssignRole.jsx'
-// import CreateProfile from './CreateProfile'
-// import { UserProvider } from './UserContext'
-
-import UserPage from './UserPage'
-
+{
+    /* User Routes */
+}
+import CreateSupplier from './CreateSupplier'
+import AssignRole from './AssignRole.jsx'
+import CreateProfile from './CreateProfile'
+import HomePage from './HomePage'
+import UsersList from './UsersList'
+import { UserProvider } from './UserContext'
+{
+    /* Shop Routes */
+}
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
-
+import ShopDetails from './ShopDetails'
+{
+    /* Product Routes */
+}
 import CreateProduct from './CreateProduct'
 import ProductsList from './ProductsList'
-
-import OrderList from './list_orders'
-// import OrderCreate from './order_form'
-
-//
+import AllProducts from './AllProducts'
+{
+    /* Order Routes */
+}
+import OrderList from './OrderList'
+import OrderCreate from './OrderCreate'
+{
+    /* Demo Routes */
+}
+import SignUpForm from './SignUpForm'
 import TestProductCreate from './TestProductCreate' // By Mel K
 import TestProductsList from './TestProductsList' // By Mel K
-// import ProductDetails from './ProductDetails'
-
-import useToken from './useToken'
 
 
-
-// function Navigation({isLoggedIn}) {
-//     const location = useLocation()
-//     const showNavRoutes = ['/user', '/shops', '/products', '/orders']
-//     const shouldShowNav = showNavRoutes.some((route) =>
-//         location.pathname.startsWith(route)
-//     )
-//     return isLoggedIn && shouldShowNav ?<Nav isLoggedIn={isLoggedIn} /> : null
-// }
-
+function Navigation({ isLoggedIn }) {
+    const location = useLocation()
+    const showNavRoutes = ['/home', '/user', '/shops', '/products', '/orders']
+    const shouldShowNav = showNavRoutes.some((route) =>
+        location.pathname.startsWith(route)
+    )
+    return isLoggedIn && shouldShowNav ? <Nav isLoggedIn={isLoggedIn} /> : null
+}
 
 function App() {
-    const { token, setToken } = useToken()
+    const [error, setError] = useState(null)
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false)
 
     useEffect(() => {
         const isAuthenticated = () => {
             return localStorage.getItem('token') !== null
         }
 
-        if (isAuthenticated()) {
-            setToken(localStorage.getItem('token'))
+        try {
+            setError(null)
+            setIsLoggedIn(isAuthenticated())
+        } catch (error) {
+            setError(error.message)
         }
-    }, [setToken])
+    }, [])
 
     return (
-        <BrowserRouter>
-            <div className="App">
-                {/* {isLoggedIn && <Nav isLoggedIn={isLoggedIn} />} */}
-                <Nav isLoggedIn={token} />
-                <Routes>
-                    <Route path="/" element={<Construct />} />
-                    <Route path="/signup" element={<SignUpForm />} />
-                    <Route
-                        path="/forgot-password"
-                        element={<ForgotPassword />}
-                    />
-                    <Route path="/user" element={<UserPage />} />
-
-                    <Route
-                        path="/shops/*"
-                        element={token ? <ShopRoutes /> : <Navigate to="/" />}
-                    />
-
-                    <Route path="/products">
-                        <Route path="create" element={<CreateProduct />} />
-                        <Route path="list" element={<ProductsList />} />
-
-                        <Route
-                            path="create1"
-                            element={<TestProductCreate isLoggedIn={token} />}
-                        />
-                        <Route
-                            path="list1"
-                            element={<TestProductsList isLoggedIn={token} />}
-                        />
-                    </Route>
-
-                    <Route path="/orders" element={<OrderList />} />
-                    <Route
-                        path="/"
-                        element={<Navigate to="/construct" replace />}
-                    />
-                </Routes>
-            </div>
-        </BrowserRouter>
-
-    )
-}
-
-function ShopRoutes() {
-    return (
-        <Routes>
-            <Route path="/" element={<Navigate to="/shops/create" />} />
-            <Route path="create" element={<ShopCreate />} />
-            <Route path="list" element={<ShopsList />} />
-            {/* Add more routes as needed */}
-        </Routes>
+        <>
+            <UserProvider>
+                <BrowserRouter>
+                    <div className="App">
+                        <Navigation isLoggedIn={isLoggedIn} />
+                        <ErrorNotification error={error} />
+                        <Routes>
+                            <Route path="/" element={<Construct />} />
+                            {/* Authentication Routes */}
+                            <Route
+                                path="/signup"
+                                element={<SignUpUserForm />}
+                            />
+                            <Route
+                                path="/forgot-password"
+                                element={<ForgotPassword />}
+                            />
+                            {/* User Routes */}
+                            <Route
+                                path="/home"
+                                element={<HomePage isLoggedIn={isLoggedIn} />}
+                            />
+                            <Route path="/role" element={<AssignRole />} />
+                            <Route path="/user" element={<UsersList />} />
+                            <Route path="profile">
+                                <Route
+                                    path="/profile"
+                                    element={<CreateProfile />}
+                                />
+                                <Route
+                                    path="/profile/supplier"
+                                    element={<CreateSupplier />}
+                                />
+                            </Route>
+                            {/* Shops Routes */}
+                            <Route path="/shops">
+                                <Route
+                                    path="create"
+                                    element={
+                                        <ShopCreate isLoggedIn={isLoggedIn} />
+                                    }
+                                />
+                                <Route
+                                    path="list"
+                                    element={
+                                        <ShopsList isLoggedIn={isLoggedIn} />
+                                    }
+                                />
+                                <Route
+                                    path="details"
+                                    element={
+                                        <ShopDetails isLoggedIn={isLoggedIn} />
+                                    }
+                                />
+                            </Route>
+                            {/* Products Routes */}
+                            <Route path="/products">
+                                <Route
+                                    path="create"
+                                    element={<CreateProduct />}
+                                />
+                                <Route path="list" element={<ProductsList />} />
+                                <Route path="all" element={<AllProducts />} />
+                                {/* Demo Routes */}
+                                <Route
+                                    path="signup1"
+                                    element={<SignUpForm />}
+                                />
+                                <Route
+                                    path="create1"
+                                    element={
+                                        <TestProductCreate
+                                            isLoggedIn={isLoggedIn}
+                                        />
+                                    }
+                                />
+                                <Route
+                                    path="list1"
+                                    element={
+                                        <TestProductsList
+                                            isLoggedIn={isLoggedIn}
+                                        />
+                                    }
+                                />
+                            </Route>
+                            {/* Orders Routes */}
+                            <Route path="/orders-items">
+                                <Route path="list" element={<OrderList />} />
+                                <Route
+                                    path="create"
+                                    element={<OrderCreate />}
+                                />
+                            </Route>
+                            {/* Default Redirect */}
+                            <Route
+                                path="/"
+                                element={<Navigate to="/construct" replace />}
+                            />
+                        </Routes>
+                    </div>
+                </BrowserRouter>
+            </UserProvider>
+        </>
     )
 }
 export default App

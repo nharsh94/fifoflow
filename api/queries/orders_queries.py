@@ -1,6 +1,7 @@
 from models.orders import OrderItemsIn, OrdersIn, OrdersOut, OrderItemsOut
 from queries.pool import pool
 import datetime
+import traceback
 
 
 class OrdersRepository:
@@ -31,6 +32,7 @@ class OrdersRepository:
                         order_id, order_date = row
                     return self.order_in_out(order_id, order_date, order)
         except Exception:
+            traceback.print_exc()
             return {"message": "Order failed to create"}
 
     def order_in_out(
@@ -38,6 +40,10 @@ class OrdersRepository:
     ):
         old_data = order.dict()
         return OrdersOut(order_id=order_id, order_date=order_date, **old_data)
+
+    def order_in_out_update(self, order_id: int, order: OrdersIn):
+        old_data = order.dict()
+        return OrdersOut(order_id=order_id, **old_data)
 
     def get_one_order(self, order_id: int):
         try:
@@ -90,7 +96,7 @@ class OrdersRepository:
         except Exception:
             return {"message": "Failed to delete"}
 
-    def update_order(self, order_id: int, order: OrdersIn):
+    def update_order(self, order_id: int, order: OrdersOut):
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -103,22 +109,25 @@ class OrdersRepository:
                             , quantity = %s
                             , total_price = %s
                             , status = %s
+                            , order_date = %s
                         WHERE order_id = %s
                         """,
                         [
                             order.shop_id,
                             order.user_id,
-                            order.order_date,
                             order.product_id,
                             order.quantity,
                             order.total_price,
                             order.status,
+                            order.order_date,
                             order_id,
                         ],
                     )
-                    return self.order_in_out(order_id, order)
-        except Exception:
-            return {"message": "Failed to update order"}
+                    return self.order_in_out_update(order_id, order)
+        except Exception as e:
+            traceback.print_exc()
+            return f"Error updating order: {e}"
+            # return {"message": "Failed to update order"}
 
     def get_all_orders(self):
         try:

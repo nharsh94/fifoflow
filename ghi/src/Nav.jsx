@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Button from 'react-bootstrap/Button'
+import LogoutButton from './LogoutButton' // Import the LogoutButton component
 
 import { NavLink } from 'react-router-dom'
 // const token = localStorage.getItem('token')
@@ -12,11 +13,30 @@ import { NavLink } from 'react-router-dom'
 import brand from './assets/FIFOFlow_transparent_x1.png'
 
 function Navs({ isLoggedIn }) {
-    return isLoggedIn ? (
+        const navigate = useNavigate()
+        const { userData } = useUser() // Move userData declaration here
+
+        useEffect(() => {
+            // Redirect if user is not logged in or doesn't have admin role
+            if (!userData || userData.role !== 'Admin') {
+                navigate('/') // Example redirection to home page
+            }
+        }, [userData, navigate])
+
+        const handleLogin = () => {
+            navigate('/login')
+        }
+
+        const capitalizeFirstLetter = (string) => {
+            if (!string) return ''
+            return string.charAt(0).toUpperCase() + string.slice(1)
+        }
+
+    return (
         <>
                 <Navbar bg="dark" expand="lg" variant="dark">
                     <Container fluid>
-                        <Navbar.Brand as={NavLink} to="/user">
+                        <Navbar.Brand as={NavLink} to="/home">
                             <OverlayTrigger
                                 placement="bottom"
                                 overlay={
@@ -48,15 +68,34 @@ function Navs({ isLoggedIn }) {
                                         Inventory
                                     </Nav.Link>
                                 </Nav.Item>
-                                <Nav.Item>
-                                    <Nav.Link
-                                        className="px-3"
+                                <NavDropdown
+                                    className="px-2"
+                                    title="Orders"
+                                    id="nav-dropdown"
+                                >
+                                    <NavDropdown.Item as={NavLink} to="/create">
+                                        Add Order To Flow
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item as={NavLink} to="/list">
+                                        Orders List
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item
                                         as={NavLink}
-                                        to="/api/orders"
+                                        to="/orders/list"
                                     >
-                                        Ordering
-                                    </Nav.Link>
-                                </Nav.Item>
+                                        Orders(WIP)
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item
+                                        as={NavLink}
+                                        to="/products/details"
+                                    >
+                                        Orders(WIP)
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item eventKey="4.4">
+                                        Separated link
+                                    </NavDropdown.Item>
+                                </NavDropdown>
                                 <NavDropdown
                                     className="px-2"
                                     title="Products"
@@ -72,7 +111,7 @@ function Navs({ isLoggedIn }) {
                                         as={NavLink}
                                         to="/products/create1"
                                     >
-                                        Add Product To Flow(test)
+                                        Add Product To Flow(Alt)
                                     </NavDropdown.Item>
                                     <NavDropdown.Item
                                         as={NavLink}
@@ -82,13 +121,27 @@ function Navs({ isLoggedIn }) {
                                     </NavDropdown.Item>
                                     <NavDropdown.Item
                                         as={NavLink}
+                                        to="/products/list1"
+                                    >
+                                        Product Database(Alt)
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item
+                                        as={NavLink}
                                         to="/products/details"
                                     >
                                         Product Details
                                     </NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item eventKey="4.4">
-                                        Separated link
+                                        {userData &&
+                                            userData.role === 'Admin' && ( // Only show "All Products" if user is admin
+                                                <NavDropdown.Item
+                                                    as={NavLink}
+                                                    to="/products/all"
+                                                >
+                                                    All Products
+                                                </NavDropdown.Item>
+                                            )}
                                     </NavDropdown.Item>
                                 </NavDropdown>
                                 <NavDropdown
@@ -121,26 +174,67 @@ function Navs({ isLoggedIn }) {
                                     title="User Management"
                                     id="nav-dropdown"
                                 >
+                                    <NavDropdown.Item as={NavLink} to="/role">
+                                        Assign Role (Admin Only)
+                                    </NavDropdown.Item>
+                                    {userData &&
+                                            userData.role === 'Admin' && (
                                     <NavDropdown.Item
                                         as={NavLink}
-                                        to="/shops/list"
+                                        to="/profile/supplier"
                                     >
-                                        User Database
+                                        Create a Supplier (Admin)
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item eventKey="4.2">
-                                        Assign User Access (Admin Only)
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/shops/create"
-                                    >
-                                        Register User (Admin Only)
+                                            )}
+                                    <NavDropdown.Item as={NavLink} to="/home">
+                                        User Database (Admin Only)
                                     </NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item eventKey="4.4">
                                         Admin
                                     </NavDropdown.Item>
                                 </NavDropdown>
+                            </Nav>
+                            <Nav className="d-flex ms-auto order-5">
+                                {userData ? (
+                                    <NavDropdown
+                                        className="dropdown-menu-right"
+                                        title={
+                                            <span>
+                                                Welcome{' '}
+                                                <strong
+                                                    style={{ color: 'white' }}
+                                                >
+                                                    {capitalizeFirstLetter(
+                                                        userData.first_name
+                                                    )}
+                                                </strong>{' '}
+                                                <strong
+                                                    style={{ color: 'white' }}
+                                                >
+                                                    {capitalizeFirstLetter(
+                                                        userData.last_name
+                                                    )}
+                                                </strong>
+                                            </span>
+                                        }
+                                        id="user-dropdown"
+                                    >
+                                        <NavDropdown.Item
+                                            as={NavLink}
+                                            to="/profile"
+                                        >
+                                            Profile
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item>
+                                            <LogoutButton />
+                                        </NavDropdown.Item>
+                                    </NavDropdown>
+                                ) : (
+                                    <Nav.Link onClick={handleLogin}>
+                                        Login
+                                    </Nav.Link>
+                                )}
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

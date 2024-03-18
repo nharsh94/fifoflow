@@ -46,6 +46,24 @@ function OrderList() {
         getOrderData(), getProductData(), getShopData(), getUserData()
     }, [])
 
+    const handleCancel = async (id) => {
+        const url = 'http://localhost:8000/api/orders/' + id
+        const response = await fetch(url)
+        const data = await response.json()
+        data['status'] = 'cancelled'
+        console.log(data)
+        const cancelConfig = {
+            method: 'put',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+        await fetch(url, cancelConfig)
+
+        // location.reload()
+    }
+
     return (
         <table>
             <thead>
@@ -89,6 +107,13 @@ function OrderList() {
                             </td>
                             <td>{formattedDate}</td>
                             <td>{order.status}</td>
+                            <td>
+                                <button
+                                    onClick={() => handleCancel(order.order_id)}
+                                >
+                                    cancel
+                                </button>
+                            </td>
                         </tr>
                     )
                 })}

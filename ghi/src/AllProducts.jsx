@@ -7,9 +7,12 @@ import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
 import Sort from './Sort'
 import Pagination from './PaginationComponent'
-import SearchComponent from './Search'
+import Search from './Search'
+import { useUser } from './UserContext'
 
-function ProductsList() {
+function AllProducts() {
+    const { userData } = useUser()
+    console.log(userData)
     const [products, setProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
@@ -27,13 +30,10 @@ function ProductsList() {
 
             if (response.ok) {
                 const data = await response.json()
-                const filteredData = data.filter(
-                    (product) => !product.deleted_flag
-                )
-                setProducts(filteredData)
+                setProducts(data)
             } else {
                 throw new Error(
-                    `Failed to fetch data. Status: ${response.status}`
+                    'Failed to fetch data. Status: ${response.status}'
                 )
             }
         } catch (error) {
@@ -94,13 +94,9 @@ function ProductsList() {
             console.error('Error updating product', error)
         }
     }
-
     const handleDeleteConfirmation = async () => {
         try {
-            const updatedProduct = {
-                ...selectedProduct,
-                deleted_flag: true,
-            }
+            const updatedProduct = { ...selectedProduct, deleted_flag: true }
             const response = await fetch(
                 `http://localhost:8000/api/products/${selectedProduct.product_id}`,
                 {
@@ -140,7 +136,7 @@ function ProductsList() {
     const Msg = ({ closeToast }) => (
         <div>
             Are you sure you want to delete this product?
-            <br />
+            <br></br>
             <button
                 className={'btn btn-primary'}
                 onClick={handleDeleteConfirmation}
@@ -153,12 +149,64 @@ function ProductsList() {
         </div>
     )
 
+    const handleAddConfirmation = async () => {
+        try {
+            const updatedProduct = { ...selectedProduct, deleted_flag: false }
+            const response = await fetch(
+                `http://localhost:8000/api/products/${selectedProduct.product_id}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedProduct),
+                }
+            )
+
+            if (response.ok) {
+                console.log('Product added successfully', selectedProduct)
+                getData()
+                handleCloseModal()
+                toast.dismiss()
+            } else {
+                throw new Error(
+                    `Failed to add product. Status: ${response.status}`
+                )
+            }
+        } catch (error) {
+            console.error('Error adding product', error)
+        }
+    }
+
+    const handleAddProduct = async () => {
+        toast.warn(<MsgtoAdd />, {
+            position: 'top-center',
+            autoClose: false,
+            closeButton: false,
+            draggable: false,
+            closeOnClick: false,
+        })
+    }
+
+    const MsgtoAdd = ({ closeToast }) => (
+        <div>
+            Are you sure you want to Add this product?
+            <br></br>
+            <button
+                className={'btn btn-primary'}
+                onClick={handleAddConfirmation}
+            >
+                Yes
+            </button>
+            <button className={'btn btn-danger'} onClick={closeToast}>
+                No
+            </button>
+        </div>
+    )
+
     const handleInputChange = (e) => {
         const { name, value } = e.target
-        setSelectedProduct((prevProduct) => ({
-            ...prevProduct,
-            [name]: value,
-        }))
+        setSelectedProduct((prevProduct) => ({ ...prevProduct, [name]: value }))
     }
 
     const requestSort = (key) => {
@@ -213,8 +261,8 @@ function ProductsList() {
     return (
         <>
             <div>
-                <h1>Products</h1>
-                <SearchComponent value={searchQuery} onChange={handleSearch} />
+                <h1>All Products</h1>
+                <Search value={searchQuery} onChange={handleSearch} />
                 <div
                     style={{
                         display: 'flex',
@@ -263,6 +311,12 @@ function ProductsList() {
                                 sortConfig={sortConfig}
                                 field="description"
                             />
+                            <Sort
+                                label="Deleted"
+                                onClick={() => requestSort('deleted_flag')}
+                                sortConfig={sortConfig}
+                                field="deleted_flag"
+                            />
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -273,6 +327,7 @@ function ProductsList() {
                                 <td>{product.name}</td>
                                 <td>{`$${product.price}`}</td>
                                 <td>{product.description}</td>
+                                <td>{product.deleted_flag ? 'Yes' : 'No'}</td>
                                 <td>
                                     {product.description &&
                                     product.category &&
@@ -280,21 +335,33 @@ function ProductsList() {
                                     (product.quantity_in_stock > 1 ||
                                         product.quantity_in_stock === '') ? (
                                         <Button
-                                            variant="success"
+                                            variant={
+                                                product.deleted_flag
+                                                    ? 'secondary'
+                                                    : 'success'
+                                            }
                                             onClick={() =>
                                                 handleShowModal(product)
                                             }
                                         >
-                                            Details
+                                            {product.deleted_flag
+                                                ? 'View'
+                                                : 'Details'}
                                         </Button>
                                     ) : (
                                         <Button
-                                            variant="primary"
+                                            variant={
+                                                product.deleted_flag
+                                                    ? 'secondary'
+                                                    : 'primary'
+                                            }
                                             onClick={() =>
                                                 handleShowModal(product)
                                             }
                                         >
-                                            Edit
+                                            {product.deleted_flag
+                                                ? 'View'
+                                                : 'Edit'}
                                         </Button>
                                     )}
                                 </td>
@@ -398,11 +465,17 @@ function ProductsList() {
                     <Button variant="secondary" onClick={handleCloseModal}>
                         Close
                     </Button>
+                    {selectedProduct && selectedProduct.deleted_flag ? (
+                        <Button variant="success" onClick={handleAddProduct}>
+                            Add Product
+                        </Button>
+                    ) : (
+                        <Button variant="danger" onClick={handleDeleteProduct}>
+                            Delete Product
+                        </Button>
+                    )}
                     <Button variant="primary" onClick={handleUpdateProduct}>
                         Save Changes
-                    </Button>
-                    <Button variant="danger" onClick={handleDeleteProduct}>
-                        Delete Product
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -411,4 +484,4 @@ function ProductsList() {
     )
 }
 
-export default ProductsList
+export default AllProducts

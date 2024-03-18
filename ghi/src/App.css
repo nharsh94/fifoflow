@@ -14,8 +14,19 @@
     /* font-size: calc(5px + 2vmin); */
 }
 body {
-    background-color: hsl(72.3,37.1%,95%);
+    background-color: hsl(72.3,37.1%,90%);
 }
+.container {
+    max-width: 600px; /* Set a maximum width for the container */
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 10px 20px 10px; /* Add padding to create space around the form */
+}
+.container-list {
+    max-width: 1150px; /* Set a maximum width for the container */
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 10px 20px 10px; /* Add padding to create space around the form */
+}
+
 Nav.Link {
     margin-right: 10em;
 }
@@ -27,9 +38,13 @@ Nav.Link {
 .motto {
     color: whitesmoke;
 }
+.terms {
+    display: block;
+    flex-direction: column;
+    align-items: center;
+}
 .form-floating {
     width: 20rem;
-    padding: 6px 0px 0px 0px;
 }
 .side-by-side-buttons {
     display: flex;
@@ -46,14 +61,11 @@ Nav.Link {
 #create-account-btn {
     text-decoration: none;
 }
-#login-btn {
+#account-btn {
     color: white;
-    /* border: 1px solid black; */
     background-color: #0064e0;
-    width: 8rem;
-    padding: 4px 9px;
-    margin-bottom: 5px;
-    margin-top: 10px;
+    width: 7rem;
+    padding: 3px 12px;
     text-decoration: none;
 }
 @media (max-width: 768px) {
@@ -68,11 +80,25 @@ Nav.Link {
     justify-content: center;
 }
 .custom-shadow {
-    box-shadow: 10px 10px 5px hsl(72.3,37.1%,80%);
+    box-shadow: 0px 5px 5px -5px hsl(72.3,37.1%,80%),
+                5px 5px 5px -5px hsl(72.3,37.1%,80%),
+                -5px 5px 5px -5px hsl(72.3,37.1%,80%);
     border-radius: 5px;
 }
-/* .form-wrapper {
-    background-color: #404821;
-    box-shadow: 10px 10px 5px hsl(72.3,37.1%,13%);
-    border-radius: 5px;
-} */
+.custom-shadow1 {
+    background-color: hsl(72.3,37.1%,99%);
+    box-shadow: 0px 5px 10px -5px rgba(0, 0, 0, 0.5), /* Left */
+                5px 5px 10px -5px rgba(0, 0, 0, 0.5), /* Bottom */
+                -5px 5px 15px -5px rgba(0, 0, 0, 0.5); /* Right */
+    padding: 20px;
+    border-radius: 10px;
+}
+.terms {
+    margin-top: 20px;
+    text-align: center;
+}
+.terms a {
+    color: #316ff6;
+    text-decoration: none;
+    margin: 0 5px;
+}

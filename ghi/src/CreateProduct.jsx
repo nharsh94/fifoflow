@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react'
-
-import FloatingLabel from 'react-bootstrap/FloatingLabel'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 function CreateProduct() {
-
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -15,24 +11,20 @@ function CreateProduct() {
         supplier_id: 0,
         alert_threshold: 0,
     })
-
     const [suppliers, setSuppliers] = useState([])
-    const [addSuccess, setAddSuccess] = useState(false)
-
     useEffect(() => {
-        // Fetch suppliers when component mounts
         fetchSuppliers()
     }, [])
-
     console.log('I am supplier', suppliers)
-
     const fetchSuppliers = async () => {
         try {
             const response = await fetch('http://localhost:8000/api/profile')
             if (response.ok) {
                 const suppliersData = await response.json()
-                console.log(suppliersData)
-                setSuppliers(suppliersData)
+                const suppliersFiltered = suppliersData.filter(
+                    (user) => user.role === 'Supplier'
+                )
+                setSuppliers(suppliersFiltered)
             } else {
                 console.error('Failed to fetch suppliers')
             }
@@ -40,11 +32,9 @@ function CreateProduct() {
             console.error('Error fetching suppliers:', error)
         }
     }
-
     const handleSubmit = async (event) => {
         event.preventDefault()
         const url = 'http://localhost:8000/api/products'
-
         const fetchConfig = {
             method: 'post',
             body: JSON.stringify({
@@ -56,6 +46,7 @@ function CreateProduct() {
         }
         const response = await fetch(url, fetchConfig)
         if (response.ok) {
+            toast.success('Product successfully added!')
             setFormData({
                 name: '',
                 description: '',
@@ -65,10 +56,8 @@ function CreateProduct() {
                 supplier_id: 0,
                 alert_threshold: 0,
             })
-            addSuccess(true)
         }
     }
-
     const handleChange = (event) => {
         const { name, value } = event.target
         setFormData({
@@ -76,27 +65,14 @@ function CreateProduct() {
             [name]: value,
         })
     }
-
     return (
         <div>
+            <ToastContainer />
             <div className="container-fluid my-5">
                 <div className="row justify-content-center">
                     <div className="col-md-6">
                         <div className="card shadow">
                             <div className="card-body">
-                                {addSuccess && (
-                                    <div
-                                        className="alert alert-success alert-dismissible fade show"
-                                        role="alert"
-                                    >
-                                        Product successfully added!
-                                        <button
-                                            type="button"
-                                            className="btn-close"
-                                            onClick={() => setAddSuccess(false)}
-                                        ></button>
-                                    </div>
-                                )}
                                 <h1 className="card-title text-center mb-4">
                                     Add Product
                                 </h1>
@@ -114,6 +90,8 @@ function CreateProduct() {
                                             type="text"
                                             className="form-control"
                                             name="name"
+                                            placeholder="Name"
+                                            required
                                         />
                                     </div>
                                     <div className="mb-3">
@@ -128,53 +106,8 @@ function CreateProduct() {
                                             onChange={handleChange}
                                             className="form-control"
                                             name="description"
+                                            placeholder="Description of item if any"
                                         ></textarea>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label
-                                            htmlFor="price"
-                                            className="form-label"
-                                        >
-                                            Price
-                                        </label>
-                                        <input
-                                            value={formData.price}
-                                            onChange={handleChange}
-                                            type="number"
-                                            className="form-control"
-                                            name="price"
-                                            step="0.01"
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label
-                                            htmlFor="quantity_in_stock"
-                                            className="form-label"
-                                        >
-                                            Quantity in Stock:
-                                        </label>
-                                        <input
-                                            value={formData.quantity_in_stock}
-                                            onChange={handleChange}
-                                            type="text"
-                                            className="form-control"
-                                            name="quantity_in_stock"
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label
-                                            htmlFor="category"
-                                            className="form-label"
-                                        >
-                                            Category:
-                                        </label>
-                                        <input
-                                            value={formData.category}
-                                            onChange={handleChange}
-                                            type="text"
-                                            className="form-control"
-                                            name="category"
-                                        />
                                     </div>
                                     <div className="mb-3">
                                         <label
@@ -188,6 +121,7 @@ function CreateProduct() {
                                             onChange={handleChange}
                                             className="form-control"
                                             name="supplier_id"
+                                            required
                                         >
                                             <option value="">
                                                 Select a Supplier
@@ -202,22 +136,6 @@ function CreateProduct() {
                                             ))}
                                         </select>
                                     </div>
-                                    <div className="mb-3">
-                                        <label
-                                            htmlFor="alert_threshold"
-                                            className="form-label"
-                                        >
-                                            Alert Threshold:
-                                        </label>
-                                        <input
-                                            value={formData.alert_threshold}
-                                            onChange={handleChange}
-                                            type="text"
-                                            className="form-control"
-                                            name="alert_threshold"
-                                        />
-                                    </div>
-
                                     <button
                                         className="btn btn-lg btn-primary"
                                         type="submit"
@@ -230,15 +148,7 @@ function CreateProduct() {
                     </div>
                 </div>
             </div>
-            <style>
-                {`
-                    body {
-                        background-color: #404821; /* Olive green */
-                    }
-                `}
-            </style>
         </div>
     )
 }
-
 export default CreateProduct
