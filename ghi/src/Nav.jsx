@@ -115,6 +115,12 @@ function Navs() {
                                     </NavDropdown.Item>
                                     <NavDropdown.Item
                                         as={NavLink}
+                                        to="/profile/list"
+                                    >
+                                        Profile Database
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item
+                                        as={NavLink}
                                         to="/profile/supplier"
                                     >
                                         Create a Supplier (Admin)
@@ -127,12 +133,6 @@ function Navs() {
                                     </NavDropdown.Item>
                                     <NavDropdown.Item eventKey="4.2">
                                         Assign User Access (Admin Only)
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/profile/list"
-                                    >
-                                        Profile Database
                                     </NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item eventKey="4.4">
