@@ -7,12 +7,14 @@ export default function AssignRole() {
         { role_id: 1, role_name: 'Admin' },
         { role_id: 2, role_name: 'Manager' },
         { role_id: 3, role_name: 'Employee' },
+        { role_id: 4, role_name: 'Supplier' },
+        { role_id: 5, role_name: 'Customer' },
     ])
     const [selectedRoleId, setSelectedRoleId] = useState('')
     const [error] = useState('')
     const navigate = useNavigate()
     const location = useLocation()
-    const { user_id } = location.state || {}
+    const { user_id, username } = location.state || {}
 
     const handleFormSubmit = async (event) => {
         event.preventDefault()
@@ -25,6 +27,7 @@ export default function AssignRole() {
         navigate('/profile', {
             state: {
                 user_id,
+                username,
                 role_id: selectedRoleId.role_id,
                 role_name: selectedRole.role_name,
             },

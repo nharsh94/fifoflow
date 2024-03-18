@@ -90,7 +90,6 @@ function OrderCreate() {
                 status: 'submitted',
             })
         }
-        location.reload()
     }
 
     useEffect(() => {

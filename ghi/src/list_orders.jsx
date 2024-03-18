@@ -50,8 +50,8 @@ function OrderList() {
         const url = 'http://localhost:8000/api/orders/' + id
         const response = await fetch(url)
         const data = await response.json()
-        data.status = 'cancelled'
-        delete data["order_date"]
+        data['status'] = 'cancelled'
+        console.log(data)
         const cancelConfig = {
             method: 'put',
             body: JSON.stringify(data),

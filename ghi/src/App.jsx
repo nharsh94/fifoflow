@@ -69,8 +69,8 @@ function App() {
     }, [])
 
     return (
-        <BrowserRouter>
-            <UserProvider>
+        <UserProvider>
+            <BrowserRouter>
                 <div className="App">
                     <Header />
                     <Navigation />
@@ -122,8 +122,8 @@ function App() {
                         {/* Define more routes as needed */}
                     </Routes>
                 </div>
-            </UserProvider>
-        </BrowserRouter>
+            </BrowserRouter>
+        </UserProvider>
     )
 }
 export default App
