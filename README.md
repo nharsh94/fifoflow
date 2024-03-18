@@ -1,18 +1,39 @@
-# Module3 Project Gamma
+# FIFOFlow
+
+![FIFOFlow Logo](FIFOFlow_transparent_x.png)
 
 ## Getting started
 
-You have a project repository, now what? The next section
-lists all of the deliverables that are due at the end of the
-week. Below is some guidance for getting started on the
-tasks for this week.
+Before this app will work, you will need to complete:
 
-## Install Extensions
+-   [ ] Creation of a volume in Docker (`postgres-data`)
+-   [ ] `npm install` in the `ghi` directory
 
--   Prettier: <https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode>
--   Black Formatter: <https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter>
+## Extensions
 
-## Deliverables
+[Bootstrap](https://getbootstrap.com/): Frontend toolkit for prebuilt grid systems and components.
+<br>
+[Bootstrap Icons](https://icons.getbootstrap.com/): Free, high-quality icons.
+<br>
+[EmailJS](https://www.emailjs.com/): Helps with sending emails using client-side technologies.
+<br>
+[JWTDown](https://jwtdown-fastapi.readthedocs.io/en/stable/): Reduces boilerplate code written for FastAPI authentication.
+<br>
+[React](https://react.dev/): Used for creation of user interface.
+<br>
+[Toastify](https://www.npmjs.com/package/react-toastify): Allows the addition of clean, easy-to-use notifications.
+
+### Overview
+
+FIFOFlow was designed to reduce the headache that is the inventory system. As a Database Administrator, you'll be able to track and manage:
+
+-   Products
+-   Shops
+-   Orders
+
+The point of FIFOFlow is to have your inventory when you need it, without the need for a college degree or more wasted manpower hours.
+
+<!-- ## Deliverables
 
 -   [ ] Wire-frame diagrams
 -   [ ] API documentation
@@ -169,10 +190,4 @@ in GitLab.
 
 Merge a change into main to kick off the initial deploy. Once the build pipeline
 finishes you should be able to see an "under construction" page on your GitLab
-pages site.
-
-# packit
-
-packit was designed to reduce the headache that is the inventory system.
-
-packit makes it easier to track your inventory and your orders. just point-and-click, that's it! 😊
+pages site.-->
