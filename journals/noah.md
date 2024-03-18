@@ -15,3 +15,5 @@
 -   [x] 03/08/2024: Altered database schema to include foreign key relationships. Issues are on Gitlab, along with documentation for future reference.
 
 -   [x] 03/14/2024: Added Create a Supplier for product creation, sign-up is functional (with context), and users are able to be viewed by admins. Forgot-password is linked to email-js.
+
+-   [x] 03/18/2024: updated READme for instructions/general info.
