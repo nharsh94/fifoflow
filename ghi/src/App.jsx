@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 import Nav from './Nav'
 import ErrorNotification from './ErrorNotification'
+import { UserProvider } from './UserContext'
 {
     /* Authentication Routes */
 }
@@ -22,12 +23,13 @@ import ForgotPassword from './ForgotPassword'
 {
     /* User Routes */
 }
+import HomePage from './HomePage'
+import UsersList from './UsersList'
 import CreateSupplier from './CreateSupplier'
 import AssignRole from './AssignRole.jsx'
 import CreateProfile from './CreateProfile'
-import HomePage from './HomePage'
-import UsersList from './UsersList'
-import { UserProvider } from './UserContext'
+import ProfileDatabase from './ProfileDatabase'
+import CreateCustomer from './CreateCustomer'
 {
     /* Shop Routes */
 }
@@ -45,17 +47,17 @@ import AllProducts from './AllProducts'
 }
 import OrderList from './OrderList'
 import OrderCreate from './OrderCreate'
+import OrderHistory from './OrderHistory'
 {
     /* Demo Routes */
 }
-import SignUpForm from './SignUpForm'
+import SignUpForm from './TestSignUpForm'
 import TestProductCreate from './TestProductCreate' // By Mel K
 import TestProductsList from './TestProductsList' // By Mel K
 
-
 function Navigation({ isLoggedIn }) {
     const location = useLocation()
-    const showNavRoutes = ['/home', '/user', '/shops', '/products', '/orders']
+    const showNavRoutes = ['/home', 'profile', '/user', '/shops', '/products', '/orders']
     const shouldShowNav = showNavRoutes.some((route) =>
         location.pathname.startsWith(route)
     )
@@ -110,10 +112,19 @@ function App() {
                                     element={<CreateProfile />}
                                 />
                                 <Route
+                                    path="/profile/list"
+                                    element={<ProfileDatabase />}
+                                />
+                                <Route
                                     path="/profile/supplier"
                                     element={<CreateSupplier />}
                                 />
+                                <Route
+                                    path="/profile/customer"
+                                    element={<CreateCustomer />}
+                                />
                             </Route>
+
                             {/* Shops Routes */}
                             <Route path="/shops">
                                 <Route
@@ -166,11 +177,15 @@ function App() {
                                 />
                             </Route>
                             {/* Orders Routes */}
-                            <Route path="/orders-items">
+                            <Route path="/orders">
                                 <Route path="list" element={<OrderList />} />
                                 <Route
                                     path="create"
                                     element={<OrderCreate />}
+                                />
+                                <Route
+                                    path="history"
+                                    element={<OrderHistory />}
                                 />
                             </Route>
                             {/* Default Redirect */}
