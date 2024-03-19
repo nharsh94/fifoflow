@@ -41,7 +41,7 @@ function HomePage({ isLoggedIn }) {
                     variant="primary"
                     className="home-button"
                     as={NavLink}
-                    to="/user/list"
+                    to="/user"
                 >
                     <i className="fas fa-users"></i> Users
                 </Button>
@@ -49,7 +49,7 @@ function HomePage({ isLoggedIn }) {
                     variant="primary"
                     className="home-button"
                     as={NavLink}
-                    to="/orders"
+                    to="/orders/list"
                 >
                     <i className="fas fa-shopping-cart"></i> Orders
                 </Button>

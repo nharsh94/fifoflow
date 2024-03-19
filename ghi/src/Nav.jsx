@@ -20,7 +20,7 @@ function Navs({ isLoggedIn }) {
 
     useEffect(() => {
         // Redirect if user is not logged in or doesn't have admin role
-        if (!userData || userData.role !== 'Admin') {
+        if (!userData.id) {
             navigate('/') // Example redirection to home page
         }
     }, [userData, navigate])

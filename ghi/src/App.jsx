@@ -111,6 +111,7 @@ function App() {
                                 path="/home"
                                 element={<HomePage isLoggedIn={isLoggedIn} />}
                             />
+                            <Route path="/user" element={<UsersList />} />
                             <Route path="/role" element={<AssignRole />} />
                             <Route path="/user" element={<UsersList />} />
                             <Route path="profile">
