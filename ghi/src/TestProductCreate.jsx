@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
+import { Navigate } from 'react-router-dom'
+import styles from './Forms.module.css'
+
 
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
-function TestProductCreate() {
+function TestProductCreate({isLoggedIn}) {
     const [formSuccess, setFormSuccess] = useState(false)
     const [formData, setFormData] = useState({
         name: '',
@@ -12,31 +15,32 @@ function TestProductCreate() {
         price: '',
         quantity_in_stock: '',
         category: '',
+        supplier_id: 0,
         alert_threshold: 0,
-        stock_alert: false,
-        shop_name: '',
     })
-    const [shops, setShops] = useState([]);
+    const [shops, setShops] = useState([])
 
-    useEffect (() => {
+    if (!isLoggedIn) {
+        return <Navigate to="/" replace />
+    }
+
+    useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/shops');
+                const response = await fetch('http://localhost:8000/api/shops')
                 if (response.ok) {
-                    const data = await response.json();
-                    setShops(data);
+                    const data = await response.json()
+                    setShops(data)
                 } else {
-                    throw new Error('Failed to fetch shop data');
+                    throw new Error('Failed to fetch shop data')
                 }
             } catch (error) {
-                console.error('Error fetching shop data', error);
+                console.error('Error fetching shop data', error)
+            }
         }
-    };
 
-    fetchData();
-}, []);
-
-
+        fetchData()
+    }, [])
 
     const handleStateChange = (e) => {
         const selectedValue = e.target.value
@@ -75,7 +79,7 @@ function TestProductCreate() {
     }
 
     const handleFormChange = (e, inputName) => {
-        const value = e.target.value;
+        const value = e.target.value
 
         setFormData((prevState) => ({
             ...prevState,
@@ -84,7 +88,7 @@ function TestProductCreate() {
                     ? parseFloat(value)
                     : value,
         }))
-    };
+    }
 
     let messageClasses = 'alert alert-success d-none mb-0'
     let formClasses = ''
@@ -95,105 +99,110 @@ function TestProductCreate() {
 
     return (
         <>
-        <div>
-            <h1>Create Product</h1>
-            <Form onSubmit={handleSubmit}
-            className="center-form"
-            >
-                <FloatingLabel
-                    controlId="FloatingName"
-                    label="Product Name"
-                    className="mb-3"
+            <div className="container">
+                <div className="signup-form-wrapper custom-shadow1">
+                <h1>Add Product</h1>
+                <Form onSubmit={handleSubmit} className="center-form">
+                    <FloatingLabel
+                        controlId="FloatingName"
+                        label="Product Name"
+                        className="mb-1 custom-shadow"
                     >
-                    <Form.Control
-                        type="text"
-                        placeholder="product_name"
-                        value={formData.name}
-                        onChange={(e) => handleFormChange(e, 'name')}
+                        <Form.Control
+                            type="text"
+                            placeholder="product_name"
+                            value={formData.name}
+                            onChange={(e) => handleFormChange(e, 'name')}
                         />
-                </FloatingLabel>
-                <FloatingLabel
-                    controlId="FloatingDescription"
-                    label="Description"
-                    className="mb-3"
+                    </FloatingLabel>
+                    <FloatingLabel
+                        controlId="FloatingDescription"
+                        label="Description"
+                        className="mb-1 custom-shadow"
                     >
-                    <Form.Control
-                        type="text"
-                        placeholder="description"
-                        value={formData.description}
-                        onChange={(e) => handleFormChange(e, 'description')}
+                        <Form.Control
+                            type="text"
+                            placeholder="description"
+                            value={formData.description}
+                            onChange={(e) => handleFormChange(e, 'description')}
                         />
-                </FloatingLabel>
-                <FloatingLabel
-                    controlId="FloatingPrice"
-                    label="Price"
-                    className="mb-3"
+                    </FloatingLabel>
+                    <FloatingLabel
+                        controlId="FloatingPrice"
+                        label="Price"
+                        className="mb-1 custom-shadow"
                     >
-                    <Form.Control
-                        type="number"
-                        placeholder="price"
-                        value={formData.price}
-                        onChange={(e) => handleFormChange(e, 'price')}
+                        <Form.Control
+                            type="number"
+                            placeholder="price"
+                            value={formData.price}
+                            onChange={(e) => handleFormChange(e, 'price')}
                         />
-                </FloatingLabel>
-                <FloatingLabel
-                    controlId="FloatingQIS"
-                    label="Quantity in Stock"
-                    className="mb-3"
+                    </FloatingLabel>
+                    <FloatingLabel
+                        controlId="FloatingQIS"
+                        label="Quantity in Stock"
+                        className="mb-1 custom-shadow"
                     >
-                    <Form.Control
-                        type="number"
-                        placeholder="quantity_in_stock"
-                        value={formData.quantity_in_stock}
-                        onChange={(e) => handleFormChange(e, 'quantity_in_stock')}
+                        <Form.Control
+                            type="number"
+                            placeholder="quantity_in_stock"
+                            value={formData.quantity_in_stock}
+                            onChange={(e) =>
+                                handleFormChange(e, 'quantity_in_stock')
+                            }
                         />
-                </FloatingLabel>
-                <FloatingLabel
-                    controlId="FloatingCategory"
-                    label="Category"
-                    className="mb-3"
+                    </FloatingLabel>
+                    <FloatingLabel
+                        controlId="FloatingCategory"
+                        label="Category"
+                        className="mb-1 custom-shadow"
                     >
-                    <Form.Control
-                        type="text"
-                        placeholder="category"
-                        value={formData.category}
-                        onChange={(e) => handleFormChange(e, 'category')}
+                        <Form.Control
+                            type="text"
+                            placeholder="category"
+                            value={formData.category}
+                            onChange={(e) => handleFormChange(e, 'category')}
                         />
-                </FloatingLabel>
-                <FloatingLabel
-                    controlId="FloatingShop"
-                    label="Shop"
-                    className="mb-3"
+                    </FloatingLabel>
+                    <FloatingLabel
+                        controlId="FloatingShop"
+                        label="Shop"
+                        className="mb-1 custom-shadow"
                     >
-                    <Form.Select
-                        value={formData.shop_name}
-                        onChange={(e) => handleStateChange(e, 'shop_name')}
+                        <Form.Select
+                            value={formData.shop_name}
+                            onChange={(e) => handleStateChange(e, 'shop_name')}
                         >
-                        <option value="" disabled>
-                            Select a Shop
-                        </option>
-                        {shops.map((shop) => (
-                        <option key={shop.shop_id} value={shop.shop_name}>
-                            {shop.shop_name}
+                            <option value="" disabled>
+                                Select a Shop
                             </option>
+                            {shops.map((shop) => (
+                                <option
+                                    key={shop.shop_id}
+                                    value={shop.shop_name}
+                                >
+                                    {shop.shop_name}
+                                </option>
                             ))}
-                            </Form.Select>
-                </FloatingLabel>
-                <Button
-                    className="btn btn-outline-light"
-                    variant="secondary"
-                    id="submit-btn"
-                    data-replace=""
-                    type="submit"
+                        </Form.Select>
+                    </FloatingLabel>
+                    <Button
+                        className="btn btn-outline-light mt-1"
+                        variant="secondary"
+                        id="submit-btn"
+                        data-replace=""
+                        type="submit"
                     >
-                    Submit
-                </Button>{' '}
-            </Form>
-            <div className={messageClasses} id="success-message">
-                Product added successfully!
+                        Submit
+                    </Button>{' '}
+                </Form>
+                </div>
+                <div className={messageClasses} id="success-message">
+                    Product added successfully!
+                </div>
             </div>
-        </div>
-    </>
+        </>
     )
 }
 
