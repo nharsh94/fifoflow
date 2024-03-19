@@ -41,7 +41,9 @@ class OrdersRepository:
         old_data = order.dict()
         return OrdersOut(order_id=order_id, **old_data)
 
-    def order_in_out_update(self, order_id: int, order: OrdersIn):
+    def order_in_out_update(
+        self, order_id: int, order: OrdersIn
+    ):
         old_data = order.dict()
         return OrdersOut(order_id=order_id, **old_data)
 
@@ -127,7 +129,7 @@ class OrdersRepository:
                     return self.order_in_out_update(order_id, order)
         except Exception as e:
             traceback.print_exc()
-            return f"Error updating order: {e}"
+            return (f"Error updating order: {e}")
             # return {"message": "Failed to update order"}
 
     def get_all_orders(self):

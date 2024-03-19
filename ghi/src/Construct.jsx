@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
@@ -10,12 +10,10 @@ import { useUser } from './UserContext'
 
 
 import logo from './assets/FIFOFlow_transparent_x1.png'
-import useToken from './useToken'
 
 function Construct() {
     const { setUserData } = useUser()
     const navigate = useNavigate()
-    const { setToken } = useToken();
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -41,6 +39,7 @@ function Construct() {
             if (!response.ok) {
                 throw new Error('Login failed')
             }
+
             const authData = await response.json()
             console.log(authData)
 
