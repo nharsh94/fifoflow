@@ -2,9 +2,15 @@ import { NavLink } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import './HomePage.css'
 import { useUser } from './UserContext'
+import { Navigate } from 'react-router-dom'
 
-function HomePage() {
+
+function HomePage({ isLoggedIn }) {
     const { userData } = useUser()
+    if (!isLoggedIn) {
+        return <Navigate to="/" replace />
+    }
+
     return (
         <div className="user-page">
             <h1>Welcome!</h1>
@@ -35,7 +41,7 @@ function HomePage() {
                     variant="primary"
                     className="home-button"
                     as={NavLink}
-                    to="/user/list"
+                    to="/user"
                 >
                     <i className="fas fa-users"></i> Users
                 </Button>
@@ -43,7 +49,7 @@ function HomePage() {
                     variant="primary"
                     className="home-button"
                     as={NavLink}
-                    to="/orders"
+                    to="/orders/list"
                 >
                     <i className="fas fa-shopping-cart"></i> Orders
                 </Button>
