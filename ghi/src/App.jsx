@@ -58,18 +58,17 @@ import TestProductCreate from './TestProductCreate' // By Mel K
 import TestProductsList from './TestProductsList' // By Mel K
 
 function Navigation({ isLoggedIn }) {
-        const showNavRoutes = ['/home', 'profile', '/user', '/shops', '/products', '/orders']
-    const shouldShowNav = showNavRoutes.some((route) =>
-        location.pathname.startsWith(route)
-    )
-    return isLoggedIn && shouldShowNav ? <Nav isLoggedIn={isLoggedIn} /> : null
     const location = useLocation()
-    // return (
-    //     location.pathname !== '/' &&
-    //     location.pathname !== '/signup' &&
-    //     location.pathname !== '/role' &&
-    //     location.pathname !== '/profile' && <Nav />
-    // )
+    const showNavRoutes = ['/home', 'profile', '/user', '/shops', '/products', '/orders']
+    const shouldShowNav =
+        isLoggedIn &&
+        (showNavRoutes.some((route) => location.pathname.startsWith(route)) ||
+            (location.pathname !== '/' &&
+                location.pathname !== '/signup' &&
+                location.pathname !== '/role' &&
+                location.pathname !== '/profile'))
+
+    return isLoggedIn && shouldShowNav ? <Nav isLoggedIn={isLoggedIn} /> : null
 }
 
 function App() {
