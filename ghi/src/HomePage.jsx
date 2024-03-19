@@ -36,7 +36,7 @@ function HomePage({ isLoggedIn }) {
                         variant="primary"
                         className="home-button"
                         as={NavLink}
-                        to="/user"
+                        to="/user/list"
                     >
                         <i className="fas fa-users"></i> Users
                     </Button>

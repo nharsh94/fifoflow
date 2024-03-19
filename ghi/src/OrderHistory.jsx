@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import SearchComponent from './Search'
 
-function OrderList() {
+function OrderHistory() {
     const [orders, setOrders] = useState([])
     const [products, setProducts] = useState([])
     const [shops, setShops] = useState([])
@@ -48,58 +48,6 @@ function OrderList() {
         getOrderData(), getProductData(), getShopData(), getUserData()
     }, [])
 
-    const handleCancel = async (id) => {
-        const url = `http://localhost:8000/api/orders/${id}`
-        console.log(url)
-        const response = await fetch(url)
-        const data = await response.json()
-        data['status'] = 'cancelled'
-        console.log('this is happening in handleCancel', data)
-        const cancelConfig = {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }
-        await fetch(url, cancelConfig)
-
-        setOrders((prevOrders) =>
-            prevOrders.map((order) => {
-                if (order.order_id === id) {
-                    return { ...order, status: 'cancelled' }
-                }
-                return order
-            })
-        )
-    }
-
-    const handleApprove = async (id) => {
-        const url = `http://localhost:8000/api/orders/${id}`
-        console.log(url)
-        const response = await fetch(url)
-        const data = await response.json()
-        data['status'] = 'approved'
-        console.log('this is happening in handleApprove', data)
-        const cancelConfig = {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }
-        await fetch(url, cancelConfig)
-
-        setOrders((prevOrders) =>
-            prevOrders.map((order) => {
-                if (order.order_id === id) {
-                    return { ...order, status: 'approved' }
-                }
-                return order
-            })
-        )
-    }
-
     const handleSearch = (e) => {
         const inputValue = e.target.value.toLowerCase()
         if (typeof inputValue === 'string') {
@@ -113,8 +61,8 @@ function OrderList() {
 
         if (
             product &&
-            order.status !== 'cancelled' &&
-            order.status !== 'approved'
+            order.status === 'cancelled' &&
+            order.status === 'approved'
         ) {
             return product.name.toLowerCase().includes(searchQuery)
         }
@@ -177,24 +125,6 @@ function OrderList() {
                                     </td>
                                     <td>{formattedDate}</td>
                                     <td>{order.status}</td>
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                handleCancel(order.order_id)
-                                            }
-                                        >
-                                            cancel
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                handleApprove(order.order_id)
-                                            }
-                                        >
-                                            Approve
-                                        </button>
-                                    </td>
                                 </tr>
                             )
                         })}
@@ -205,4 +135,4 @@ function OrderList() {
     )
 }
 
-export default OrderList
+export default OrderHistory
