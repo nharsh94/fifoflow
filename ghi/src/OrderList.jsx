@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import SearchComponent from './Search'
+import Button from 'react-bootstrap/Button'
+import Table from 'react-bootstrap/Table'
+import { BsSearch } from 'react-icons/bs'
 
 function OrderList() {
     const [orders, setOrders] = useState([])
@@ -123,83 +126,93 @@ function OrderList() {
     })
     return (
         <>
-            <div>
-                <h1>Orders</h1>
-                <SearchComponent value={searchQuery} onChange={handleSearch} />
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Quantity</th>
-                            <th>Shop</th>
-                            <th>Total Price</th>
-                            <th>Orderer</th>
-                            <th>Order Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredOrders.map((order) => {
-                            const product = products.find(
-                                (product) =>
-                                    product.product_id === order.product_id
-                            )
-                            const shop = shops.find(
-                                (shop) => shop.shop_id === order.shop_id
-                            )
-                            const user = users.find(
-                                (user) => user.user_id === order.user_id
-                            )
-                            const date = new Date(order.order_date)
-                            const formattedDate = `${
-                                date.getMonth() + 1
-                            }-${date.getDate()}-${date.getFullYear()}`
-                            return (
-                                <tr key={order.order_id}>
-                                    <td>
-                                        {product
-                                            ? product.name
-                                            : 'Product not found'}
-                                    </td>
-                                    <td>{order.quantity}</td>
-                                    <td>
-                                        {shop
-                                            ? shop.shop_name
-                                            : 'Shop not found'}
-                                    </td>
-                                    <td>{order.total_price}</td>
-                                    <td>
-                                        {user
-                                            ? user.first_name +
-                                              ' ' +
-                                              user.last_name
-                                            : 'User not found'}
-                                    </td>
-                                    <td>{formattedDate}</td>
-                                    <td>{order.status}</td>
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                handleCancel(order.order_id)
-                                            }
-                                        >
-                                            cancel
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                handleApprove(order.order_id)
-                                            }
-                                        >
-                                            Approve
-                                        </button>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
+            <div className="container-list">
+                <div className="signup-form-wrapper custom-shadow1">
+                    <h1>Orders</h1>
+                        <SearchComponent
+                            value={searchQuery}
+                            onChange={handleSearch}
+                            className="search-field"
+                        />
+                    <Table responsive striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Shop</th>
+                                <th>Total Price</th>
+                                <th>Orderer</th>
+                                <th>Order Date</th>
+                                <th>Status</th>
+                                <th colSpan="2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredOrders.map((order) => {
+                                const product = products.find(
+                                    (product) =>
+                                        product.product_id === order.product_id
+                                )
+                                const shop = shops.find(
+                                    (shop) => shop.shop_id === order.shop_id
+                                )
+                                const user = users.find(
+                                    (user) => user.user_id === order.user_id
+                                )
+                                const date = new Date(order.order_date)
+                                const formattedDate = `${
+                                    date.getMonth() + 1
+                                }-${date.getDate()}-${date.getFullYear()}`
+                                return (
+                                    <tr key={order.order_id}>
+                                        <td>
+                                            {product
+                                                ? product.name
+                                                : 'Product not found'}
+                                        </td>
+                                        <td>{order.quantity}</td>
+                                        <td>
+                                            {shop
+                                                ? shop.shop_name
+                                                : 'Shop not found'}
+                                        </td>
+                                        <td>{order.total_price}</td>
+                                        <td>
+                                            {user
+                                                ? user.first_name +
+                                                  ' ' +
+                                                  user.last_name
+                                                : 'User not found'}
+                                        </td>
+                                        <td>{formattedDate}</td>
+                                        <td>{order.status}</td>
+                                        <td>
+                                            <Button
+                                                onClick={() =>
+                                                    handleApprove(
+                                                        order.order_id
+                                                    )
+                                                }
+                                            >
+                                                Approve
+                                            </Button>
+                                        </td>
+                                        <td>
+                                            <Button
+                                                variant="danger"
+                                                onClick={() =>
+                                                    handleCancel(order.order_id)
+                                                }
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </Table>
+                </div>
             </div>
         </>
     )

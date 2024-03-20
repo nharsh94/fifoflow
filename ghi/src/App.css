@@ -11,7 +11,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* font-size: calc(5px + 2vmin); */
 }
 body {
     background-color: hsl(72.3,37.1%,90%);
@@ -22,7 +21,8 @@ body {
     padding: 10px 20px 10px; /* Add padding to create space around the form */
 }
 .container-list {
-    max-width: 1150px; /* Set a maximum width for the container */
+    max-width: 1175px; /* Set a maximum width for the container */
+    min-width: 750px;
     margin: 0 auto; /* Center the container horizontally */
     padding: 10px 20px 10px; /* Add padding to create space around the form */
 }

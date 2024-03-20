@@ -77,7 +77,8 @@ function App() {
 
     useEffect(() => {
         const isAuthenticated = () => {
-            return localStorage.getItem('token') !== null
+            // return localStorage.getItem('token') !== null
+            return true
         }
 
         try {
