@@ -1,5 +1,5 @@
 import Nav from 'react-bootstrap/Nav'
-import { useEffect } from 'react' // Add useState
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Container from 'react-bootstrap/Container'
@@ -7,7 +7,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Button from 'react-bootstrap/Button'
-import LogoutButton from './LogoutButton' // Import the LogoutButton component
+import LogoutButton from './LogoutButton'
 
 import { NavLink } from 'react-router-dom'
 import { UserProvider, useUser } from './UserContext'
@@ -16,12 +16,11 @@ import brand from './assets/FIFOFlow_transparent_x1.png'
 
 function Navs({ isLoggedIn }) {
     const navigate = useNavigate()
-    const { userData } = useUser() // Move userData declaration here
+    const { userData } = useUser()
 
     useEffect(() => {
-        // Redirect if user is not logged in or doesn't have admin role
-        if (!userData.id) {
-            navigate('/') // Example redirection to home page
+        if (!userData) {
+            navigate('/')
         }
     }, [userData, navigate])
 
@@ -144,7 +143,7 @@ function Navs({ isLoggedIn }) {
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item eventKey="4.4">
                                             {userData &&
-                                                userData.role === 'Admin' && ( // Only show "All Products" if user is admin
+                                                userData.role === 'Admin' && (
                                                     <NavDropdown.Item
                                                         as={NavLink}
                                                         to="/products/all"

@@ -26,24 +26,3 @@ class OrdersOut(BaseModel):
     quantity: int
     total_price: Decimal
     status: str
-
-
-class OrderItemsIn(BaseModel):
-    shop_id: int
-    order_id: int
-    product_id: int
-    quantity: int
-    unit_price: Decimal
-    total_price: Decimal
-    status: str
-
-
-class OrderItemsOut(BaseModel):
-    id: int
-    shop_id: int
-    order_id: int
-    product_id: int
-    quantity: int
-    unit_price: Decimal
-    total_price: Decimal
-    status: str

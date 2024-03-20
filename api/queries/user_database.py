@@ -1,7 +1,3 @@
-"""
-Database Queries for Users
-"""
-
 import os
 import psycopg
 from psycopg_pool import ConnectionPool
@@ -34,17 +30,9 @@ class UserQueries:
                         """
                     )
                     users = cur.fetchall()
-        except psycopg.Error as e:
-            print(e)
+        except psycopg.Error:
             raise UserDatabaseException("Error retrieving all users")
         return users
-
-    """
-    Class containing queries for the Users table
-    Can be dependency injected into a route like so
-    def my_route(userQueries: UserQueries = Depends()):
-    Here you can call any of the functions to query the DB
-    """
 
     def get_by_username(self, username: str) -> Optional[UserWithPw]:
         """
@@ -67,8 +55,7 @@ class UserQueries:
                     user = cur.fetchone()
                     if not user:
                         return None
-        except psycopg.Error as e:
-            print(e)
+        except psycopg.Error:
             raise UserDatabaseException(f"Error getting user {username}")
         return user
 
@@ -93,8 +80,7 @@ class UserQueries:
                     user = cur.fetchone()
                     if not user:
                         return None
-        except psycopg.Error as e:
-            print(e)
+        except psycopg.Error:
             raise UserDatabaseException(f"Error getting user with id {id}")
 
         return user

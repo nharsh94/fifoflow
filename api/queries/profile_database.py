@@ -1,7 +1,6 @@
 from typing import List, Optional, Union
 from queries.pool import pool
 from models.profiles import ProfileOut, ProfileIn, Error
-import traceback
 
 
 class ProfileRepository:
@@ -23,8 +22,7 @@ class ProfileRepository:
                         return None
                     return self.record_to_profile_out(profile)
         except Exception:
-            traceback.print_exc()
-            return None
+            return {"message": "Product ID does not exist"}
 
     def delete(self, user_id: int) -> bool:
         try:
@@ -39,7 +37,6 @@ class ProfileRepository:
                     )
                     return True
         except Exception as e:
-            print(e)
             return False
 
     def update(
@@ -61,6 +58,7 @@ class ProfileRepository:
                             , email = %s
                             , phone = %s
                         WHERE user_id = %s
+                        RETURNING *
                         """,
                         [
                             profile.user_id,
@@ -73,8 +71,7 @@ class ProfileRepository:
                         ]
                     )
                     return self.profile_in_to_out(user_id, profile)
-        except Exception as e:
-            print(e)
+        except Exception:
             return {"message": "Could not update profile"}
 
     def get_all(self) -> Union[List[ProfileOut], Error]:
@@ -92,8 +89,7 @@ class ProfileRepository:
                         self.record_to_profile_out(record)
                         for record in result
                     ]
-        except Exception as e:
-            print(e)
+        except Exception:
             return {"message": "Could not get all profiles"}
 
     def create(self, profile: ProfileIn) -> ProfileOut:
@@ -126,9 +122,8 @@ class ProfileRepository:
                     )
                     inserted_id = db.fetchone()[0]
                     return self.profile_in_to_out(inserted_id, profile)
-        except Exception as e:
-            traceback.print_exc()
-            return {"message": str(e)}
+        except Exception:
+            return {"message": "Profile faild to create"}
 
     def profile_in_to_out(self, id: int, profile: ProfileIn
                           ) -> ProfileOut:

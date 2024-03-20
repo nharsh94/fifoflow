@@ -8,11 +8,8 @@ import Table from 'react-bootstrap/Table'
 import Sort from './Sort'
 import Pagination from './PaginationComponent'
 import Search from './Search'
-import { useUser } from './UserContext'
 
 function AllProducts() {
-    const { userData } = useUser()
-    console.log(userData)
     const [products, setProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
@@ -114,7 +111,6 @@ function AllProducts() {
             )
 
             if (response.ok) {
-                console.log('Product updated successfully:', selectedProduct)
                 handleCloseModal()
                 getData()
             } else {
@@ -141,7 +137,6 @@ function AllProducts() {
             )
 
             if (response.ok) {
-                console.log('Product deleted successfully', selectedProduct)
                 getData()
                 handleCloseModal()
                 toast.dismiss()
@@ -196,7 +191,6 @@ function AllProducts() {
             )
 
             if (response.ok) {
-                console.log('Product added successfully', selectedProduct)
                 getData()
                 handleCloseModal()
                 toast.dismiss()

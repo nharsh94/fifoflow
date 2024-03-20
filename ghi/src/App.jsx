@@ -1,7 +1,3 @@
-// This makes VSCode check types as if you are using TypeScript
-//@ts-check
-// This makes VSCode check types as if you are using TypeScript
-//@ts-check
 import React from 'react'
 import { useState, useEffect } from 'react'
 import {
@@ -54,12 +50,19 @@ import OrderHistory from './OrderHistory'
     /* Demo Routes */
 }
 import SignUpForm from './TestSignUpForm'
-import TestProductCreate from './TestProductCreate' // By Mel K
-import TestProductsList from './TestProductsList' // By Mel K
+import TestProductCreate from './TestProductCreate'
+import TestProductsList from './TestProductsList'
 
 function Navigation({ isLoggedIn }) {
     const location = useLocation()
-    const showNavRoutes = ['/home', 'profile', '/user', '/shops', '/products', '/orders']
+    const showNavRoutes = [
+        '/home',
+        'profile',
+        '/user',
+        '/shops',
+        '/products',
+        '/orders',
+    ]
     const shouldShowNav =
         isLoggedIn &&
         (showNavRoutes.some((route) => location.pathname.startsWith(route)) ||
@@ -77,7 +80,8 @@ function App() {
 
     useEffect(() => {
         const isAuthenticated = () => {
-            return localStorage.getItem('token') !== null
+            return true
+            // return localStorage.getItem('token') !== null
         }
 
         try {

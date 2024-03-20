@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 function OrderCreate() {
-    const [orders, setOrders] = useState([])
+    const [setOrders] = useState([])
     const [products, setProducts] = useState([])
     const [shops, setShops] = useState([])
     const [users, setUsers] = useState([])

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Response, HTTPException
 from queries.profile_database import ProfileRepository
 from typing import List, Union, Optional
 from models.profiles import ProfileIn, ProfileOut, Error
@@ -11,12 +11,17 @@ def create_profile(
     profile: ProfileIn,
     repo: ProfileRepository = Depends()
 ):
+    if profile.user_id == 0:
+        raise HTTPException(status_code=400, detail="Invalid User ID")
     return repo.create(profile)
 
 
 @router.get("/", response_model=Union[List[ProfileOut], Error])
 def get_all(repo: ProfileRepository = Depends()):
-    return repo.get_all()
+    profiles = repo.get_all()
+    if not profiles:
+        raise HTTPException(status_code=404, detail="No profiles found")
+    return profiles
 
 
 @router.put("/{user_id}",
@@ -39,6 +44,6 @@ def get_one_profile(user_id: int,
                     response: Response,
                     repo: ProfileRepository = Depends()) -> ProfileOut:
     profile = repo.get_one(user_id)
-    if profile is None:
-        response.status_code = 404
+    if not profile:
+        raise HTTPException(status_code = 404, detail="No profiles matching ID")
     return profile
