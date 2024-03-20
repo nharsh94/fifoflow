@@ -17,3 +17,5 @@ journal
         3/15/2024 - added search feature to order list, also added order history.
 
         3/18/2024 - added buttons to update orders to "approved", "cancelled", and "update"
+
+        3/20/2024 - started work on unit test

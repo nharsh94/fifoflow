@@ -33,7 +33,6 @@ import CreateCustomer from './CreateCustomer'
 }
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
-import OrderHistory from './orderHistory'
 import ShopDetails from './ShopDetails'
 {
     /* Product Routes */
@@ -94,21 +93,6 @@ function App() {
     }, [])
 
     return (
-        <UserProvider>
-            <BrowserRouter>
-                <div className="App">
-                    <Header />
-                    <Navigation />
-                    <ErrorNotification error={error} />
-                    <Routes>
-                        <Route path="/" element={<Construct info={{}} />} />
-                        <Route path="/orders" element={<OrderList />} />
-                        <Route path="/create-order" element={<OrderCreate />} />
-                        <Route path="/order-history" element={<OrderHistory />} />
-                        <Route path="/signup" element={<SignUpUserForm />} />
-                        <Route path="/role" element={<AssignRole />} />
-                        <Route path="profile">
-        <>
             <UserProvider>
                 <BrowserRouter>
                     <div className="App">
@@ -224,7 +208,6 @@ function App() {
                     </div>
                 </BrowserRouter>
             </UserProvider>
-        </>
     )
 }
 export default App
