@@ -1,6 +1,3 @@
-"""
-Helper functions for implementing authentication
-"""
 import os
 import bcrypt
 from calendar import timegm
@@ -10,10 +7,9 @@ from jose import JWTError, jwt
 from jose.constants import ALGORITHMS
 from typing import Annotated, Optional
 from models.jwt import JWTPayload, JWTUserData
-
 from queries.user_database import UserWithPw
 
-# If you ever need to change the hashing algorith, you can change it here
+# If you ever need to change the hashing algorithm, you can change it here
 ALGORITHM = ALGORITHMS.HS256
 
 # We pull this from the environment
@@ -36,39 +32,20 @@ async def decode_jwt(token: str) -> Optional[JWTPayload]:
 
 async def try_get_jwt_user_data(
     fast_api_token: Annotated[str | None, Cookie()] = None,
-) -> Optional[JWTUserData]:
+) -> tuple[Optional[JWTUserData], Optional[str]]:
     """
-    This function can be dependency injected into a route
-
-    It checks the JWT token from the cookie and attempts to get the user
-    from the payload of the JWT
-
-    *NOTE* this does not get the user from the database, if you
-    need to do that you must call another method after calling this
-
-    Returns None when the user isn't logged in
-
-    Example usage:
-
-    ```python
-    @app.get("/some-protected-route"):
-    def some_protected_route(user: Depends(try_get_user_data)):
-        if not user:
-            # Do somthing when not logged in
-        else:
-            # Do something when logged in
-    ```
+    This function attempts to decode the JWT token from the provided FastAPI cookie.
+    It returns the decoded JWT payload (if valid) along with the cookie value.
     """
-    # If there's no cookie at all, return None
     if not fast_api_token:
-        return
+        return None, None
 
-    # If the payload doesn't exist, return None
+    # Decode the JWT token
     payload = await decode_jwt(fast_api_token)
     if not payload:
-        return
+        return None, None
 
-    return payload.user
+    return payload.user, fast_api_token
 
 
 def verify_password(plain_password, hashed_password) -> bool:
@@ -91,16 +68,16 @@ def hash_password(plain_password) -> str:
     ).decode()
 
 
-def generate_jwt(user: UserWithPw) -> str:
+def generate_jwt(
+    user: UserWithPw, expires_at: Optional[datetime] = None
+) -> str:
     """
     Generates a new JWT token using the user's information
-
-    We store the user as a JWTUserData converted to a dictionary
-    in the payload of the JWT
+    Optionally accepts an expiration time for the token
     """
-    exp = timegm((datetime.utcnow() + timedelta(hours=1)).utctimetuple())
+    exp = expires_at or datetime.utcnow() + timedelta(hours=1)
     jwt_data = JWTPayload(
-        exp=exp,
+        exp=timegm(exp.utctimetuple()),
         sub=user.username,
         user=JWTUserData(username=user.username, id=user.id),
     )

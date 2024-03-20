@@ -34,13 +34,18 @@ function Construct({ info }) {
 
         try {
             const response = await fetch(
-                'http://localhost:8000/api/user/signin',
+                'http://localhost:8000/api/user/token',
                 {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: JSON.stringify({ username, password }),
+                    body: new URLSearchParams({
+                        username,
+                        password,
+                        grant_type: 'password',
+                        scope: 'read write',
+                    }),
                 }
             )
 
@@ -51,49 +56,13 @@ function Construct({ info }) {
             const authData = await response.json()
             console.log(authData)
 
-            const profileResponse = await fetch(
-                `http://localhost:8000/api/profile/${authData.id}`,
-                {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${authData.access_token}`,
-                    },
-                }
-            )
+            localStorage.setItem('access_token', authData.access_token)
 
-            if (!profileResponse.ok) {
-                throw new Error('Failed to retrieve user profile')
-            }
-
-            const profileData = await profileResponse.json()
-
-            localStorage.setItem(
-                'userData',
-                JSON.stringify({
-                    user_id: authData.id,
-                    username: authData.username,
-                    first_name: profileData.first_name,
-                    last_name: profileData.last_name,
-                    role: profileData.role,
-                })
-            )
-
-            setUserData({
-                user_id: authData.id,
-                username: authData.username,
-                first_name: profileData.first_name,
-                last_name: profileData.last_name,
-                role: profileData.role,
-            })
-
+            // Redirect to the home page or perform any other action upon successful login
             console.log('Login successful:', authData)
             navigate('/home')
         } catch (error) {
-            if (error instanceof TypeError) {
-                console.error('Network error:', error)
-            } else {
-                console.error('Login error:', error)
-            }
+            console.error('Login error:', error)
         }
     }
 

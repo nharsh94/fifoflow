@@ -81,7 +81,10 @@ function App() {
                         <Route path="/" element={<Construct info={{}} />} />
                         <Route path="/orders" element={<OrderList />} />
                         <Route path="/create-order" element={<OrderCreate />} />
-                        <Route path="/order-history" element={<OrderHistory />} />
+                        <Route
+                            path="/order-history"
+                            element={<OrderHistory />}
+                        />
                         <Route path="/signup" element={<SignUpUserForm />} />
                         <Route path="/role" element={<AssignRole />} />
                         <Route path="profile">
