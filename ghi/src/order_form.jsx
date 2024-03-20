@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
+import { useUser } from './UserContext'
 
 function OrderCreate() {
+    const { userData } = useUser()
     const [orders, setOrders] = useState([])
     const [products, setProducts] = useState([])
     const [shops, setShops] = useState([])
@@ -67,6 +69,8 @@ function OrderCreate() {
         const total = formData.quantity * product.price
         formData.total_price = total
 
+        formData.user_id = userData.user_id
+
         const newFormData = {
             ...formData,
             total_price: total,
@@ -124,28 +128,7 @@ function OrderCreate() {
                                 })}
                             </select>
                         </div>
-                        <div className="form-floating mb-3">
-                            <select
-                                onChange={handleFormChange}
-                                value={formData.user_id}
-                                required
-                                name="user_id"
-                                id="user_id"
-                                className="form-select"
-                            >
-                                <option value="">Select User</option>
-                                {users.map((user) => {
-                                    return (
-                                        <option
-                                            key={user.user_id}
-                                            value={user.user_id}
-                                        >
-                                            {user.user_id}
-                                        </option>
-                                    )
-                                })}
-                            </select>
-                        </div>
+
                         <div className="form-floating mb-3">
                             <select
                                 onChange={handleFormChange}
