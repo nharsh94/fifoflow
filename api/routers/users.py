@@ -47,7 +47,7 @@ async def authenticate_user(
 async def login(user: UserWithPw = Depends(authenticate_user)):
     token_expiry = datetime.utcnow() + timedelta(hours=1)
     token = generate_jwt(user, expires_at=token_expiry)
-    return {"access_token": token, "token_type": "bearer"}
+    return {"access_token": token, "token_type": "bearer", "user_id": user.id}
 
 
 @router.get("/list", response_model=List[UserResponse])
@@ -55,7 +55,8 @@ async def list_users(queries: UserQueries = Depends()) -> List[UserResponse]:
     user_list = queries.get_all_users()
 
     user_response_list = [
-        UserResponse(id=user.id, username=user.username) for user in user_list
+        UserResponse(id=user.id, username=user.username, user_id=user.id)
+        for user in user_list
     ]
 
     return user_response_list
@@ -98,7 +99,11 @@ async def signin(
 
     token = generate_jwt(user)
 
-    return {"message": "User signed in successfully", "access_token": token}
+    return {
+        "message": "User signed in successfully",
+        "access_token": token,
+        "user_id": user.id,
+    }
 
 
 @router.get("/authenticate")

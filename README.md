@@ -8,9 +8,13 @@ FIFOFlow was designed to reduce the headache that is the inventory system. As a 
 -   Shops
 -   Orders
 
-The point of FIFOFlow is to have your inventory when you need it, without the need for a college degree ~or more wasted manpower hours~.
+The point of FIFOFlow is to have your inventory when you need it, without the need for a college degree (or more wasted manpower hours).
+
+Easy as that! 👍
 
 ## Getting started
+
+This app was created with a Docker container. It's recommended to [install](https://www.docker.com/) before continuing.
 
 Before this app will work, you will need to complete:
 
@@ -23,6 +27,8 @@ Before this app will work, you will need to complete:
 <br>
 [Bootstrap Icons](https://icons.getbootstrap.com/): Free, high-quality icons.
 <br>
+[bcrypt](https://www.npmjs.com/package/bcrypt): Password-hashing.
+<br>
 [EmailJS](https://www.emailjs.com/): Helps with sending emails using client-side technologies.
 <br>
 [JWTDown](https://jwtdown-fastapi.readthedocs.io/en/stable/): Reduces boilerplate code written for FastAPI authentication.
@@ -30,6 +36,12 @@ Before this app will work, you will need to complete:
 [React](https://react.dev/): Used for creation of user interface.
 <br>
 [Toastify](https://www.npmjs.com/package/react-toastify): Allows the addition of clean, easy-to-use notifications.
+
+### Testing
+
+For testing, use [unittest.mock](https://docs.python.org/3/library/unittest.mock.html)
+
+This app uses pytest.
 
 <!-- ## Deliverables
 

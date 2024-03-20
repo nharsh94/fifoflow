@@ -16,4 +16,6 @@
 
 -   [x] 03/14/2024: Added Create a Supplier for product creation, sign-up is functional (with context), and users are able to be viewed by admins. Forgot-password is linked to email-js.
 
--   [x] 03/18/2024: updated READme for instructions/general info.
+-   [x] 03/18/2024: Updated READme for instructions/general info.
+
+-   [x] 03/20/2024: Authenticator/authentication completed with unit tests.
