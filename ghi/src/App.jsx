@@ -54,27 +54,6 @@ import TestProductCreate from './TestProductCreate'
 import TestProductsList from './TestProductsList'
 
 function Navigation({ isLoggedIn }) {
-
-import OrderList from './list_orders'
-import OrderCreate from './order_form'
-import CreateSupplier from './CreateSupplier'
-import CreateCustomer from './CreateCustomer'
-//
-import TestProductCreate from './TestProductCreate' // By Mel K
-import TestProductsList from './TestProductsList' // By Mel K
-import UsersList from './UsersList'
-import ProfileDatabase from './ProfileDatabase'
-// import ProductDetails from './ProductDetails'
-// import ThreeScene from './ThreeScene'
-
-console.table(import.meta.env)
-const API_HOST = import.meta.env.VITE_API_HOST
-
-if (!API_HOST) {
-    throw new Error('VITE_API_HOST is not defined')
-}
-
-function Navigation() {
     const location = useLocation()
     const showNavRoutes = [
         '/home',

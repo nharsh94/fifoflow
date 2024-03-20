@@ -4,7 +4,6 @@ import './HomePage.css'
 import { useUser } from './UserContext'
 import { Navigate } from 'react-router-dom'
 
-
 function HomePage({ isLoggedIn }) {
     const { userData } = useUser()
     if (!isLoggedIn) {

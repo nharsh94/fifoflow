@@ -48,7 +48,6 @@ function Construct() {
 
             localStorage.setItem('access_token', authData.access_token)
 
-            // Redirect to the home page or perform any other action upon successful login
             console.log('Login successful:', authData)
             navigate('/home')
         } catch (error) {
