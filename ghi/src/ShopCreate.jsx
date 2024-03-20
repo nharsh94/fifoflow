@@ -81,6 +81,10 @@ function ShopCreate({ isLoggedIn }) {
         return <Navigate to="/" replace />
     }
 
+    if (!isLoggedIn) {
+        return <Navigate to="/" replace />
+    }
+
     const handleStateChange = (e) => {
         const selectedValue = e.target.value
         setFormData((prevState) => ({

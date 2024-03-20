@@ -69,8 +69,7 @@ function OrderHistory() {
         )
 
         if (
-            product &&
-            order.status === 'cancelled' &&
+            (product && order.status === 'cancelled') ||
             order.status === 'approved'
         ) {
             return product.name.toLowerCase().includes(searchQuery)

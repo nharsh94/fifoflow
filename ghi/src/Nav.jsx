@@ -1,5 +1,5 @@
 import Nav from 'react-bootstrap/Nav'
-import { useEffect } from 'react' // Add useState
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Container from 'react-bootstrap/Container'
@@ -142,7 +142,7 @@ function Navs({ isLoggedIn }) {
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item eventKey="4.4">
                                             {userData &&
-                                                userData.role === 'Admin' && ( // Only show "All Products" if user is admin
+                                                userData.role === 'Admin' && (
                                                     <NavDropdown.Item
                                                         as={NavLink}
                                                         to="/products/all"

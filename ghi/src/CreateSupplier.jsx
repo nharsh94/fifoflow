@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -25,7 +25,6 @@ export default function CreateSupplierProfile() {
                 )
                 if (!response.ok) throw new Error('Failed to fetch users')
                 const data = await response.json()
-                console.log('Fetched users:', data)
                 setUsers(data)
             } catch (error) {
                 setError('Failed to fetch users. Please try again later.')

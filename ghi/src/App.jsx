@@ -1,7 +1,3 @@
-// This makes VSCode check types as if you are using TypeScript
-//@ts-check
-// This makes VSCode check types as if you are using TypeScript
-//@ts-check
 import React from 'react'
 import { useState, useEffect } from 'react'
 import {
@@ -54,8 +50,7 @@ import OrderHistory from './OrderHistory'
     /* Demo Routes */
 }
 import SignUpForm from './TestSignUpForm'
-import TestProductCreate from './TestProductCreate' // By Mel K
-import TestProductsList from './TestProductsList' // By Mel K
+
 
 function Navigation({ isLoggedIn }) {
     const location = useLocation()
@@ -90,6 +85,15 @@ function App() {
     }, [])
 
     return (
+        <>
+            <UserProvider>
+                <BrowserRouter>
+                    <div className="App">
+                        <Navigation isLoggedIn={isLoggedIn} />
+                        <ErrorNotification error={error} />
+                        <Routes>
+                            <Route path="/" element={<Construct />} />
+                            {/* Authentication Routes */}
         <>
             <UserProvider>
                 <BrowserRouter>
@@ -145,13 +149,13 @@ function App() {
                                 <Route
                                     path="list"
                                     element={
-                                        <ShopsList isLoggedIn={isLoggedIn} />
+                                        <ShopsList />
                                     }
                                 />
                                 <Route
                                     path="details"
                                     element={
-                                        <ShopDetails isLoggedIn={isLoggedIn} />
+                                        <ShopDetails />
                                     }
                                 />
                             </Route>
@@ -167,22 +171,6 @@ function App() {
                                 <Route
                                     path="signup1"
                                     element={<SignUpForm />}
-                                />
-                                <Route
-                                    path="create1"
-                                    element={
-                                        <TestProductCreate
-                                            isLoggedIn={isLoggedIn}
-                                        />
-                                    }
-                                />
-                                <Route
-                                    path="list1"
-                                    element={
-                                        <TestProductsList
-                                            isLoggedIn={isLoggedIn}
-                                        />
-                                    }
                                 />
                             </Route>
                             {/* Orders Routes */}

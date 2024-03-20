@@ -15,6 +15,7 @@ function TestProductCreate({ isLoggedIn }) {
         quantity_in_stock: 0,
         category: '',
         supplier_id: 0,
+        supplier_id: 0,
         alert_threshold: 0,
     })
 

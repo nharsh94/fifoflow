@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Response, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from queries.product_database import ProductRepository
 from typing import List, Union, Optional
 from models.products import ProductIn, ProductOut, Error
@@ -8,18 +8,25 @@ router = APIRouter(tags=["Products"], prefix="/api/products")
 
 @router.post("/", response_model=Union[ProductOut, Error])
 def create_products(product: ProductIn, repo: ProductRepository = Depends()):
+    if product.supplier_id == 0:
+        raise HTTPException(status_code=400, detail="Invalid supplier ID")
     return repo.create(product)
 
 
 @router.get("/", response_model=Union[List[ProductOut], Error])
 def get_all(repo: ProductRepository = Depends()):
-    return repo.get_all()
+    products = repo.get_all()
+    if not products:
+        raise HTTPException(status_code=404, detail="No products found")
+    return products
 
 
 @router.put("/{product_id}", response_model=Union[ProductOut, Error])
 def update_product(
     product_id: int, product: ProductIn, repo: ProductRepository = Depends()
 ) -> Union[ProductOut, Error]:
+    if product.supplier_id == 0:
+        raise HTTPException(status_code=400, detail="Invalid supplier ID")
     return repo.update(product_id, product)
 
 
@@ -27,20 +34,14 @@ def update_product(
 def delete_product(
     product_id: int, repo: ProductRepository = Depends()
 ) -> bool:
-    if not repo.delete(product_id):
-        raise HTTPException(
-            status_code=404,
-            detail="Product not found",
-        )
-    return True
+    return repo.delete(product_id)
 
 
 @router.get("/{product_id}", response_model=Optional[ProductOut])
 def get_one_product(
-    product_id: int, response: Response, repo: ProductRepository = Depends()
+    product_id: int, repo: ProductRepository = Depends()
 ) -> ProductOut:
     product = repo.get_one(product_id)
-    if product is None:
-        response.status_code = 404
-        return None
+    if not product:
+        raise HTTPException(status_code=404, detail="No products matching ID")
     return product

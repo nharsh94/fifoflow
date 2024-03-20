@@ -41,7 +41,6 @@ function Construct() {
             }
 
             const authData = await response.json()
-            console.log(authData)
 
             const profileResponse = await fetch(
                 `http://localhost:8000/api/profile/${authData.id}`,
@@ -78,7 +77,6 @@ function Construct() {
                 role: profileData.role,
             })
 
-            console.log('Login successful:', authData)
             navigate('/home')
         } catch (error) {
             if (error instanceof TypeError) {

@@ -6,7 +6,6 @@ const LogoutButton = () => {
     const navigate = useNavigate()
 
     const handleLogout = () => {
-        // Clear user data by setting it to its initial value
         setUserData({
             user_id: null,
             username: null,
@@ -15,13 +14,9 @@ const LogoutButton = () => {
             last_name: null,
         })
 
-        // Remove user data from local storage
         localStorage.removeItem('userData')
 
-        // Navigate back to the home page or any other route
         navigate('/')
-
-        // Additional logic for any other cleanup or actions after logout
     }
 
     return (
