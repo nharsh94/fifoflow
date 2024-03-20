@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react'
+import { Navigate } from 'react-router-dom'
+
 
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
 
-function TestProductsList() {
+function TestProductsList({isLoggedIn}) {
     const [products, setProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
+
+        if (!isLoggedIn) {
+            return <Navigate to="/" replace />
+        }
 
     const getData = async () => {
         try {
@@ -116,7 +122,8 @@ function TestProductsList() {
 
     return (
         <>
-            <div>
+            <div className="container-list">
+            <div className="signup-form-wrapper custom-shadow1">
                 <h1>Products in Flow</h1>
                 <Table striped bordered hover>
                     <thead>
@@ -156,6 +163,7 @@ function TestProductsList() {
                         })}
                     </tbody>
                 </Table>
+            </div>
             </div>
 
             <Modal show={showModal} onHide={handleCloseModal}>

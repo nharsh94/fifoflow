@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import SearchComponent from './Search'
 
 function OrderHistory() {
@@ -61,12 +61,11 @@ function OrderHistory() {
 
         if (
             product &&
-            order.status === 'cancelled' ||
+            order.status === 'cancelled' &&
             order.status === 'approved'
         ) {
-            if (product !== undefined) {
-                return product.name.toLowerCase().includes(searchQuery)
-        }}
+            return product.name.toLowerCase().includes(searchQuery)
+        }
 
         return false
     })

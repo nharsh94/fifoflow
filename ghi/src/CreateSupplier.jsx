@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 export default function CreateSupplierProfile() {
     const navigate = useNavigate()
@@ -23,7 +25,6 @@ export default function CreateSupplierProfile() {
                 )
                 if (!response.ok) throw new Error('Failed to fetch users')
                 const data = await response.json()
-                console.log('Fetched users:', data)
                 setUsers(data)
             } catch (error) {
                 setError('Failed to fetch users. Please try again later.')
@@ -73,7 +74,8 @@ export default function CreateSupplierProfile() {
 
     return (
         <div className="container mt-5">
-            <form onSubmit={handleFormSubmit}>
+            <h1>Create a Supplier</h1>
+            <Form onSubmit={handleFormSubmit}>
                 {error && <div className="alert alert-danger">{error}</div>}
                 <div className="mb-3">
                     <select
@@ -136,10 +138,16 @@ export default function CreateSupplierProfile() {
                     />
                 </div>
 
-                <button type="submit" className="btn btn-primary">
+                <Button
+                    className="btn btn-outline-light"
+                    variant="secondary"
+                    id="submit-btn"
+                    data-replace=""
+                    type="submit"
+                >
                     Create Supplier Profile
-                </button>
-            </form>
+                </Button>
+            </Form>
         </div>
     )
 }
