@@ -14,7 +14,7 @@ export default function ForgotPassword() {
             )
             .then(
                 (result) => {
-                    window.location.reload() //This is if you still want the page to reload (since e.preventDefault() cancelled that behavior)
+                    window.location.reload()
                 },
                 (error) => {
                     console.log(error.text)

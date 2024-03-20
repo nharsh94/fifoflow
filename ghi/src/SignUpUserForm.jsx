@@ -30,7 +30,6 @@ export default function SignUpUserForm() {
             }
 
             const data = await response.json()
-            console.log('Response data:', data)
 
             if (data.user_id) {
                 // Updated condition to check for user_id

@@ -3,8 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useUser } from './UserContext'
 
 export default function CreateProfile() {
-    const { userData, setUserData } = useUser()
-    console.log('I am being logged', userData)
+    const { setUserData } = useUser()
     const navigate = useNavigate()
     const location = useLocation()
     const { user_id, username, role_id, role_name } = location.state || {}
@@ -19,7 +18,6 @@ export default function CreateProfile() {
         phone: '',
     })
 
-    console.log(profileData)
     const [error, setError] = useState('')
 
     const handleChange = (event) => {
@@ -52,7 +50,6 @@ export default function CreateProfile() {
             }
 
             const responseData = await response.json()
-            // Save all relevant data to local storage
             localStorage.setItem(
                 'userData',
                 JSON.stringify({
@@ -64,7 +61,6 @@ export default function CreateProfile() {
                 })
             )
 
-            // Update state or context with the newly created profile data
             setUserData({
                 user_id: user_id,
                 username: username,
@@ -73,7 +69,7 @@ export default function CreateProfile() {
                 role: role_name,
             })
 
-            navigate('/home') // Navigate to the dashboard
+            navigate('/home')
         } catch (error) {
             setError(error.message || 'An unknown error occurred')
         }

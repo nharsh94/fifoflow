@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Navigate } from 'react-router-dom'
 
 import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
 import Form from 'react-bootstrap/Form'
@@ -64,7 +65,7 @@ const stateOptions = [
     { label: 'U.S. Virgin Islands', value: 'VI' },
 ]
 
-function ShopCreate() {
+function ShopCreate({ isLoggedIn }) {
     const [formSuccess, setFormSuccess] = useState(false)
     const [formData, setFormData] = useState({
         shop_name: '',
@@ -74,6 +75,10 @@ function ShopCreate() {
         zip_code: '',
         phone: '',
     })
+
+    if (!isLoggedIn) {
+        return <Navigate to="/" replace />
+    }
 
     const handleStateChange = (e) => {
         const selectedValue = e.target.value
@@ -140,111 +145,118 @@ function ShopCreate() {
     }
     return (
         <>
-            <div className="container mt-5">
-                <h1>Add Shop to Flow</h1>
-                <Form
-                    onSubmit={handleSubmit}
-                    id="create-shop-form"
-                    className="center-form"
-                >
-                    <div className="mb-3">
-                        <FloatingLabel
-                            controlId="FloatingInput"
-                            label="Shop Name"
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                type="text"
-                                placeholder="shop_name"
-                                value={formData.shop_name}
-                                onChange={(e) =>
-                                    handleFormChange(e, 'shop_name')
-                                }
-                            />
-                        </FloatingLabel>
-                        <FloatingLabel
-                            controlId="FloatingStreetAddress"
-                            label="Street Address"
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                type="text"
-                                placeholder="street_address"
-                                value={formData.street_address}
-                                onChange={(e) =>
-                                    handleFormChange(e, 'street_address')
-                                }
-                            />
-                        </FloatingLabel>
-                        <FloatingLabel
-                            controlId="FloatingCity"
-                            label="City"
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                type="text"
-                                placeholder="city"
-                                value={formData.city}
-                                onChange={(e) => handleFormChange(e, 'city')}
-                            />
-                        </FloatingLabel>
-                        <FloatingLabel
-                            controlId="FloatingState"
-                            label="State"
-                            className="mb-3"
-                        >
-                            <Form.Select
-                                value={formData.selectedState}
-                                onChange={(e) => handleStateChange(e)}
-                            >
-                                <option value="" disabled>
-                                    Select a State
-                                </option>
-                                {stateOptions.map((state) => (
-                                    <option
-                                        key={state.value}
-                                        value={state.value}
-                                    >
-                                        {state.value} - {state.label}
-                                    </option>
-                                ))}
-                            </Form.Select>
-                        </FloatingLabel>
-                        <FloatingLabel
-                            controlId="FloatingZipCode"
-                            label="Zip Code"
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                type="text"
-                                placeholder="zip_code"
-                                value={formData.zip_code}
-                                onChange={(e) =>
-                                    handleFormChange(e, 'zip_code')
-                                }
-                            />
-                        </FloatingLabel>
-                        <FloatingLabel controlId="phone" label="Phone">
-                            <Form.Control
-                                type="tel"
-                                placeholder="phone"
-                                value={formData.phone}
-                                onChange={(e) => handleFormChange(e, 'phone')}
-                                pattern="\d{3}-\d{3}-\d{4}"
-                                title="Enter a valid phone number (e.g., 123-456-7890)"
-                            />
-                        </FloatingLabel>
-                    </div>
-                    <Button
-                        className="btn btn-outline-light"
-                        variant="secondary"
-                        id="submit-btn"
-                        data-replace=""
-                        type="submit"
+            <div className="container">
+                <div className="signup-form-wrapper custom-shadow1">
+                    <h1>Add Shop to Flow</h1>
+
+                    <Form
+                        onSubmit={handleSubmit}
+                        id="create-shop-form"
+                        className="center-form"
                     >
-                        Submit
-                    </Button>{' '}
-                </Form>
+                        <div className="mb-1">
+                            <FloatingLabel
+                                controlId="FloatingInput"
+                                label="Shop Name"
+                                className="mb-1"
+                            >
+                                <Form.Control
+                                    type="text"
+                                    placeholder="shop_name"
+                                    value={formData.shop_name}
+                                    onChange={(e) =>
+                                        handleFormChange(e, 'shop_name')
+                                    }
+                                />
+                            </FloatingLabel>
+                            <FloatingLabel
+                                controlId="FloatingStreetAddress"
+                                label="Street Address"
+                                className="mb-1"
+                            >
+                                <Form.Control
+                                    type="text"
+                                    placeholder="street_address"
+                                    value={formData.street_address}
+                                    onChange={(e) =>
+                                        handleFormChange(e, 'street_address')
+                                    }
+                                />
+                            </FloatingLabel>
+                            <FloatingLabel
+                                controlId="FloatingCity"
+                                label="City"
+                                className="mb-1"
+                            >
+                                <Form.Control
+                                    type="text"
+                                    placeholder="city"
+                                    value={formData.city}
+                                    onChange={(e) =>
+                                        handleFormChange(e, 'city')
+                                    }
+                                />
+                            </FloatingLabel>
+                            <FloatingLabel
+                                controlId="FloatingState"
+                                label="State"
+                                className="mb-1"
+                            >
+                                <Form.Select
+                                    value={formData.selectedState}
+                                    onChange={(e) => handleStateChange(e)}
+                                >
+                                    <option value="" disabled>
+                                        Select a State
+                                    </option>
+                                    {stateOptions.map((state) => (
+                                        <option
+                                            key={state.value}
+                                            value={state.value}
+                                        >
+                                            {state.value} - {state.label}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                            </FloatingLabel>
+                            <FloatingLabel
+                                controlId="FloatingZipCode"
+                                label="Zip Code"
+                                className="mb-1"
+                            >
+                                <Form.Control
+                                    type="text"
+                                    placeholder="zip_code"
+                                    value={formData.zip_code}
+                                    onChange={(e) =>
+                                        handleFormChange(e, 'zip_code')
+                                    }
+                                />
+                            </FloatingLabel>
+                            <FloatingLabel controlId="phone" label="Phone">
+                                <Form.Control
+                                    type="tel"
+                                    placeholder="phone"
+                                    value={formData.phone}
+                                    onChange={(e) =>
+                                        handleFormChange(e, 'phone')
+                                    }
+                                    pattern="\d{3}-\d{3}-\d{4}"
+                                    title="Enter a valid phone number (e.g., 123-456-7890)"
+                                />
+                            </FloatingLabel>
+                            <Button
+                                className="btn btn-outline-light mt-1"
+                                variant="secondary"
+                                id="submit-btn"
+                                data-replace=""
+                                type="submit"
+                            >
+                                Submit
+                            </Button>{' '}
+                        </div>
+                    </Form>
+                </div>
                 <div className={messageClasses} id="success-message">
                     Shop added to Flow!
                 </div>

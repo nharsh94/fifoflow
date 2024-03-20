@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import SearchComponent from './Search'
 
 function OrderList() {
@@ -74,31 +74,31 @@ function OrderList() {
         )
     }
 
-        const handleApprove = async (id) => {
-            const url = `http://localhost:8000/api/orders/${id}`
-            console.log(url)
-            const response = await fetch(url)
-            const data = await response.json()
-            data['status'] = 'approved'
-            console.log('this is happening in handleApprove', data)
-            const cancelConfig = {
-                method: 'PUT',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }
-            await fetch(url, cancelConfig)
-
-            setOrders((prevOrders) =>
-                prevOrders.map((order) => {
-                    if (order.order_id === id) {
-                        return { ...order, status: 'approved' }
-                    }
-                    return order
-                })
-            )
+    const handleApprove = async (id) => {
+        const url = `http://localhost:8000/api/orders/${id}`
+        console.log(url)
+        const response = await fetch(url)
+        const data = await response.json()
+        data['status'] = 'approved'
+        console.log('this is happening in handleApprove', data)
+        const cancelConfig = {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            },
         }
+        await fetch(url, cancelConfig)
+
+        setOrders((prevOrders) =>
+            prevOrders.map((order) => {
+                if (order.order_id === id) {
+                    return { ...order, status: 'approved' }
+                }
+                return order
+            })
+        )
+    }
 
     const handleSearch = (e) => {
         const inputValue = e.target.value.toLowerCase()
@@ -106,21 +106,21 @@ function OrderList() {
             setSearchQuery(inputValue)
         }
     }
-const filteredOrders = orders.filter((order) => {
-    const product = products.find(
-        (product) => product.product_id === order.product_id
-    )
+    const filteredOrders = orders.filter((order) => {
+        const product = products.find(
+            (product) => product.product_id === order.product_id
+        )
 
-    if (
-        product &&
-        order.status !== 'cancelled' &&
-        order.status !== 'approved'
-    ) {
-        return product.name.toLowerCase().includes(searchQuery)
-    }
+        if (
+            product &&
+            order.status !== 'cancelled' &&
+            order.status !== 'approved'
+        ) {
+            return product.name.toLowerCase().includes(searchQuery)
+        }
 
-    return false
-})
+        return false
+    })
     return (
         <>
             <div>

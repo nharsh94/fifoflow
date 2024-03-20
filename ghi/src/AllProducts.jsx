@@ -8,11 +8,8 @@ import Table from 'react-bootstrap/Table'
 import Sort from './Sort'
 import Pagination from './PaginationComponent'
 import Search from './Search'
-import { useUser } from './UserContext'
 
 function AllProducts() {
-    const { userData } = useUser()
-    console.log(userData)
     const [products, setProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
@@ -58,6 +55,7 @@ function AllProducts() {
                 const data = await response.json()
                 setSelectedProduct(data)
                 setShowModal(true)
+                checkAlertThreshold(data)
             } else {
                 throw new Error(
                     `Failed to fetch product details. Status: ${response.status}`
@@ -65,6 +63,37 @@ function AllProducts() {
             }
         } catch (error) {
             console.error('Error fetching product details', error)
+        }
+    }
+
+    const checkAlertThreshold = (product) => {
+        const { alert_threshold, quantity_in_stock, name, product_id } = product
+        if (parseInt(alert_threshold) === quantity_in_stock) {
+            toast.warn(
+                `Product "${name}" (ID: ${product_id}) has reached alert threshold.`,
+                {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                }
+            )
+        } else if (parseInt(alert_threshold) > quantity_in_stock) {
+            toast.error(
+                `Product "${name}" (ID: ${product_id}) quantity in stock is low.`,
+                {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                }
+            )
         }
     }
 
@@ -82,7 +111,6 @@ function AllProducts() {
             )
 
             if (response.ok) {
-                console.log('Product updated successfully:', selectedProduct)
                 handleCloseModal()
                 getData()
             } else {
@@ -109,7 +137,6 @@ function AllProducts() {
             )
 
             if (response.ok) {
-                console.log('Product deleted successfully', selectedProduct)
                 getData()
                 handleCloseModal()
                 toast.dismiss()
@@ -164,7 +191,6 @@ function AllProducts() {
             )
 
             if (response.ok) {
-                console.log('Product added successfully', selectedProduct)
                 getData()
                 handleCloseModal()
                 toast.dismiss()

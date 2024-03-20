@@ -33,6 +33,6 @@ def get_profile(
     user_id: int, response: Response, repo: ProfileRepository = Depends()
 ):
     profile = repo.get_one(user_id)
-    if profile is None:
-        response.status_code = 404
+    if not profile:
+        raise HTTPException(status_code=404, detail="No profiles matching ID")
     return profile
