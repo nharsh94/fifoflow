@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import SearchComponent from './Search'
 
 function OrderHistory() {

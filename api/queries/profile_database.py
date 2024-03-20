@@ -1,6 +1,7 @@
 from typing import List, Optional, Union
 from queries.pool import pool
 from models.profiles import ProfileOut, ProfileIn, Error
+import traceback
 
 
 class ProfileRepository:
@@ -15,14 +16,15 @@ class ProfileRepository:
                         FROM profiles
                         WHERE user_id = %s
                         """,
-                        [user_id]
+                        [user_id],
                     )
                     profile = db.fetchone()
                     if not profile:
                         return None
                     return self.record_to_profile_out(profile)
         except Exception:
-            return {"message": "Product ID does not exist"}
+            traceback.print_exc()
+            return None
 
     def delete(self, user_id: int) -> bool:
         try:
@@ -33,17 +35,16 @@ class ProfileRepository:
                         DELETE FROM profiles
                         WHERE user_id = %s
                         """,
-                        [user_id]
+                        [user_id],
                     )
                     return True
-        except Exception:
+        except Exception as e:
+            print(e)
             return False
 
     def update(
-            self,
-            user_id: int,
-            profile: ProfileIn
-            ) -> Union[List[ProfileOut], Error]:
+        self, user_id: int, profile: ProfileIn
+    ) -> Union[List[ProfileOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -51,14 +52,13 @@ class ProfileRepository:
                         """
                         UPDATE profiles
                         SET
-                            user_id = %s
-                            , role = %s
-                            , first_name = %s
-                            , last_name = %s
-                            , email = %s
-                            , phone = %s
+                            user_id = %s,
+                            role = %s,
+                            first_name = %s,
+                            last_name = %s,
+                            email = %s,
+                            phone = %s
                         WHERE user_id = %s
-                        RETURNING *
                         """,
                         [
                             profile.user_id,
@@ -67,29 +67,31 @@ class ProfileRepository:
                             profile.last_name,
                             profile.email,
                             profile.phone,
-                            user_id
-                        ]
+                            user_id,
+                        ],
                     )
                     return self.profile_in_to_out(user_id, profile)
-        except Exception:
+        except Exception as e:
+            print(e)
             return {"message": "Could not update profile"}
 
     def get_all(self) -> Union[List[ProfileOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
                         SELECT *
                         FROM profiles
                         ORDER BY user_id
                         """
                     )
+                    result = db.fetchall()
                     return [
-                        self.record_to_profile_out(record)
-                        for record in result
+                        self.record_to_profile_out(record) for record in result
                     ]
-        except Exception:
+        except Exception as e:
+            print(e)
             return {"message": "Could not get all profiles"}
 
     def create(self, profile: ProfileIn) -> ProfileOut:
@@ -117,16 +119,16 @@ class ProfileRepository:
                             profile.first_name,
                             profile.last_name,
                             profile.email,
-                            profile.phone
-                        ]
+                            profile.phone,
+                        ],
                     )
                     inserted_id = db.fetchone()[0]
                     return self.profile_in_to_out(inserted_id, profile)
-        except Exception:
-            return {"message": "Profile faild to create"}
+        except Exception as e:
+            traceback.print_exc()
+            return {"message": str(e)}
 
-    def profile_in_to_out(self, id: int, profile: ProfileIn
-                          ) -> ProfileOut:
+    def profile_in_to_out(self, id: int, profile: ProfileIn) -> ProfileOut:
         old_data = profile.dict()
         return ProfileOut(id=id, **old_data)
 
@@ -138,5 +140,5 @@ class ProfileRepository:
             first_name=record[3],
             last_name=record[4],
             email=record[5],
-            phone=record[6]
+            phone=record[6],
         )
