@@ -21,7 +21,6 @@ def get_all(repo: ProductRepository = Depends()):
     return products
 
 
-
 @router.put("/{product_id}", response_model=Union[ProductOut, Error])
 def update_product(
     product_id: int, product: ProductIn, repo: ProductRepository = Depends()
