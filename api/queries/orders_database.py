@@ -2,7 +2,6 @@ from models.orders import OrdersIn, OrdersOut
 from queries.pool import pool
 import datetime
 
-
 class OrdersRepository:
     def create_order(self, order: OrdersIn):
         try:
@@ -33,7 +32,6 @@ class OrdersRepository:
         except Exception:
             return {"message": "Order failed to create"}
 
-
     def get_one_order(self, order_id: int):
         try:
             with pool.connection() as conn:
@@ -54,7 +52,6 @@ class OrdersRepository:
                     return self.record_to_orders_out(record)
         except Exception:
             return {"message": "Order ID does not exist"}
-
 
     def delete_order(self, order_id: int):
         try:
@@ -102,7 +99,6 @@ class OrdersRepository:
                     return self.order_in_out_update(order_id, order)
         except Exception:
             return {"message": "Could not update order"}
-
 
     def get_all_orders(self):
         try:

@@ -36,7 +36,7 @@ class ProfileRepository:
                         [user_id]
                     )
                     return True
-        except Exception as e:
+        except Exception:
             return False
 
     def update(

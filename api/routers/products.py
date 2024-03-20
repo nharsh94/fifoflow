@@ -7,7 +7,6 @@ router = APIRouter(tags=["Products"], prefix="/api/products")
 
 
 @router.post("/", response_model=Union[ProductOut, Error])
-
 def create_products(product: ProductIn, repo: ProductRepository = Depends()):
     if product.supplier_id == 0:
         raise HTTPException(status_code=400, detail="Invalid supplier ID")
