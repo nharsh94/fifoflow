@@ -30,7 +30,6 @@ export default function SignUpUserForm() {
             }
 
             const data = await response.json()
-            console.log(data)
 
             if (data.id) {
                 navigate('/role', {

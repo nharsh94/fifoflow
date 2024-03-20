@@ -8,7 +8,6 @@ import 'bootstrap/dist/js/bootstrap.bundle'
 import 'react-json-pretty/themes/monikai.css'
 import { useUser } from './UserContext'
 
-
 import logo from './assets/FIFOFlow_transparent_x1.png'
 
 function Construct() {
@@ -18,7 +17,7 @@ function Construct() {
     const [password, setPassword] = useState('')
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
+        event.preventDefault()
 
         if (!username || !password) {
             alert('Please enter both username and password.')
@@ -41,7 +40,6 @@ function Construct() {
             }
 
             const authData = await response.json()
-            console.log(authData)
 
             const profileResponse = await fetch(
                 `http://localhost:8000/api/profile/${authData.id}`,
@@ -78,7 +76,6 @@ function Construct() {
                 role: profileData.role,
             })
 
-            console.log('Login successful:', authData)
             navigate('/home')
         } catch (error) {
             if (error instanceof TypeError) {
@@ -88,7 +85,6 @@ function Construct() {
             }
         }
     }
-
 
     return (
         <>
