@@ -1,47 +1,33 @@
-# # authenticator.py
-# import os
-# from fastapi import Depends
-# from jwtdown_fastapi.authentication import Authenticator
-# from queries.account_database import AccountRepo
-# from api.models.users import AccountOut, DBAccount
+# authenticator.py
+import os
+from fastapi import Depends
+from jwtdown_fastapi.authentication import Authenticator
+from queries.user_database import UserQueries
+from models.users import UserResponse, UserWithPw
 
 
-# class MyAuthenticator(Authenticator):
-#     async def get_account_data(
-#         self,
-#         username: str,
-#         accounts: AccountRepo,
-#     ) -> DBAccount:  # Add!!!
-#         # Use your repo to get the account based on the
-#         # username (which could be an email)
-#         account = accounts.get(username)
-#         if not account:
-#             raise Exception("Account not found")
-#         return account
+class MyAuthenticator(Authenticator):
+    async def get_account_data(
+        self,
+        username: str,
+        users: UserQueries,
+    ) -> UserResponse:
+        user = users.get_by_username(username)
+        if not user:
+            raise Exception("User not found")
+        return user
 
-#     def get_account_getter(
-#         self,
-#         accounts: AccountRepo = Depends(),
-#     ):
-#         # Return the accounts. That's it.
-#         return accounts
+    def get_account_getter(
+        self,
+        users: UserQueries = Depends(),
+    ):
+        return users
 
-#     def get_hashed_password(self, account: DBAccount):
-#         # Return the encrypted password value from your
-#         # account object
-#         return account.password_hash
+    def get_hashed_password(self, user: UserWithPw):
+        return user.password_hash
 
-#     def get_account_data_for_cookie(self, account: DBAccount):
-#         # Return the username and the data for the cookie.
-#         # You must return TWO values from this method.
-#         return account.username, AccountOut(
-#             id=account.id,
-#             username=account.username,
-#             first_name=account.first_name,
-#             last_name=account.last_name,
-#             email=account.email,
-#             modified=account.modified.isoformat(),
-#         )
+    def get_account_data_for_cookie(self, user: UserWithPw):
+        return user.username, UserResponse(id=user.id, username=user.username)
 
 
-# authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
+authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])

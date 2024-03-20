@@ -31,9 +31,10 @@ export default function SignUpUserForm() {
 
             const data = await response.json()
 
-            if (data.id) {
+            if (data.user_id) {
+                // Updated condition to check for user_id
                 navigate('/role', {
-                    state: { user_id: data.id, username: data.username },
+                    state: { user_id: data.user_id, username: data.username },
                 })
             } else {
                 throw new Error('User ID not found in response')
@@ -44,7 +45,6 @@ export default function SignUpUserForm() {
             setIsLoading(false)
         }
     }
-
     return (
         <div className="container mt-5">
             <form onSubmit={handleSubmit}>

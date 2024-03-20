@@ -94,15 +94,6 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Construct />} />
                             {/* Authentication Routes */}
-        <>
-            <UserProvider>
-                <BrowserRouter>
-                    <div className="App">
-                        <Navigation isLoggedIn={isLoggedIn} />
-                        <ErrorNotification error={error} />
-                        <Routes>
-                            <Route path="/" element={<Construct />} />
-                            {/* Authentication Routes */}
                             <Route
                                 path="/signup"
                                 element={<SignUpUserForm />}
