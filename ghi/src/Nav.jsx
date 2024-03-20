@@ -48,106 +48,6 @@ function Navs({ isLoggedIn }) {
                                         </Tooltip>
                                     }
                                 >
-                                    <NavDropdown.Item as={NavLink} to="/orders">
-                                        Orders
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/order-history"
-                                    >
-                                        Order History
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/create-order"
-                                    >
-                                        Create an Order
-                                    </NavDropdown.Item>
-                                </NavDropdown>
-                                <NavDropdown
-                                    className="px-2"
-                                    title="Products"
-                                    id="nav-dropdown"
-                                >
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/products/create"
-                                    >
-                                        Add Product To Flow
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/products/list"
-                                    >
-                                        Product Database
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Divider />
-                                    {userData &&
-                                        userData.role === 'Admin' && ( // Only show "All Products" if user is admin
-                                            <NavDropdown.Item
-                                                as={NavLink}
-                                                to="/products/all"
-                                            >
-                                                All Products
-                                            </NavDropdown.Item>
-                                        )}
-                                </NavDropdown>
-                                <NavDropdown
-                                    className="px-2"
-                                    title="Shops"
-                                    id="nav-dropdown"
-                                >
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/shops/create"
-                                    >
-                                        Add Shop To Flow
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/shops/list"
-                                    >
-                                        Shop Database
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item eventKey="4.2">
-                                        Shop Details
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Divider />
-                                    <NavDropdown.Item eventKey="4.4">
-                                        Separated link
-                                    </NavDropdown.Item>
-                                </NavDropdown>
-                                <NavDropdown
-                                    className="px-2"
-                                    title="User Management"
-                                    id="nav-dropdown"
-                                >
-                                    <NavDropdown.Item as={NavLink} to="/user">
-                                        User Database (Admin)
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/profile/supplier"
-                                    >
-                                        Create a Supplier (Admin)
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item eventKey="4.2">
-                                        Assign User Access (Admin Only)
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/shops/create"
-                                    >
-                                        Register User (Admin Only)
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Divider />
-                                    <NavDropdown.Item eventKey="4.4">
-                                        Admin
-                                    </NavDropdown.Item>
-                                </NavDropdown>
-                            </Nav>
-                            <Nav className="d-flex ms-auto order-5">
-                                {userData ? (
                                     <Button variant="dark">
                                         <img
                                             src={brand}
@@ -190,9 +90,9 @@ function Navs({ isLoggedIn }) {
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             as={NavLink}
-                                            to="/orders/list"
+                                            to="/orders/history"
                                         >
-                                            Orders(WIP)
+                                            Order History
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             as={NavLink}

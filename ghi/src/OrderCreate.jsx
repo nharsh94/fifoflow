@@ -76,15 +76,33 @@ function OrderCreate() {
             total_price: total,
         }
 
-        const fetchConfig = {
-            method: 'POST',
-            body: JSON.stringify(newFormData),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }
-        const response = await fetch(url, fetchConfig)
-        if (response.ok) {
+        const producturl = `http://localhost:8000/api/products/${product.product_id}`
+        const productresponse = await fetch(producturl)
+        if (productresponse.ok) {
+            const productdata = await productresponse.json()
+            productdata['quantity_in_stock'] = productdata['quantity_in_stock'] - newFormData.quantity
+            if  (productdata['quantity_in_stock'] < 0) {
+                return {'message': 'not enough product in stock'}
+            }
+            const updateConfig = {
+                method: 'PUT',
+                body: JSON.stringify(productdata),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+            await fetch(producturl, updateConfig)
+
+            const fetchConfig = {
+                method: 'POST',
+                body: JSON.stringify(newFormData),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                }
+                const response = await fetch(url, fetchConfig)
+                if (response.ok)
+
             setFormData({
                 shop_id: '',
                 user_id: '',

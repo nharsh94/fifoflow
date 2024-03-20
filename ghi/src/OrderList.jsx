@@ -50,11 +50,9 @@ function OrderList() {
 
     const handleCancel = async (id) => {
         const url = `http://localhost:8000/api/orders/${id}`
-        console.log(url)
         const response = await fetch(url)
         const data = await response.json()
         data['status'] = 'cancelled'
-        console.log('this is happening in handleCancel', data)
         const cancelConfig = {
             method: 'PUT',
             body: JSON.stringify(data),
@@ -76,11 +74,9 @@ function OrderList() {
 
     const handleApprove = async (id) => {
         const url = `http://localhost:8000/api/orders/${id}`
-        console.log(url)
         const response = await fetch(url)
         const data = await response.json()
         data['status'] = 'approved'
-        console.log('this is happening in handleApprove', data)
         const cancelConfig = {
             method: 'PUT',
             body: JSON.stringify(data),
