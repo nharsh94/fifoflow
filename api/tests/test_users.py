@@ -49,4 +49,5 @@
 #     # Test valid username
 #     assert await mock_user_queries.get_by_username("test_user") == mock_user
 #     # Test invalid username
-#     assert await mock_user_queries.get_by_username("nonexistent_user") is None
+#     assert await mock_user_queries.get_by_username("nonexistent_user")
+#   is None

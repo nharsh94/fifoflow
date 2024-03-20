@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Response, HTTPException
 from typing import List, Union, Optional
 from models.profiles import ProfileIn, ProfileOut, Error
 from queries.profile_database import ProfileRepository
