@@ -2,9 +2,8 @@ from models.orders import OrdersIn, OrdersOut
 from queries.pool import pool
 import datetime
 
+
 class OrdersRepository:
-
-
     def create_order(self, order: OrdersIn):
         try:
             with pool.connection() as conn:
