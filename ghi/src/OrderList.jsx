@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import SearchComponent from './Search'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
+import { toast, ToastContainer } from 'react-toastify'
 
 function OrderList() {
     const [orders, setOrders] = useState([])
@@ -65,6 +66,7 @@ function OrderList() {
             },
         }
         await fetch(url, cancelConfig)
+        toast.success('Order cancelled successfully')
 
         setOrders((prevOrders) =>
             prevOrders.map((order) => {
@@ -91,6 +93,7 @@ function OrderList() {
             },
         }
         await fetch(url, cancelConfig)
+        toast.success('Order approved successfully')
 
         setOrders((prevOrders) =>
             prevOrders.map((order) => {
@@ -126,13 +129,14 @@ function OrderList() {
     return (
         <>
             <div className="container-list">
+                <ToastContainer />
                 <div className="signup-form-wrapper custom-shadow1">
                     <h1>Orders</h1>
-                        <SearchComponent
-                            value={searchQuery}
-                            onChange={handleSearch}
-                            placeholder="Search by product name.."
-                        />
+                    <SearchComponent
+                        value={searchQuery}
+                        onChange={handleSearch}
+                        placeholder="Search by product name.."
+                    />
                     <Table responsive striped bordered hover>
                         <thead>
                             <tr>
