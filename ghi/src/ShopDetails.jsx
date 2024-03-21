@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react'
 
-function ShopDetails({ isLoggedIn }) {
+function ShopDetails() {
     const [shop, setShop] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-
-        if (!isLoggedIn) {
-            return <Navigate to="/" replace />
-        }
 
     const getData = async () => {
         try {
@@ -53,4 +49,4 @@ function ShopDetails({ isLoggedIn }) {
     )
 }
 
-export default ShopDetails;
+export default ShopDetails

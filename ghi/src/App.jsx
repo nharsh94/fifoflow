@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import {
     BrowserRouter,
     Routes,
@@ -51,45 +50,25 @@ import OrderHistory from './OrderHistory'
 }
 import SignUpForm from './TestSignUpForm'
 
-
-function Navigation({ isLoggedIn }) {
+function Navigation() {
     const location = useLocation()
-    const showNavRoutes = ['/home', 'profile', '/user', '/shops', '/products', '/orders']
-    const shouldShowNav =
-        isLoggedIn &&
-        (showNavRoutes.some((route) => location.pathname.startsWith(route)) ||
-            (location.pathname !== '/' &&
-                location.pathname !== '/signup' &&
-                location.pathname !== '/role' &&
-                location.pathname !== '/profile'))
-
-    return isLoggedIn && shouldShowNav ? <Nav isLoggedIn={isLoggedIn} /> : null
+    return (
+        location.pathname !== '/' &&
+        location.pathname !== '/signup' &&
+        location.pathname !== '/role' &&
+        location.pathname !== '/profile' && <Nav />
+    )
 }
 
 function App() {
-    const [error, setError] = useState(null)
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false)
-
-    useEffect(() => {
-        const isAuthenticated = () => {
-            // return localStorage.getItem('token') !== null
-            return true
-        }
-
-        try {
-            setError(null)
-            setIsLoggedIn(isAuthenticated())
-        } catch (error) {
-            setError(error.message)
-        }
-    }, [])
+    const [error] = useState(null)
 
     return (
         <>
             <UserProvider>
                 <BrowserRouter>
                     <div className="App">
-                        <Navigation isLoggedIn={isLoggedIn} />
+                        <Navigation />
                         <ErrorNotification error={error} />
                         <Routes>
                             <Route path="/" element={<Construct />} />
@@ -103,10 +82,7 @@ function App() {
                                 element={<ForgotPassword />}
                             />
                             {/* User Routes */}
-                            <Route
-                                path="/home"
-                                element={<HomePage isLoggedIn={isLoggedIn} />}
-                            />
+                            <Route path="/home" element={<HomePage />} />
                             <Route path="/user" element={<UsersList />} />
                             <Route path="/role" element={<AssignRole />} />
                             <Route path="/user" element={<UsersList />} />
@@ -131,23 +107,11 @@ function App() {
 
                             {/* Shops Routes */}
                             <Route path="/shops">
-                                <Route
-                                    path="create"
-                                    element={
-                                        <ShopCreate isLoggedIn={isLoggedIn} />
-                                    }
-                                />
-                                <Route
-                                    path="list"
-                                    element={
-                                        <ShopsList />
-                                    }
-                                />
+                                <Route path="create" element={<ShopCreate />} />
+                                <Route path="list" element={<ShopsList />} />
                                 <Route
                                     path="details"
-                                    element={
-                                        <ShopDetails />
-                                    }
+                                    element={<ShopDetails />}
                                 />
                             </Route>
                             {/* Products Routes */}

@@ -17,6 +17,7 @@ export default function CreateProfile() {
         email: '',
         phone: '',
     })
+    console.log(username)
 
     const [error, setError] = useState('')
 
@@ -49,25 +50,37 @@ export default function CreateProfile() {
                 throw new Error(errorData.message || 'Failed to create profile')
             }
 
-            const responseData = await response.json()
-            localStorage.setItem(
-                'userData',
-                JSON.stringify({
-                    user_id: user_id,
-                    username: username,
-                    first_name: responseData.first_name,
-                    last_name: responseData.last_name,
-                    role: role_name,
-                })
+            const userDataResponse = await fetch(
+                `http://localhost:8000/api/user/${username}`
             )
 
-            setUserData({
-                user_id: user_id,
-                username: username,
-                first_name: responseData.first_name,
-                last_name: responseData.last_name,
-                role: role_name,
-            })
+            const userData = await userDataResponse.json()
+
+            console.log('I am the response', userData)
+
+            if (userDataResponse.ok) {
+                localStorage.setItem(
+                    'userData',
+                    JSON.stringify({
+                        user_id: userData.user_id,
+                        username: userData.username,
+                        role: userData.role,
+                        first_name: userData.first_name,
+                        last_name: userData.last_name,
+                        email: userData.email,
+                        phone: userData.phone,
+                    })
+                )
+                setUserData({
+                    user_id: userData.user_id,
+                    username: userData.username,
+                    role: userData.role,
+                    first_name: userData.first_name,
+                    last_name: userData.last_name,
+                    email: userData.email,
+                    phone: userData.phone,
+                })
+            }
 
             navigate('/home')
         } catch (error) {
