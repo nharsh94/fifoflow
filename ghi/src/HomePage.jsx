@@ -2,14 +2,10 @@ import { NavLink } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import './HomePage.css'
 import { useUser } from './UserContext'
-import { Navigate } from 'react-router-dom'
 
 
-function HomePage({ isLoggedIn }) {
+function HomePage() {
     const { userData } = useUser()
-    if (!isLoggedIn) {
-        return <Navigate to="/" replace />
-    }
 
     return (
         <div className="user-page">

@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Navigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -67,7 +66,7 @@ const stateOptions = [
     { label: 'U.S. Virgin Islands', value: 'VI' },
 ]
 
-function ShopCreate({ isLoggedIn }) {
+function ShopCreate() {
     const [formData, setFormData] = useState({
         shop_name: '',
         street_address: '',
@@ -76,10 +75,6 @@ function ShopCreate({ isLoggedIn }) {
         zip_code: '',
         phone: '',
     })
-
-    if (!isLoggedIn) {
-        return <Navigate to="/" replace />
-    }
 
     const handleStateChange = (e) => {
         const selectedValue = e.target.value
@@ -154,7 +149,7 @@ function ShopCreate({ isLoggedIn }) {
                         <FloatingLabel
                             controlId="FloatingInput"
                             label="Shop Name"
-                            className="mb-1"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Control
                                 type="text"
@@ -168,7 +163,7 @@ function ShopCreate({ isLoggedIn }) {
                         <FloatingLabel
                             controlId="FloatingStreetAddress"
                             label="Street Address"
-                            className="mb-1"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Control
                                 type="text"
@@ -182,7 +177,7 @@ function ShopCreate({ isLoggedIn }) {
                         <FloatingLabel
                             controlId="FloatingCity"
                             label="City"
-                            className="mb-1"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Control
                                 type="text"
@@ -194,7 +189,7 @@ function ShopCreate({ isLoggedIn }) {
                         <FloatingLabel
                             controlId="FloatingState"
                             label="State"
-                            className="mb-1"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Select
                                 value={formData.selectedState}
@@ -216,7 +211,7 @@ function ShopCreate({ isLoggedIn }) {
                         <FloatingLabel
                             controlId="FloatingZipCode"
                             label="Zip Code"
-                            className="mb-1"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Control
                                 type="text"
@@ -227,7 +222,11 @@ function ShopCreate({ isLoggedIn }) {
                                 }
                             />
                         </FloatingLabel>
-                        <FloatingLabel controlId="phone" label="Phone">
+                        <FloatingLabel
+                            controlId="phone"
+                            label="Phone"
+                            className="mb-1 custom-shadow"
+                        >
                             <Form.Control
                                 type="tel"
                                 placeholder="phone"

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import SearchComponent from './Search'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
-import { BsSearch } from 'react-icons/bs'
 
 function OrderList() {
     const [orders, setOrders] = useState([])
@@ -132,7 +131,7 @@ function OrderList() {
                         <SearchComponent
                             value={searchQuery}
                             onChange={handleSearch}
-                            className="search-field"
+                            placeholder="Search by product name.."
                         />
                     <Table responsive striped bordered hover>
                         <thead>

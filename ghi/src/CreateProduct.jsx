@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
-import { Navigate } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
 
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
-function CreateProduct({ isLoggedIn }) {
+function CreateProduct() {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -18,9 +17,6 @@ function CreateProduct({ isLoggedIn }) {
         alert_threshold: 0,
     })
 
-    if (!isLoggedIn) {
-        return <Navigate to="/" replace />
-    }
     const [suppliers, setSuppliers] = useState([])
     useEffect(() => {
         fetchSuppliers()

@@ -17,8 +17,9 @@ import brand from './assets/FIFOFlow_transparent_x1.png'
 function Navs() {
     const navigate = useNavigate()
     const { userData } = useUser()
+
     useEffect(() => {
-        if (!userData) {
+        if (userData.user_id === null) {
             navigate('/')
         }
     }, [userData, navigate])
@@ -31,6 +32,7 @@ function Navs() {
         if (!string) return ''
         return string.charAt(0).toUpperCase() + string.slice(1)
     }
+
 
     return (
         <>
@@ -110,12 +112,6 @@ function Navs() {
                                     >
                                         Database
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/products/details"
-                                    >
-                                        Details
-                                    </NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     {userData && userData.role === 'Admin' && (
                                         <NavDropdown.Item
@@ -123,8 +119,8 @@ function Navs() {
                                             to="/products/all"
                                         >
                                             All Products
-                                        </NavDropdown.Item>
-                                    )}
+                                            </NavDropdown.Item>
+                                            )}
                                 </NavDropdown>
                                 <NavDropdown
                                     className="px-2"

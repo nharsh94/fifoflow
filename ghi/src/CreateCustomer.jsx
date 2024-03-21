@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function CreateSupplierProfile() {
     const navigate = useNavigate()
@@ -66,6 +68,8 @@ export default function CreateSupplierProfile() {
                     errorData.message || 'Failed to create customer profile'
                 )
             }
+
+            toast.success('Customer successfully added!')
 
             navigate('/home')
         } catch (error) {

@@ -3,8 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useUser } from './UserContext'
 
 export default function CreateProfile() {
-    const { userData, setUserData } = useUser()
-    console.log('I am being logged', userData)
+    const { setUserData } = useUser()
     const navigate = useNavigate()
     const location = useLocation()
     const { user_id, username, role_id, role_name } = location.state || {}
@@ -18,8 +17,8 @@ export default function CreateProfile() {
         email: '',
         phone: '',
     })
+    console.log(username)
 
-    console.log(profileData)
     const [error, setError] = useState('')
 
     const handleChange = (event) => {
@@ -51,29 +50,39 @@ export default function CreateProfile() {
                 throw new Error(errorData.message || 'Failed to create profile')
             }
 
-            const responseData = await response.json()
-            // Save all relevant data to local storage
-            localStorage.setItem(
-                'userData',
-                JSON.stringify({
-                    user_id: user_id,
-                    username: username,
-                    first_name: responseData.first_name,
-                    last_name: responseData.last_name,
-                    role: role_name,
-                })
+            const userDataResponse = await fetch(
+                `http://localhost:8000/api/user/${username}`
             )
 
-            // Update state or context with the newly created profile data
-            setUserData({
-                user_id: user_id,
-                username: username,
-                first_name: responseData.first_name,
-                last_name: responseData.last_name,
-                role: role_name,
-            })
+            const userData = await userDataResponse.json()
 
-            navigate('/home') // Navigate to the dashboard
+            console.log('I am the response', userData)
+
+            if (userDataResponse.ok) {
+                localStorage.setItem(
+                    'userData',
+                    JSON.stringify({
+                        user_id: userData.user_id,
+                        username: userData.username,
+                        role: userData.role,
+                        first_name: userData.first_name,
+                        last_name: userData.last_name,
+                        email: userData.email,
+                        phone: userData.phone,
+                    })
+                )
+                setUserData({
+                    user_id: userData.user_id,
+                    username: userData.username,
+                    role: userData.role,
+                    first_name: userData.first_name,
+                    last_name: userData.last_name,
+                    email: userData.email,
+                    phone: userData.phone,
+                })
+            }
+
+            navigate('/home')
         } catch (error) {
             setError(error.message || 'An unknown error occurred')
         }

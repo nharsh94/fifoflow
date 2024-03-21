@@ -16,6 +16,8 @@ export default function AssignRole() {
     const location = useLocation()
     const { user_id, username } = location.state || {}
 
+    console.log(username)
+
     const handleFormSubmit = async (event) => {
         event.preventDefault()
 

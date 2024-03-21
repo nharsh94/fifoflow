@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
-import { Navigate } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Button from 'react-bootstrap/Button'
@@ -220,6 +219,7 @@ function ProductsList() {
                     <SearchComponent
                         value={searchQuery}
                         onChange={handleSearch}
+                        placeholder="Search by product name.."
                     />
                     <div
                         style={{

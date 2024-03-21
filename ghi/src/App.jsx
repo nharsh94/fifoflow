@@ -1,9 +1,4 @@
-// This makes VSCode check types as if you are using TypeScript
-//@ts-check
-// This makes VSCode check types as if you are using TypeScript
-//@ts-check
-import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import {
     BrowserRouter,
     Routes,
@@ -37,7 +32,6 @@ import CreateCustomer from './CreateCustomer'
 }
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
-import ShopDetails from './ShopDetails'
 {
     /* Product Routes */
 }
@@ -54,47 +48,28 @@ import OrderHistory from './OrderHistory'
     /* Demo Routes */
 }
 import SignUpForm from './TestSignUpForm'
-import TestProductCreate from './TestProductCreate' // By Mel K
-import TestProductsList from './TestProductsList' // By Mel K
 
-function Navigation({ isLoggedIn }) {
+
+function Navigation() {
     const location = useLocation()
-    const showNavRoutes = ['/home', 'profile', '/user', '/shops', '/products', '/orders']
-    const shouldShowNav =
-        isLoggedIn &&
-        (showNavRoutes.some((route) => location.pathname.startsWith(route)) ||
-            (location.pathname !== '/' &&
-                location.pathname !== '/signup' &&
-                location.pathname !== '/role' &&
-                location.pathname !== '/profile'))
-
-    return isLoggedIn && shouldShowNav ? <Nav isLoggedIn={isLoggedIn} /> : null
+    return (
+        location.pathname !== '/' &&
+        location.pathname !== '/signup' &&
+        location.pathname !== '/role' &&
+        location.pathname !== '/profile' && <Nav />
+    )
 }
 
+
 function App() {
-    const [error, setError] = useState(null)
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false)
-
-    useEffect(() => {
-        const isAuthenticated = () => {
-            // return localStorage.getItem('token') !== null
-            return true
-        }
-
-        try {
-            setError(null)
-            setIsLoggedIn(isAuthenticated())
-        } catch (error) {
-            setError(error.message)
-        }
-    }, [])
+    const [error] = useState(null)
 
     return (
         <>
             <UserProvider>
                 <BrowserRouter>
                     <div className="App">
-                        <Navigation isLoggedIn={isLoggedIn} />
+                        <Navigation />
                         <ErrorNotification error={error} />
                         <Routes>
                             <Route path="/" element={<Construct />} />
@@ -110,7 +85,7 @@ function App() {
                             {/* User Routes */}
                             <Route
                                 path="/home"
-                                element={<HomePage isLoggedIn={isLoggedIn} />}
+                                element={<HomePage />}
                             />
                             <Route path="/user" element={<UsersList />} />
                             <Route path="/role" element={<AssignRole />} />
@@ -139,19 +114,13 @@ function App() {
                                 <Route
                                     path="create"
                                     element={
-                                        <ShopCreate isLoggedIn={isLoggedIn} />
+                                        <ShopCreate />
                                     }
                                 />
                                 <Route
                                     path="list"
                                     element={
-                                        <ShopsList isLoggedIn={isLoggedIn} />
-                                    }
-                                />
-                                <Route
-                                    path="details"
-                                    element={
-                                        <ShopDetails isLoggedIn={isLoggedIn} />
+                                        <ShopsList />
                                     }
                                 />
                             </Route>
@@ -162,29 +131,13 @@ function App() {
                                     element={<CreateProduct />}
                                 />
                                 <Route path="list" element={<ProductsList />} />
+                            </Route>
                                 <Route path="all" element={<AllProducts />} />
                                 {/* Demo Routes */}
                                 <Route
                                     path="signup1"
                                     element={<SignUpForm />}
                                 />
-                                <Route
-                                    path="create1"
-                                    element={
-                                        <TestProductCreate
-                                            isLoggedIn={isLoggedIn}
-                                        />
-                                    }
-                                />
-                                <Route
-                                    path="list1"
-                                    element={
-                                        <TestProductsList
-                                            isLoggedIn={isLoggedIn}
-                                        />
-                                    }
-                                />
-                            </Route>
                             {/* Orders Routes */}
                             <Route path="/orders">
                                 <Route path="list" element={<OrderList />} />
