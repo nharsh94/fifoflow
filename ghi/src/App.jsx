@@ -32,7 +32,6 @@ import CreateCustomer from './CreateCustomer'
 }
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
-import ShopDetails from './ShopDetails'
 {
     /* Product Routes */
 }
@@ -44,11 +43,7 @@ import AllProducts from './AllProducts'
 }
 import OrderList from './OrderList'
 import OrderCreate from './OrderCreate'
-import OrderHistory from './OrderHistory'
-{
-    /* Demo Routes */
-}
-import SignUpForm from './TestSignUpForm'
+import OrderHistory from './OrdersHistory'
 
 function Navigation() {
     const location = useLocation()
@@ -109,10 +104,6 @@ function App() {
                             <Route path="/shops">
                                 <Route path="create" element={<ShopCreate />} />
                                 <Route path="list" element={<ShopsList />} />
-                                <Route
-                                    path="details"
-                                    element={<ShopDetails />}
-                                />
                             </Route>
                             {/* Products Routes */}
                             <Route path="/products">
@@ -122,11 +113,6 @@ function App() {
                                 />
                                 <Route path="list" element={<ProductsList />} />
                                 <Route path="all" element={<AllProducts />} />
-                                {/* Demo Routes */}
-                                <Route
-                                    path="signup1"
-                                    element={<SignUpForm />}
-                                />
                             </Route>
                             {/* Orders Routes */}
                             <Route path="/orders">

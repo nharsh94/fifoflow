@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Table from 'react-bootstrap/Table'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+
 function ProfileDatabase() {
     const [profiles, setProfiles] = useState([])
 
@@ -20,25 +21,29 @@ function ProfileDatabase() {
 
     return (
         <>
-            <h1>Profiles</h1>
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Role Assigned</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {profiles.map((profile) => (
-                        <tr key={profile.id}>
-                            <td>{profile.first_name}</td>
-                            <td>{profile.last_name}</td>
-                            <td>{profile.role}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
+            <div className="container-list">
+                <div className="signup-form-wrapper custom-shadow1">
+                    <h1>Profiles</h1>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Role Assigned</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {profiles.map((profile) => (
+                                <tr key={profile.id}>
+                                    <td>{profile.first_name}</td>
+                                    <td>{profile.last_name}</td>
+                                    <td>{profile.role}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
+            </div>
         </>
     )
 }
