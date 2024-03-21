@@ -52,6 +52,7 @@ function OrderList() {
             },
         }
         await fetch(url, cancelConfig)
+        toast.success('Order cancelled successfully')
         const producturl = `http://localhost:8000/api/products/${order.product_id}`
         const productresponse = await fetch(producturl)
         if (productresponse.ok) {
@@ -73,8 +74,8 @@ function OrderList() {
                     }
                     return ordermap
                 })
-            )
-        }
+                )
+            }
     }
     const handleApprove = async (order) => {
         const url = `http://localhost:8000/api/orders/${order.order_id}`
@@ -89,6 +90,7 @@ function OrderList() {
             },
         }
         await fetch(url, cancelConfig)
+        toast.success('Order approved successfully')
         setOrders((prevOrders) =>
             prevOrders.map((ordermap) => {
                 if (ordermap.order_id === order.order_id) {
