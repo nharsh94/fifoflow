@@ -141,5 +141,5 @@ class ProductRepository:
             category=record[5],
             supplier_id=record[6],
             alert_threshold=record[7],
-            deleted_flag=record[8],
+            deleted_flag=record[8]
         )
