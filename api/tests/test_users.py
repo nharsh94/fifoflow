@@ -3,8 +3,14 @@ from unittest.mock import MagicMock
 from utils.authentication import verify_password, hash_password, generate_jwt
 from models.users import UserWithPw
 import os
+from psycopg_pool import ConnectionPool
+
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable is not set")
+
+pool = ConnectionPool(DATABASE_URL)
 
 
 @pytest.fixture
