@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Navigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -67,7 +66,7 @@ const stateOptions = [
     { label: 'U.S. Virgin Islands', value: 'VI' },
 ]
 
-function ShopCreate({ isLoggedIn }) {
+function ShopCreate() {
     const [formData, setFormData] = useState({
         shop_name: '',
         street_address: '',
@@ -76,14 +75,6 @@ function ShopCreate({ isLoggedIn }) {
         zip_code: '',
         phone: '',
     })
-
-    if (!isLoggedIn) {
-        return <Navigate to="/" replace />
-    }
-
-    if (!isLoggedIn) {
-        return <Navigate to="/" replace />
-    }
 
     const handleStateChange = (e) => {
         const selectedValue = e.target.value

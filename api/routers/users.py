@@ -9,6 +9,7 @@ from utils.authentication import (
 )
 from queries.user_database import UserQueries
 from models.users import UserRequest, UserResponse, UserWithPw
+from models.userdata import UserData
 from utils.exceptions import UserDatabaseException
 from datetime import datetime, timedelta
 
@@ -117,3 +118,12 @@ async def signout():
 @router.get("/check-token")
 async def check_token(token: str = Depends(get_current_user)):
     return {"message": "Token is valid"}
+
+
+@router.get("/{username}")
+def getall_userdata(username: str, repo: UserQueries = Depends()) -> UserData:
+    userData = repo.get_all_data(username)
+    if not userData:
+        raise HTTPException(status_code=404,
+                            detail="No username matching found")
+    return userData

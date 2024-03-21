@@ -34,7 +34,7 @@ export default function SignUpUserForm() {
             if (data.user_id) {
                 // Updated condition to check for user_id
                 navigate('/role', {
-                    state: { user_id: data.user_id, username: data.username },
+                    state: { user_id: data.user_id, username: username },
                 })
             } else {
                 throw new Error('User ID not found in response')
