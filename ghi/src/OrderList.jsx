@@ -50,13 +50,11 @@ function OrderList() {
         getOrderData(), getProductData(), getShopData(), getUserData()
     }, [])
 
-    const handleCancel = async (id) => {
-        const url = `http://localhost:8000/api/orders/${id}`
-        console.log(url)
+    const handleCancel = async (order) => {
+        const url = `http://localhost:8000/api/orders/${order.order_id}`
         const response = await fetch(url)
         const data = await response.json()
         data['status'] = 'cancelled'
-        console.log('this is happening in handleCancel', data)
         const cancelConfig = {
             method: 'PUT',
             body: JSON.stringify(data),
@@ -66,23 +64,36 @@ function OrderList() {
         }
         await fetch(url, cancelConfig)
 
-        setOrders((prevOrders) =>
-            prevOrders.map((order) => {
-                if (order.order_id === id) {
-                    return { ...order, status: 'cancelled' }
+        const producturl = `http://localhost:8000/api/products/${order.product_id}`
+        const productresponse = await fetch(producturl)
+        if (productresponse.ok) {
+            const productdata = await productresponse.json()
+            productdata['quantity_in_stock'] = productdata['quantity_in_stock'] + order.quantity
+            const updateConfig = {
+                method: 'PUT',
+                body: JSON.stringify(productdata),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+            await fetch(producturl, updateConfig)
+
+            setOrders((prevOrders) =>
+            prevOrders.map((ordermap) => {
+                if (ordermap.order_id === order.order_id) {
+                    return { ...ordermap, status: 'cancelled' }
                 }
-                return order
+                return ordermap
             })
-        )
+            )
+        }
     }
 
     const handleApprove = async (id) => {
         const url = `http://localhost:8000/api/orders/${id}`
-        console.log(url)
         const response = await fetch(url)
         const data = await response.json()
         data['status'] = 'approved'
-        console.log('this is happening in handleApprove', data)
         const cancelConfig = {
             method: 'PUT',
             body: JSON.stringify(data),
@@ -93,9 +104,9 @@ function OrderList() {
         await fetch(url, cancelConfig)
 
         setOrders((prevOrders) =>
-            prevOrders.map((order) => {
-                if (order.order_id === id) {
-                    return { ...order, status: 'approved' }
+            prevOrders.map((ordermap) => {
+                if (ordermap.order_id === order.order_id) {
+                    return { ...ordermap, status: 'approved' }
                 }
                 return order
             })
@@ -200,7 +211,7 @@ function OrderList() {
                                             <Button
                                                 variant="danger"
                                                 onClick={() =>
-                                                    handleCancel(order.order_id)
+                                                    handleCancel(order)
                                                 }
                                             >
                                                 Cancel

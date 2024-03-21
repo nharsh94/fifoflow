@@ -61,7 +61,6 @@ function App() {
     const [error] = useState(null)
 
     return (
-        <>
             <UserProvider>
                 <BrowserRouter>
                     <div className="App">
@@ -127,8 +126,8 @@ function App() {
                                     element={<CreateProduct />}
                                 />
                                 <Route path="list" element={<ProductsList />} />
-                            </Route>
                                 <Route path="all" element={<AllProducts />} />
+                            </Route>
                             {/* Orders Routes */}
                             <Route path="/orders">
                                 <Route path="list" element={<OrderList />} />
@@ -150,7 +149,6 @@ function App() {
                     </div>
                 </BrowserRouter>
             </UserProvider>
-        </>
     )
 }
 export default App
