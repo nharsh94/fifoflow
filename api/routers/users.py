@@ -119,9 +119,11 @@ async def signout():
 async def check_token(token: str = Depends(get_current_user)):
     return {"message": "Token is valid"}
 
+
 @router.get("/{username}")
-def getall_userdata(username:str, repo:UserQueries = Depends())-> UserData:
+def getall_userdata(username: str, repo: UserQueries = Depends())-> UserData:
     userData = repo.get_all_data(username)
     if not userData:
-        raise HTTPException(status_code=404, detail="No username matching found")
+        raise HTTPException(status_code=404,
+                            detail="No username matching found")
     return userData
