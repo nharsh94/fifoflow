@@ -167,4 +167,4 @@ def test_delete_shop():
     app.dependency_overrides = {}
 
     assert response.status_code == 200
-    assert response.json() == True
+    assert response.json() is True
