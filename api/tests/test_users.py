@@ -1,15 +1,18 @@
-import os
 import pytest
 from unittest.mock import MagicMock
 from utils.authentication import verify_password, hash_password, generate_jwt
 from models.users import UserWithPw
-from psycopg_pool import ConnectionPool
+from queries.pool import pool
 
-DATABASE_URL = os.environ.get(
-    "DATABASE_URL", "postgresql://packit1:packit@postgres/packit"
-)
 
-pool = ConnectionPool(DATABASE_URL)
+def test_database_connection():
+    # Now you can use the pool instance directly in your test
+    with pool.connection() as conn:
+        # Perform database operations using the connection
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users")
+        result = cursor.fetchall()
+        assert len(result) == 0  # Example assertion
 
 
 @pytest.fixture
