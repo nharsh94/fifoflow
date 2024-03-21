@@ -1,11 +1,13 @@
+import os
 import pytest
 from unittest.mock import MagicMock
 from utils.authentication import verify_password, hash_password, generate_jwt
 from models.users import UserWithPw
 from psycopg_pool import ConnectionPool
 
-
-DATABASE_URL = "postgresql://packit1:packit@postgres/packit"
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL", "postgresql://packit1:packit@postgres/packit"
+)
 
 pool = ConnectionPool(DATABASE_URL)
 
