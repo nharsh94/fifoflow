@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
+import { Navigate } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
+
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
@@ -212,113 +214,112 @@ function ProductsList() {
 
     return (
         <>
-            <div>
-                <h1>Products</h1>
-                <SearchComponent value={searchQuery} onChange={handleSearch} />
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        alignItems: 'center',
-                        marginBottom: '10px',
-                        paddingRight: '10px',
-                    }}
-                >
-                    <span
-                        style={{ marginRight: '5px', cursor: 'pointer' }}
-                        onClick={handleResetSort}
+            <div className="container-list">
+                <div className="signup-form-wrapper custom-shadow1">
+                    <h1>Products in Flow</h1>
+                    <SearchComponent
+                        value={searchQuery}
+                        onChange={handleSearch}
+                    />
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                            marginBottom: '10px',
+                            paddingRight: '10px',
+                        }}
                     >
-                        Reset
-                    </span>
-                    <i
-                        className="bi bi-funnel-fill"
-                        onClick={handleResetSort}
-                        style={{ cursor: 'pointer' }}
-                    ></i>
-                </div>
-                <Table responsive striped bordered hover>
-                    <thead>
-                        <tr>
-                            <Sort
-                                label="Product ID"
-                                onClick={() => requestSort('product_id')}
-                                sortConfig={sortConfig}
-                                field="product_id"
-                            />
-                            <Sort
-                                label="Name"
-                                onClick={() => requestSort('name')}
-                                sortConfig={sortConfig}
-                                field="name"
-                            />
-                            <Sort
-                                label="Price"
-                                onClick={() => requestSort('price')}
-                                sortConfig={sortConfig}
-                                field="price"
-                            />
-                            <Sort
-                                label="Description"
-                                onClick={() => requestSort('description')}
-                                sortConfig={sortConfig}
-                                field="description"
-                            />
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentProducts.map((product) => (
-                            <tr key={product.product_id}>
-                                <td>{product.product_id}</td>
-                                <td>{product.name}</td>
-                                <td>{`$${product.price}`}</td>
-                                <td>{product.description}</td>
-                                <td>
-                                    {product.description &&
-                                    product.category &&
-                                    product.alert_threshold &&
-                                    (product.quantity_in_stock > 1 ||
-                                        product.quantity_in_stock === '') ? (
-                                        <Button
-                                            variant="success"
-                                            onClick={() =>
-                                                handleShowModal(product)
-                                            }
-                                        >
-                                            Details
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            variant="primary"
-                                            onClick={() =>
-                                                handleShowModal(product)
-                                            }
-                                        >
-                                            Edit
-                                        </Button>
-                                    )}
-                                </td>
+                        <span
+                            style={{ marginRight: '5px', cursor: 'pointer' }}
+                            onClick={handleResetSort}
+                        >
+                            Reset
+                        </span>
+                        <i
+                            className="bi bi-funnel-fill"
+                            onClick={handleResetSort}
+                            style={{ cursor: 'pointer' }}
+                        ></i>
+                    </div>
+                    <Table responsive striped bordered hover>
+                        <thead>
+                            <tr>
+                                <Sort
+                                    label="Product ID"
+                                    onClick={() => requestSort('product_id')}
+                                    sortConfig={sortConfig}
+                                    field="product_id"
+                                />
+                                <Sort
+                                    label="Name"
+                                    onClick={() => requestSort('name')}
+                                    sortConfig={sortConfig}
+                                    field="name"
+                                />
+                                <Sort
+                                    label="Price"
+                                    onClick={() => requestSort('price')}
+                                    sortConfig={sortConfig}
+                                    field="price"
+                                />
+                                <Sort
+                                    label="Description"
+                                    onClick={() => requestSort('description')}
+                                    sortConfig={sortConfig}
+                                    field="description"
+                                />
+                                <th>Action</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </Table>
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePaginationClick}
-                />
+                        </thead>
+                        <tbody>
+                            {currentProducts.map((product) => (
+                                <tr key={product.product_id}>
+                                    <td>{product.product_id}</td>
+                                    <td>{product.name}</td>
+                                    <td>{`$${product.price}`}</td>
+                                    <td>{product.description}</td>
+                                    <td>
+                                        {product.description &&
+                                        product.category &&
+                                        product.alert_threshold &&
+                                        (product.quantity_in_stock > 1 ||
+                                            product.quantity_in_stock ===
+                                                '') ? (
+                                            <Button
+                                                variant="success"
+                                                onClick={() =>
+                                                    handleShowModal(product)
+                                                }
+                                            >
+                                                Details
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                variant="primary"
+                                                onClick={() =>
+                                                    handleShowModal(product)
+                                                }
+                                            >
+                                                Edit
+                                            </Button>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePaginationClick}
+                    />
+                </div>
             </div>
+
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>
-                        {selectedProduct &&
-                        selectedProduct.description &&
-                        selectedProduct.quantity_in_stock &&
-                        selectedProduct.category &&
-                        selectedProduct.alert_threshold
-                            ? 'Product Details'
-                            : 'Edit Product'}
-                    </Modal.Title>
+                    <Modal.Title>Edit Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -336,7 +337,7 @@ function ProductsList() {
                             <Form.Label>Description</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter description"
+                                placeholder="Enter Description"
                                 name="description"
                                 value={selectedProduct?.description || ''}
                                 onChange={handleInputChange}
@@ -345,17 +346,17 @@ function ProductsList() {
                         <Form.Group controlId="formPrice">
                             <Form.Label>Price</Form.Label>
                             <Form.Control
-                                type="text"
-                                placeholder="Enter price"
+                                type="number"
+                                placeholder="Enter phone"
                                 name="price"
                                 value={selectedProduct?.price || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formQuantity">
-                            <Form.Label>Quantity In Stock</Form.Label>
+                        <Form.Group controlId="formQIS">
+                            <Form.Label>Quantity in Stock</Form.Label>
                             <Form.Control
-                                type="int"
+                                type="number"
                                 placeholder="Enter quantity"
                                 name="quantity_in_stock"
                                 value={selectedProduct?.quantity_in_stock || ''}
@@ -366,29 +367,19 @@ function ProductsList() {
                             <Form.Label>Category</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter Category"
+                                placeholder="Enter category"
                                 name="category"
                                 value={selectedProduct?.category || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formSupplier">
-                            <Form.Label>Supplier</Form.Label>
+                        <Form.Group controlId="formShopName">
+                            <Form.Label>Shop Name</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter Supplier"
-                                name="supplier_id"
-                                value={selectedProduct?.supplier_id || ''}
-                                onChange={handleInputChange}
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="formAlert">
-                            <Form.Label>Alert Threshold</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Enter alert threshold"
-                                name="alert_threshold"
-                                value={selectedProduct?.alert_threshold || ''}
+                                placeholder="Enter shop name"
+                                name="shop_name"
+                                value={selectedProduct?.shop_name || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>

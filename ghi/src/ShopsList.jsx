@@ -5,17 +5,19 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
-import Search from './Search'
+import SearchComponent from './Search'
 
-function ShopsList({ isLoggedIn }) {
-    if (!isLoggedIn) {
-        return <Navigate to="/" replace />
-    }
+function ShopsList() {
     const [shops, setShops] = useState([])
     const [selectedShop, setSelectedShop] = useState(null)
     const [showModal, setShowModal] = useState(false)
+    const [sortConfig, setSortConfig] = useState({
+        key: null,
+        direction: 'asc',
+    })
     const [searchQuery, setSearchQuery] = useState('')
-    const [filteredShops, setFilteredShops] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const [productsPerPage] = useState(5)
 
     const getData = async () => {
         try {

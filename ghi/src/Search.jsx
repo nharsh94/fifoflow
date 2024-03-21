@@ -1,11 +1,11 @@
 import { Form } from 'react-bootstrap'
 
-function Search({ value, onChange }) {
+function Search({ value, onChange, placeholder }) {
     return (
         <Form.Group controlId="formSearch">
             <Form.Control
                 type="text"
-                placeholder="Search by product name"
+                placeholder={placeholder}
                 value={value}
                 onChange={onChange}
                 style={{

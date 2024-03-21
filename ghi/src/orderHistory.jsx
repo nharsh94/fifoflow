@@ -69,8 +69,7 @@ function OrderHistory() {
         )
 
         if (
-            product &&
-            order.status === 'cancelled' &&
+            (product && order.status === 'cancelled') ||
             order.status === 'approved'
         ) {
             return product.name.toLowerCase().includes(searchQuery)
@@ -194,7 +193,7 @@ function OrderHistory() {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredOrders.map((order) => {
+                            {currentOrders.map((order) => {
                                 const product = products.find(
                                     (product) =>
                                         product.product_id === order.product_id
@@ -247,5 +246,4 @@ function OrderHistory() {
         </>
     )
 }
-
 export default OrderHistory
