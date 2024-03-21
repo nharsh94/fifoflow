@@ -52,6 +52,7 @@ function Navigation() {
         location.pathname !== '/' &&
         location.pathname !== '/signup' &&
         location.pathname !== '/role' &&
+        location.pathname !== '/forgot-password' &&
         location.pathname !== '/profile' && <Nav />
     )
 }
