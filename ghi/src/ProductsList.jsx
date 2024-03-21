@@ -12,6 +12,7 @@ import SearchComponent from './Search'
 
 function ProductsList() {
     const [products, setProducts] = useState([])
+    const [suppliers, setSuppliers] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
     const [sortConfig, setSortConfig] = useState({
@@ -40,6 +41,22 @@ function ProductsList() {
         } catch (error) {
             console.error('Error fetching products data', error)
         }
+        try {
+            const supplierResponse = await fetch(
+                'http://localhost:8000/api/profile'
+            )
+            if (supplierResponse.ok) {
+                const suppliersData = await supplierResponse.json()
+                const suppliersFiltered = suppliersData.filter(
+                    (user) => user.role === 'Supplier'
+                )
+                setSuppliers(suppliersFiltered)
+            } else {
+                console.error('Failed to fetch suppliers')
+            }
+        } catch (error) {
+            console.error('Error fetch')
+        }
     }
 
     useEffect(() => {
@@ -59,6 +76,7 @@ function ProductsList() {
                 const data = await response.json()
                 setSelectedProduct(data)
                 setShowModal(true)
+                checkAlertThreshold(data)
             } else {
                 throw new Error(
                     `Failed to fetch product details. Status: ${response.status}`
@@ -66,6 +84,37 @@ function ProductsList() {
             }
         } catch (error) {
             console.error('Error fetching product details', error)
+        }
+    }
+
+    const checkAlertThreshold = (product) => {
+        const { alert_threshold, quantity_in_stock, name, product_id } = product
+        if (parseInt(alert_threshold) === quantity_in_stock) {
+            toast.warn(
+                `Product "${name}" (ID: ${product_id}) has reached alert threshold.`,
+                {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                }
+            )
+        } else if (parseInt(alert_threshold) > quantity_in_stock) {
+            toast.error(
+                `Product "${name}" (ID: ${product_id}) quantity in stock is low.`,
+                {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                }
+            )
         }
     }
 
@@ -83,7 +132,6 @@ function ProductsList() {
             )
 
             if (response.ok) {
-                console.log('Product updated successfully:', selectedProduct)
                 handleCloseModal()
                 getData()
             } else {
@@ -114,7 +162,6 @@ function ProductsList() {
             )
 
             if (response.ok) {
-                console.log('Product deleted successfully', selectedProduct)
                 getData()
                 handleCloseModal()
                 toast.dismiss()
@@ -377,9 +424,49 @@ function ProductsList() {
                             <Form.Label>Shop Name</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter shop name"
-                                name="shop_name"
-                                value={selectedProduct?.shop_name || ''}
+                                placeholder="Supplier"
+                                name="supplier_name"
+                                value={
+                                    selectedProduct?.supplier_id
+                                        ? suppliers.find(
+                                              (supplier) =>
+                                                  supplier.user_id ===
+                                                  selectedProduct.supplier_id
+                                          )?.first_name
+                                        : ''
+                                }
+                                readOnly
+                                disabled
+                            />
+                            <Form.Label style={{ marginTop: '5px' }}>
+                                Select a different Supplier
+                            </Form.Label>
+                            <select
+                                value={selectedProduct?.supplier_id || ''}
+                                onChange={handleInputChange}
+                                className="form-control"
+                                name="supplier_id"
+                                required
+                            >
+                                <option value="">Select a Supplier</option>
+                                {suppliers.map((supplier) => (
+                                    <option
+                                        key={supplier.user_id}
+                                        value={supplier.user_id}
+                                    >
+                                        {supplier.first_name}
+                                    </option>
+                                ))}
+                            </select>
+                        </Form.Group>
+
+                        <Form.Group controlId="formAlert">
+                            <Form.Label>Alert Threshold</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter alert threshold"
+                                name="alert_threshold"
+                                value={selectedProduct?.alert_threshold || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
