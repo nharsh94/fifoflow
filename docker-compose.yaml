@@ -14,7 +14,6 @@ services:
             - 15432:5432
     fastapi:
         environment:
-            SIGNING_KEY: aK8C0UNm9BCk9Bu9pPwiKqNL9FU4V/I/7OYd1n6TI+A=
             DATABASE_URL: postgresql://packit1:packit@postgres/packit
             CORS_HOST: http://localhost:5173
         build:
