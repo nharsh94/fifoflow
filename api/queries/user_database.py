@@ -1,13 +1,10 @@
-"""
-Database Queries for Users
-"""
-
 import os
 import psycopg
 from psycopg_pool import ConnectionPool
 from psycopg.rows import class_row
 from typing import Optional
 from models.users import UserWithPw
+from models.userdata import UserData
 from utils.exceptions import UserDatabaseException
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
@@ -34,17 +31,9 @@ class UserQueries:
                         """
                     )
                     users = cur.fetchall()
-        except psycopg.Error as e:
-            print(e)
+        except psycopg.Error:
             raise UserDatabaseException("Error retrieving all users")
         return users
-
-    """
-    Class containing queries for the Users table
-    Can be dependency injected into a route like so
-    def my_route(userQueries: UserQueries = Depends()):
-    Here you can call any of the functions to query the DB
-    """
 
     def get_by_username(self, username: str) -> Optional[UserWithPw]:
         """
@@ -67,8 +56,7 @@ class UserQueries:
                     user = cur.fetchone()
                     if not user:
                         return None
-        except psycopg.Error as e:
-            print(e)
+        except psycopg.Error:
             raise UserDatabaseException(f"Error getting user {username}")
         return user
 
@@ -93,8 +81,7 @@ class UserQueries:
                     user = cur.fetchone()
                     if not user:
                         return None
-        except psycopg.Error as e:
-            print(e)
+        except psycopg.Error:
             raise UserDatabaseException(f"Error getting user with id {id}")
 
         return user
@@ -132,4 +119,32 @@ class UserQueries:
             raise UserDatabaseException(
                 f"Could not create user with username {username}"
             )
+        return user
+
+    def get_all_data(self, username: str) -> Optional[UserData]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor(row_factory=class_row(UserData)) as cur:
+                    cur.execute(
+                        """
+                            SELECT
+                                p.user_id,
+                                u.username,
+                                p.role,
+                                p.first_name,
+                                p.last_name,
+                                p.email,
+                                p.phone
+                            FROM
+                                profiles p
+                                LEFT JOIN users u on p.user_id = u.id
+                            WHERE username = %s
+                            """,
+                        [username],
+                    )
+                    user = cur.fetchone()
+                    if not user:
+                        return None
+        except psycopg.Error:
+            raise UserDatabaseException(f"Error getting user {username}")
         return user
