@@ -1,5 +1,10 @@
 import emailjs from 'emailjs-com'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+import logo from './assets/FIFOFlow_transparent_x1.png'
+import { Link } from 'react-router-dom'
 
 export default function ForgotPassword() {
     function sendPasswordResetEmail(event) {
@@ -23,61 +28,88 @@ export default function ForgotPassword() {
     }
 
     return (
-        <div className="container mt-5">
-            <h2>Forgot Password</h2>
-            <form onSubmit={sendPasswordResetEmail} className="mt-3">
-                <div className="mb-3">
-                    <label htmlFor="from_name" className="form-label">
-                        Name
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="from_name"
-                        name="from_name"
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="from_email" className="form-label">
-                        Email
-                    </label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        id="from_email"
-                        name="from_email"
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="subject" className="form-label">
-                        Subject
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="subject"
-                        name="subject"
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="html_message" className="form-label">
-                        Message
-                    </label>
-                    <textarea
-                        className="form-control"
-                        id="html_message"
-                        name="html_message"
-                        rows="3"
-                        required
-                    ></textarea>
-                </div>
-                <button type="submit" className="btn btn-primary">
-                    Send
-                </button>
-            </form>
-        </div>
+        <>
+            <div className="App">
+                <header className="App-header">
+                    <img className="logo" src={logo} alt="FIFOFlow Logo" />
+                    <h5 className="motto">
+                        An open-source, automated system for managing your
+                        logistical nightmares!
+                    </h5>
+                    <div className="forgot-password-wrapper custom-shadow1">
+                        <div>
+                            <h2>Forgot Password</h2>
+                            <Form
+                                onSubmit={sendPasswordResetEmail}
+                                className="mt-3"
+                            >
+                                <FloatingLabel
+                                    controlId="FloatingName"
+                                    label="Name"
+                                    className="mb-1"
+                                >
+                                    <Form.Control
+                                        type="text"
+                                        name="from_name"
+                                        required
+                                    />
+                                </FloatingLabel>
+                                <FloatingLabel
+                                    controlId="FloatingEmail"
+                                    label="Email"
+                                    className="mb-1"
+                                >
+                                    <Form.Control
+                                        type="email"
+                                        name="from_email"
+                                        required
+                                    />
+                                </FloatingLabel>
+                                <FloatingLabel
+                                    controlId="FloatingSubject"
+                                    label="Subject"
+                                    className="mb-1"
+                                >
+                                    <Form.Control
+                                        type="text"
+                                        name="subject"
+                                        required
+                                    />
+                                </FloatingLabel>
+                                <FloatingLabel
+                                    controlId="FloatingMessage"
+                                    label="message"
+                                    className="mb1"
+                                >
+                                    <Form.Control
+                                        as="textarea"
+                                        className="form-control"
+                                        name="html_message"
+                                        style={{ height: '100px' }}
+                                        required
+                                    />
+                                </FloatingLabel>
+                                <Button
+                                    variant="primary"
+                                    type="submit"
+                                    className="btn mt-2"
+
+                                >
+                                    Send
+                                </Button>
+                            </Form>
+                            <Button
+                                className="btn mt-2"
+                                as={Link}
+                                to="/"
+                                variant="primary"
+                            >
+                                Go Back
+                            </Button>
+                        </div>
+                    </div>
+                </header>
+            </div>
+        </>
     )
 }
