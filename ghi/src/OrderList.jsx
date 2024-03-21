@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import SearchComponent from './Search'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
+import { toast, ToastContainer } from 'react-toastify'
 
 function OrderList() {
     const [orders, setOrders] = useState([])
@@ -63,20 +64,7 @@ function OrderList() {
             },
         }
         await fetch(url, cancelConfig)
-
-        const producturl = `http://localhost:8000/api/products/${order.product_id}`
-        const productresponse = await fetch(producturl)
-        if (productresponse.ok) {
-            const productdata = await productresponse.json()
-            productdata['quantity_in_stock'] = productdata['quantity_in_stock'] + order.quantity
-            const updateConfig = {
-                method: 'PUT',
-                body: JSON.stringify(productdata),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }
-            await fetch(producturl, updateConfig)
+        toast.success('Order cancelled successfully')
 
             setOrders((prevOrders) =>
             prevOrders.map((ordermap) => {
@@ -102,6 +90,7 @@ function OrderList() {
             },
         }
         await fetch(url, cancelConfig)
+        toast.success('Order approved successfully')
 
         setOrders((prevOrders) =>
             prevOrders.map((ordermap) => {
@@ -137,13 +126,14 @@ function OrderList() {
     return (
         <>
             <div className="container-list">
+                <ToastContainer />
                 <div className="signup-form-wrapper custom-shadow1">
                     <h1>Orders</h1>
-                        <SearchComponent
-                            value={searchQuery}
-                            onChange={handleSearch}
-                            placeholder="Search by product name.."
-                        />
+                    <SearchComponent
+                        value={searchQuery}
+                        onChange={handleSearch}
+                        placeholder="Search by product name.."
+                    />
                     <Table responsive striped bordered hover>
                         <thead>
                             <tr>
