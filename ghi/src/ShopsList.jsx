@@ -1,21 +1,26 @@
 import { useEffect, useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
-import Search from './Search'
+import Sort from './Sort'
+import Pagination from './PaginationComponent'
+import SearchComponent from './Search'
 
-function ShopsList({ isLoggedIn }) {
-    if (!isLoggedIn) {
-        return <Navigate to="/" replace />
-    }
+function ShopsList() {
     const [shops, setShops] = useState([])
     const [selectedShop, setSelectedShop] = useState(null)
     const [showModal, setShowModal] = useState(false)
+    const [sortConfig, setSortConfig] = useState({
+        key: null,
+        direction: 'asc',
+    })
     const [searchQuery, setSearchQuery] = useState('')
-    const [filteredShops, setFilteredShops] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const [shopsPerPage] = useState(5)
 
     const getData = async () => {
         try {
@@ -24,7 +29,6 @@ function ShopsList({ isLoggedIn }) {
             if (response.ok) {
                 const data = await response.json()
                 setShops(data)
-                setFilteredShops(data)
             } else {
                 throw new Error(
                     'Failed to fetch data. Status: ${response.status}'
@@ -90,30 +94,49 @@ function ShopsList({ isLoggedIn }) {
     }
 
     const handleDeleteShop = async () => {
-        const confirmDelete = window.confirm(
-            'Are you sure you want to delete this shop?'
-        )
-        if (confirmDelete) {
-            try {
-                const response = await fetch(
-                    `http://localhost:8000/api/shops/${selectedShop.shop_id}`,
-                    {
-                        method: 'DELETE',
-                    }
-                )
+        toast.warn(<Msg />, {
+            position: 'top-center',
+            autoClose: false,
+            closeButton: false,
+            draggable: false,
+            closeOnClick: false,
+        })
+    }
 
-                if (response.ok) {
-                    console.log('Shop deleted successfully', selectedShop)
-                    getData()
-                    handleCloseModal()
-                } else {
-                    throw new Error(
-                        `Failed to delete shop. Status: ${response.status}`
-                    )
+    const Msg = ({ closeToast }) => (
+        <div>
+            Are you sure you want to delete this shop?
+            <br />
+            <button className={'btn btn-primary'} onClick={handleDeleteConfirmation}>
+                Yes
+            </button>
+            <button className={'btn btn-danger'} onClick={closeToast}>
+                No
+            </button>
+        </div>
+    )
+
+    const handleDeleteConfirmation = async () => {
+        try {
+            const response = await fetch(
+                `http://localhost:8000/api/shops/${selectedShop.shop_id}`,
+                {
+                    method: 'DELETE',
                 }
-            } catch (error) {
-                console.error('Error deleting shop', error)
+            )
+
+            if (response.ok) {
+                console.log('Shop deleted successfully', selectedShop)
+                getData()
+                handleCloseModal()
+                toast.success('Shop deleted successfully')
+            } else {
+                throw new Error(
+                    `Failed to delete shop. Status: ${response.status}`
+                )
             }
+        } catch (error) {
+            console.error('Error deleting shop', error)
         }
     }
 
@@ -122,34 +145,119 @@ function ShopsList({ isLoggedIn }) {
         setSelectedShop((prevShop) => ({ ...prevShop, [name]: value }))
     }
 
-    const handleSearch = (e) => {
-        const query = e.target.value.toLowerCase()
-        setSearchQuery(query)
-
-        const filteredShops = shops.filter((shop) =>
-            shop.shop_name.toLowerCase().includes(query)
-        )
-        // Update state with filtered products
-        setFilteredShops(filteredShops)
+    const requestSort = (key) => {
+        let direction = 'asc'
+        if (
+            sortConfig &&
+            sortConfig.key === key &&
+            sortConfig.direction === 'asc'
+        ) {
+            direction = 'desc'
+        }
+        setSortConfig({ key, direction })
     }
+    const handleResetSort = () => {
+        setSortConfig({
+            key: null,
+            direction: 'asc',
+        })
+    }
+
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value)
+    }
+
+
+    const filteredShops = shops.filter((shop) =>
+        shop.shop_name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+
+    const sortedShops = [...filteredShops].sort((a, b) => {
+        if (sortConfig && sortConfig.key) {
+            if (a[sortConfig.key] < b[sortConfig.key]) {
+                return sortConfig.direction === 'asc' ? -1 : 1
+            }
+            if (a[sortConfig.key] > b[sortConfig.key]) {
+                return sortConfig.direction === 'asc' ? 1 : -1
+            }
+        }
+        return 0
+    })
+
+    const indexOfLastShop = currentPage * shopsPerPage
+    const indexOfFirstShop = indexOfLastShop - shopsPerPage
+    const currentShops = sortedShops.slice(
+        indexOfFirstShop,
+        indexOfLastShop
+    )
+
+    const totalPages = Math.ceil(filteredShops.length / shopsPerPage)
+
+    const handlePaginationClick = (pageNumber) => setCurrentPage(pageNumber)
 
     return (
         <>
             <div className="container-list">
                 <div className="signup-form-wrapper custom-shadow1">
                     <h1>Shops</h1>
+                    <SearchComponent
+                        value={searchQuery}
+                        onChange={handleSearch}
+                        placeholder="Search by shop name.."
+                    />
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                            marginBottom: '10px',
+                            paddingRight: '10px',
+                        }}
+                    >
+                        <span
+                            style={{ marginRight: '5px', cursor: 'pointer' }}
+                            onClick={handleResetSort}
+                        >
+                            Reset
+                        </span>
+                        <i
+                            className="bi bi-funnel-fill"
+                            onClick={handleResetSort}
+                            style={{ cursor: 'pointer' }}
+                        ></i>
+                    </div>
                     <Table striped bordered hover>
                         <thead>
                             <tr>
-                                <th>Shop ID</th>
-                                <th>Name</th>
-                                <th>Address</th>
-                                <th>Phone</th>
+                                <Sort
+                                    label="Shop ID"
+                                    onClick={() => requestSort('shop_id')}
+                                    sortConfig={sortConfig}
+                                    field="shop_id"
+                                />
+                                <Sort
+                                    label="Name"
+                                    onClick={() => requestSort('shop_name')}
+                                    sortConfig={sortConfig}
+                                    field="shop_name"
+                                />
+                                <Sort
+                                    label="Address"
+                                    onClick={() => requestSort('address')}
+                                    sortConfig={sortConfig}
+                                    field="address"
+                                />
+                                <Sort
+                                    label="Phone"
+                                    onClick={() => requestSort('phone')}
+                                    sortConfig={sortConfig}
+                                    field="phone"
+                                />
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {shops.map((shop) => {
+                            {currentShops.map((shop) => {
                                 return (
                                     <tr key={shop.shop_id}>
                                         <td>{shop.shop_id}</td>
@@ -171,6 +279,11 @@ function ShopsList({ isLoggedIn }) {
                             })}
                         </tbody>
                     </Table>
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePaginationClick}
+                    />
                 </div>
             </div>
 
@@ -224,6 +337,7 @@ function ShopsList({ isLoggedIn }) {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            <ToastContainer />
         </>
     )
 }

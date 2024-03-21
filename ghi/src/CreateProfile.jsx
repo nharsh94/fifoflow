@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useUser } from './UserContext'
+import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+
+import logo from './assets/FIFOFlow_transparent_x1.png'
 
 export default function CreateProfile() {
     const { setUserData } = useUser()
@@ -17,6 +22,7 @@ export default function CreateProfile() {
         email: '',
         phone: '',
     })
+    console.log(username)
 
     const [error, setError] = useState('')
 
@@ -49,25 +55,37 @@ export default function CreateProfile() {
                 throw new Error(errorData.message || 'Failed to create profile')
             }
 
-            const responseData = await response.json()
-            localStorage.setItem(
-                'userData',
-                JSON.stringify({
-                    user_id: user_id,
-                    username: username,
-                    first_name: responseData.first_name,
-                    last_name: responseData.last_name,
-                    role: role_name,
-                })
+            const userDataResponse = await fetch(
+                `http://localhost:8000/api/user/${username}`
             )
 
-            setUserData({
-                user_id: user_id,
-                username: username,
-                first_name: responseData.first_name,
-                last_name: responseData.last_name,
-                role: role_name,
-            })
+            const userData = await userDataResponse.json()
+
+            console.log('I am the response', userData)
+
+            if (userDataResponse.ok) {
+                localStorage.setItem(
+                    'userData',
+                    JSON.stringify({
+                        user_id: userData.user_id,
+                        username: userData.username,
+                        role: userData.role,
+                        first_name: userData.first_name,
+                        last_name: userData.last_name,
+                        email: userData.email,
+                        phone: userData.phone,
+                    })
+                )
+                setUserData({
+                    user_id: userData.user_id,
+                    username: userData.username,
+                    role: userData.role,
+                    first_name: userData.first_name,
+                    last_name: userData.last_name,
+                    email: userData.email,
+                    phone: userData.phone,
+                })
+            }
 
             navigate('/home')
         } catch (error) {
@@ -76,60 +94,101 @@ export default function CreateProfile() {
     }
 
     return (
-        <div className="container mt-5">
-            <form onSubmit={handleFormSubmit}>
-                {error && <div className="alert alert-danger">{error}</div>}
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        name="first_name"
-                        className="form-control create-profile-input"
-                        placeholder="First Name"
-                        value={profileData.first_name}
-                        onChange={handleChange}
-                        required
-                    />
+        <div className="App">
+            <header className="App-header">
+                <img className="logo" src={logo} alt="FIFOFlow Logo" />
+                <h5 className="motto">
+                    An open-source, automated system for managing your
+                    logistical nightmares!
+                </h5>
+                <div className="signup-form-wrapper custom-shadow1">
+                    <div>
+                        <h2 className="account">Create an account</h2>
+                        <Form onSubmit={handleFormSubmit}>
+                            {error && (
+                                <div className="alert alert-danger">
+                                    {error}
+                                </div>
+                            )}
+                            <FloatingLabel
+                                controlId="FloatingFirstName"
+                                label="First Name"
+                                className="mb-1"
+                            >
+                                <Form.Control
+                                    type="text"
+                                    name="first_name"
+                                    className="form-control create-profile-input"
+                                    placeholder="First Name"
+                                    value={profileData.first_name}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </FloatingLabel>
+                            <FloatingLabel
+                                controlId="FloatingLastName"
+                                label="Last Name"
+                                className="mb-1"
+                            >
+                                <input
+                                    type="text"
+                                    name="last_name"
+                                    className="form-control create-profile-input"
+                                    placeholder="Last Name"
+                                    value={profileData.last_name}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </FloatingLabel>
+                            <FloatingLabel
+                                controlId="FloatingFirstName"
+                                label="Email"
+                                className="mb-1"
+                            >
+                                <input
+                                    type="email"
+                                    name="email"
+                                    className="form-control create-profile-input"
+                                    placeholder="Email"
+                                    value={profileData.email}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </FloatingLabel>
+                            <FloatingLabel
+                                controlId="FloatingFirstName"
+                                label="Phone"
+                                className="mb-1"
+                            >
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    className="form-control create-profile-input"
+                                    placeholder="Phone"
+                                    value={profileData.phone}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </FloatingLabel>
+                            <Button
+                                className="btn btn-outline-light mt-1"
+                                variant="primary"
+                                size="sm"
+                                id="account-btn"
+                                data-replace=""
+                                type="submit"
+                            >
+                                Create Profile
+                            </Button>
+                        </Form>
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        name="last_name"
-                        className="form-control create-profile-input"
-                        placeholder="Last Name"
-                        value={profileData.last_name}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <input
-                        type="email"
-                        name="email"
-                        className="form-control create-profile-input"
-                        placeholder="Email"
-                        value={profileData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        name="phone"
-                        className="form-control create-profile-input"
-                        placeholder="Phone"
-                        value={profileData.phone}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <button
-                    type="submit"
-                    className="btn btn-primary btn-create-profile"
-                >
-                    Create Profile
-                </button>
-            </form>
+                <h6 className="terms">
+                    By signing up, you agree to our <a href="#">Terms</a>,{' '}
+                    <a href="#">Privacy Policy</a>, and{' '}
+                    <a href="#">Cookies Policy</a>.
+                </h6>
+            </header>
         </div>
     )
 }
