@@ -104,9 +104,9 @@ function OrderList() {
         await fetch(url, cancelConfig)
 
         setOrders((prevOrders) =>
-            prevOrders.map((order) => {
-                if (order.order_id === id) {
-                    return { ...order, status: 'approved' }
+            prevOrders.map((ordermap) => {
+                if (ordermap.order_id === order.order_id) {
+                    return { ...ordermap, status: 'approved' }
                 }
                 return order
             })
@@ -211,7 +211,7 @@ function OrderList() {
                                             <Button
                                                 variant="danger"
                                                 onClick={() =>
-                                                    handleCancel(order.order_id)
+                                                    handleCancel(order)
                                                 }
                                             >
                                                 Cancel

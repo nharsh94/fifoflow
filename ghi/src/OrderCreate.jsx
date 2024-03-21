@@ -90,41 +90,24 @@ function OrderCreate() {
             if  (productdata['quantity_in_stock'] < 0) {
                 return {'message': 'not enough product in stock'}
             }
-            const updateConfig = {
-                method: 'PUT',
-                body: JSON.stringify(productdata),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }
-            await fetch(producturl, updateConfig)
-
-        const producturl = `http://localhost:8000/api/products/${product.product_id}`
-        const productresponse = await fetch(producturl)
-        if (productresponse.ok) {
-            const productdata = await productresponse.json()
-            productdata['quantity_in_stock'] = productdata['quantity_in_stock'] - newFormData.quantity
-            if  (productdata['quantity_in_stock'] < 0) {
-                return {'message': 'not enough product in stock'}
-            }
-            const updateConfig = {
-                method: 'PUT',
-                body: JSON.stringify(productdata),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }
-            await fetch(producturl, updateConfig)
-
-        const fetchConfig = {
+            const fetchConfig = {
             method: 'POST',
             body: JSON.stringify(newFormData),
             headers: {
                 'Content-Type': 'application/json',
             },
         }
-        const response = await fetch(url, fetchConfig)
-        if (response.ok) {
+            const response = await fetch(url, fetchConfig)
+            if (response.ok) {
+            const updateConfig = {
+                method: 'PUT',
+                body: JSON.stringify(productdata),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+            await fetch(producturl, updateConfig)
+
             setFormData({
                 shop_id: '',
                 user_id: '',
@@ -135,7 +118,7 @@ function OrderCreate() {
             })
         }
     }
-
+        }
     useEffect(() => {
         getOrderData(), getProductData(), getShopData(), getUserData()
     }, [])
@@ -167,32 +150,6 @@ function OrderCreate() {
                                         value={shop.shop_id}
                                     >
                                         {shop.shop_name}
-                                    </option>
-                                )
-                            })}
-                        </Form.Select>
-                    </FloatingLabel>
-                    <FloatingLabel
-                        controlId="FloatingUser"
-                        label="User"
-                        className="mb-1 custom-shadow"
-                    >
-                        <Form.Select
-                            onChange={handleFormChange}
-                            value={formData.user_id}
-                            required
-                            name="user_id"
-                        >
-                            <option value="" disabled>
-                                Select User
-                            </option>
-                            {users.map((user) => {
-                                return (
-                                    <option
-                                        key={user.user_id}
-                                        value={user.user_id}
-                                    >
-                                        {user.user_id}
                                     </option>
                                 )
                             })}
