@@ -46,8 +46,39 @@ function Construct() {
 
             const authData = await response.json()
 
-            localStorage.setItem('access_token', authData.access_token)
+            const userDataResponse = await fetch(
+                `http://localhost:8000/api/user/${username}`
+            )
 
+            const userData = await userDataResponse.json()
+
+            console.log('I am the response', userData)
+
+            if (userDataResponse.ok) {
+                localStorage.setItem(
+                    'userData',
+                    JSON.stringify({
+                        user_id: userData.user_id,
+                        username: userData.username,
+                        role: userData.role,
+                        first_name: userData.first_name,
+                        last_name: userData.last_name,
+                        email: userData.email,
+                        phone: userData.phone,
+                        access_token: authData.access_token,
+                    })
+                )
+                setUserData({
+                    user_id: userData.user_id,
+                    username: userData.username,
+                    role: userData.role,
+                    first_name: userData.first_name,
+                    last_name: userData.last_name,
+                    email: userData.email,
+                    phone: userData.phone,
+                    access_token: authData.access_token,
+                })
+            }
             console.log('Login successful:', authData)
             navigate('/home')
         } catch (error) {
