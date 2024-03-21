@@ -18,4 +18,6 @@ journal
 
         3/18/2024 - added buttons to update orders to "approved", "cancelled", and "update"
 
-        3/20/2024 - started work on unit test
+        3/20/2024 - made it so when making/canceling orders it would add/subtract from total product
+
+        3/21/2024 - started work on unit test
