@@ -1,4 +1,3 @@
-import os
 import psycopg
 from queries.pool import pool
 from psycopg.rows import class_row
