@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
 import Form from 'react-bootstrap/Form'
@@ -65,7 +67,6 @@ const stateOptions = [
 ]
 
 function ShopCreate() {
-    const [formSuccess, setFormSuccess] = useState(false)
     const [formData, setFormData] = useState({
         shop_name: '',
         street_address: '',
@@ -100,6 +101,7 @@ function ShopCreate() {
         }
         const response = await fetch(url, fetchConfig)
         if (response.ok) {
+            toast.success('Shop successfully added!')
             setFormData({
                 shop_name: '',
                 street_address: '',
@@ -108,7 +110,6 @@ function ShopCreate() {
                 zip_code: '',
                 phone: '',
             })
-            setFormSuccess(true)
         }
     }
 
@@ -132,31 +133,28 @@ function ShopCreate() {
             [inputName]: value,
         }))
     }
-    let messageClasses = 'alert alert-success d-none mb-0'
-    let formClasses = ''
-    if (formSuccess) {
-        messageClasses = 'alert alert-success mb-0'
-        formClasses = 'd-none'
-    }
+
     return (
         <>
-            <div>
-                <h1>Add Shop to Flow</h1>
-                <Form
-                    onSubmit={handleSubmit}
-                    id="create-shop-form"
-                    className="center-form"
-                >
-                    <div className="mb-3">
+            <div className="container">
+                <ToastContainer />
+                <div className="create-shop-wrapper custom-shadow1">
+                    <h1>Add Shop to Flow</h1>
+                    <Form
+                        onSubmit={handleSubmit}
+                        id="create-shop-form"
+                        className="center-form mb-1"
+                    >
                         <FloatingLabel
                             controlId="FloatingInput"
                             label="Shop Name"
-                            className="mb-3"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Control
                                 type="text"
                                 placeholder="shop_name"
                                 value={formData.shop_name}
+                                required
                                 onChange={(e) =>
                                     handleFormChange(e, 'shop_name')
                                 }
@@ -165,12 +163,13 @@ function ShopCreate() {
                         <FloatingLabel
                             controlId="FloatingStreetAddress"
                             label="Street Address"
-                            className="mb-3"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Control
                                 type="text"
                                 placeholder="street_address"
                                 value={formData.street_address}
+                                required
                                 onChange={(e) =>
                                     handleFormChange(e, 'street_address')
                                 }
@@ -179,22 +178,24 @@ function ShopCreate() {
                         <FloatingLabel
                             controlId="FloatingCity"
                             label="City"
-                            className="mb-3"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Control
                                 type="text"
                                 placeholder="city"
                                 value={formData.city}
+                                required
                                 onChange={(e) => handleFormChange(e, 'city')}
                             />
                         </FloatingLabel>
                         <FloatingLabel
                             controlId="FloatingState"
                             label="State"
-                            className="mb-3"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Select
                                 value={formData.selectedState}
+                                required
                                 onChange={(e) => handleStateChange(e)}
                             >
                                 <option value="" disabled>
@@ -213,40 +214,43 @@ function ShopCreate() {
                         <FloatingLabel
                             controlId="FloatingZipCode"
                             label="Zip Code"
-                            className="mb-3"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Control
                                 type="text"
                                 placeholder="zip_code"
                                 value={formData.zip_code}
+                                required
                                 onChange={(e) =>
                                     handleFormChange(e, 'zip_code')
                                 }
                             />
                         </FloatingLabel>
-                        <FloatingLabel controlId="phone" label="Phone">
+                        <FloatingLabel
+                            controlId="phone"
+                            label="Phone"
+                            className="mb-1 custom-shadow"
+                        >
                             <Form.Control
                                 type="tel"
                                 placeholder="phone"
                                 value={formData.phone}
+                                required
                                 onChange={(e) => handleFormChange(e, 'phone')}
                                 pattern="\d{3}-\d{3}-\d{4}"
                                 title="Enter a valid phone number (e.g., 123-456-7890)"
                             />
                         </FloatingLabel>
-                    </div>
-                    <Button
-                        className="btn btn-outline-light"
-                        variant="secondary"
-                        id="submit-btn"
-                        data-replace=""
-                        type="submit"
-                    >
-                        Submit
-                    </Button>{' '}
-                </Form>
-                <div className={messageClasses} id="success-message">
-                    Shop added to Flow!
+                        <Button
+                            className="btn mt-2"
+                            variant="secondary"
+                            id="submit-btn"
+                            data-replace=""
+                            type="submit"
+                        >
+                            Submit
+                        </Button>{' '}
+                    </Form>
                 </div>
             </div>
         </>

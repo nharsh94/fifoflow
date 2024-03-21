@@ -2,15 +2,16 @@ import { useState, useEffect } from 'react'
 import Table from 'react-bootstrap/Table'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-function UsersList() {
-    const [users, setUsers] = useState([])
+
+function ProfileDatabase() {
+    const [profiles, setProfiles] = useState([])
 
     const getUserData = async () => {
-        const response = await fetch('http://localhost:8000/api/user/list')
+        const response = await fetch('http://localhost:8000/api/profile/')
 
         if (response.ok) {
             const data = await response.json()
-            setUsers(data)
+            setProfiles(data)
         }
     }
 
@@ -22,19 +23,21 @@ function UsersList() {
         <>
             <div className="container-list">
                 <div className="signup-form-wrapper custom-shadow1">
-                    <h1>Users</h1>
+                    <h1>Profiles</h1>
                     <Table striped bordered hover>
                         <thead>
                             <tr>
-                                <th>User ID</th>
-                                <th>Username</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Role Assigned</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map((user) => (
-                                <tr key={user.id}>
-                                    <td>{user.id}</td>
-                                    <td>{user.username}</td>
+                            {profiles.map((profile) => (
+                                <tr key={profile.id}>
+                                    <td>{profile.first_name}</td>
+                                    <td>{profile.last_name}</td>
+                                    <td>{profile.role}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -44,4 +47,4 @@ function UsersList() {
         </>
     )
 }
-export default UsersList
+export default ProfileDatabase
