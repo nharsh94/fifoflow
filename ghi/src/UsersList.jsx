@@ -20,23 +20,27 @@ function UsersList() {
 
     return (
         <>
-            <h1>Users</h1>
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Username</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map((user) => (
-                        <tr key={user.id}>
-                            <td>{user.id}</td>
-                            <td>{user.username}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
+            <div className="container-list">
+                <div className="signup-form-wrapper custom-shadow1">
+                    <h1>Users</h1>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Username</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {users.map((user) => (
+                                <tr key={user.id}>
+                                    <td>{user.id}</td>
+                                    <td>{user.username}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
+            </div>
         </>
     )
 }

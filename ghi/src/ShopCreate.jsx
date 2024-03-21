@@ -110,7 +110,6 @@ function ShopCreate() {
                 zip_code: '',
                 phone: '',
             })
-            setFormSuccess(true)
         }
     }
 
@@ -139,7 +138,7 @@ function ShopCreate() {
         <>
             <div className="container">
                 <ToastContainer />
-                <div className="signup-form-wrapper custom-shadow1">
+                <div className="create-shop-wrapper custom-shadow1">
                     <h1>Add Shop to Flow</h1>
                     <Form
                         onSubmit={handleSubmit}
@@ -149,7 +148,7 @@ function ShopCreate() {
                         <FloatingLabel
                             controlId="FloatingInput"
                             label="Shop Name"
-                            className="mb-1"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Control
                                 type="text"
@@ -163,7 +162,7 @@ function ShopCreate() {
                         <FloatingLabel
                             controlId="FloatingStreetAddress"
                             label="Street Address"
-                            className="mb-1"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Control
                                 type="text"
@@ -177,7 +176,7 @@ function ShopCreate() {
                         <FloatingLabel
                             controlId="FloatingCity"
                             label="City"
-                            className="mb-1"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Control
                                 type="text"
@@ -189,7 +188,7 @@ function ShopCreate() {
                         <FloatingLabel
                             controlId="FloatingState"
                             label="State"
-                            className="mb-1"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Select
                                 value={formData.selectedState}
@@ -211,7 +210,7 @@ function ShopCreate() {
                         <FloatingLabel
                             controlId="FloatingZipCode"
                             label="Zip Code"
-                            className="mb-1"
+                            className="mb-1 custom-shadow"
                         >
                             <Form.Control
                                 type="text"
@@ -222,7 +221,11 @@ function ShopCreate() {
                                 }
                             />
                         </FloatingLabel>
-                        <FloatingLabel controlId="phone" label="Phone">
+                        <FloatingLabel
+                            controlId="phone"
+                            label="Phone"
+                            className="mb-1 custom-shadow"
+                        >
                             <Form.Control
                                 type="tel"
                                 placeholder="phone"

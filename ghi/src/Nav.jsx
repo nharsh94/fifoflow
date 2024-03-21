@@ -19,7 +19,6 @@ function Navs() {
     const { userData } = useUser()
 
     useEffect(() => {
-        console.log('i ran and sent back home', userData)
         if (userData.user_id === null) {
             navigate('/')
         }
@@ -33,6 +32,7 @@ function Navs() {
         if (!string) return ''
         return string.charAt(0).toUpperCase() + string.slice(1)
     }
+
 
     return (
         <>
@@ -94,16 +94,6 @@ function Navs() {
                                     >
                                         History
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/products/details"
-                                    >
-                                        Orders(WIP)
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Divider />
-                                    <NavDropdown.Item eventKey="4.4">
-                                        Separated link
-                                    </NavDropdown.Item>
                                 </NavDropdown>
                                 <NavDropdown
                                     className="px-2"
@@ -118,40 +108,20 @@ function Navs() {
                                     </NavDropdown.Item>
                                     <NavDropdown.Item
                                         as={NavLink}
-                                        to="/products/create1"
-                                    >
-                                        Add To Flow(Alt)
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item
-                                        as={NavLink}
                                         to="/products/list"
                                     >
                                         Database
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/products/list1"
-                                    >
-                                        Database(Alt)
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/products/details"
-                                    >
-                                        Details
-                                    </NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item eventKey="4.4">
-                                        {userData &&
-                                            userData.role === 'Admin' && (
-                                                <NavDropdown.Item
-                                                    as={NavLink}
-                                                    to="/products/all"
-                                                >
-                                                    All Products
-                                                </NavDropdown.Item>
+                                    {userData && userData.role === 'Admin' && (
+                                        <NavDropdown.Item
+                                            as={NavLink}
+                                            to="/products/all"
+                                        >
+                                            All Products
+                                            </NavDropdown.Item>
                                             )}
-                                    </NavDropdown.Item>
+
                                 </NavDropdown>
                                 <NavDropdown
                                     className="px-2"
@@ -170,35 +140,41 @@ function Navs() {
                                     >
                                         Database
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item eventKey="4.2">
-                                        Details
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Divider />
-                                    <NavDropdown.Item eventKey="4.4">
-                                        Separated link
-                                    </NavDropdown.Item>
                                 </NavDropdown>
                                 <NavDropdown
                                     className="px-2"
                                     title="User Management"
                                     id="nav-dropdown"
+                                    disabled={
+                                        userData && userData.role !== 'Admin'
+                                    }
                                 >
-                                    <NavDropdown.Item as={NavLink} to="/role">
-                                        Assign Role (Admin Only)
-                                    </NavDropdown.Item>
                                     {userData && userData.role === 'Admin' && (
                                         <NavDropdown.Item
                                             as={NavLink}
-                                            to="/profile/supplier"
+                                            to="/user"
                                         >
-                                            Create a Supplier (Admin)
+                                            User Database (Admin)
                                         </NavDropdown.Item>
                                     )}
-                                    <NavDropdown.Item as={NavLink} to="/home">
-                                        User Database (Admin Only)
-                                    </NavDropdown.Item>
+                                    {userData && userData.role === 'Admin' && (
+                                        <NavDropdown.Item
+                                            as={NavLink}
+                                            to="/profile/list"
+                                        >
+                                            Profile Database (Admin)
+                                        </NavDropdown.Item>
+                                    )}
+                                    {userData && userData.role === 'Admin' && (
+                                        <NavDropdown.Item
+                                            as={NavLink}
+                                            to="/profile/customer"
+                                        >
+                                            Add a Customer (Admin)
+                                        </NavDropdown.Item>
+                                    )}
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item eventKey="4.4">
+                                    <NavDropdown.Item disabled>
                                         Admin
                                     </NavDropdown.Item>
                                 </NavDropdown>
