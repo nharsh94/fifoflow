@@ -3,7 +3,6 @@ import Button from 'react-bootstrap/Button'
 import './HomePage.css'
 import { useUser } from './UserContext'
 
-
 function HomePage() {
     const { userData } = useUser()
 

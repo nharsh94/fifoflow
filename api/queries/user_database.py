@@ -4,6 +4,7 @@ from psycopg_pool import ConnectionPool
 from psycopg.rows import class_row
 from typing import Optional
 from models.users import UserWithPw
+from models.userdata import UserData
 from utils.exceptions import UserDatabaseException
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
@@ -118,4 +119,32 @@ class UserQueries:
             raise UserDatabaseException(
                 f"Could not create user with username {username}"
             )
+        return user
+
+    def get_all_data(self, username: str) -> Optional[UserData]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor(row_factory=class_row(UserData)) as cur:
+                    cur.execute(
+                        """
+                            SELECT
+                                p.user_id,
+                                u.username,
+                                p.role,
+                                p.first_name,
+                                p.last_name,
+                                p.email,
+                                p.phone
+                            FROM
+                                profiles p
+                                LEFT JOIN users u on p.user_id = u.id
+                            WHERE username = %s
+                            """,
+                        [username],
+                    )
+                    user = cur.fetchone()
+                    if not user:
+                        return None
+        except psycopg.Error:
+            raise UserDatabaseException(f"Error getting user {username}")
         return user
