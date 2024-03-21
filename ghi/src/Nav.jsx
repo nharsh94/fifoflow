@@ -141,17 +141,14 @@ function Navs() {
                                         Details
                                     </NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item eventKey="4.4">
-                                        {userData &&
-                                            userData.role === 'Admin' && (
-                                                <NavDropdown.Item
-                                                    as={NavLink}
-                                                    to="/products/all"
-                                                >
-                                                    All Products
-                                                </NavDropdown.Item>
-                                            )}
-                                    </NavDropdown.Item>
+                                    {userData && userData.role === 'Admin' && (
+                                        <NavDropdown.Item
+                                            as={NavLink}
+                                            to="/products/all"
+                                        >
+                                            All Products
+                                        </NavDropdown.Item>
+                                    )}
                                 </NavDropdown>
                                 <NavDropdown
                                     className="px-2"
