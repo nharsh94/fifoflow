@@ -1,7 +1,9 @@
 """
 Pydantic Models for the JWT Payload
 """
+
 from pydantic import BaseModel
+from typing import Any, Dict
 
 
 class JWTUserData(BaseModel):
@@ -24,3 +26,6 @@ class JWTPayload(BaseModel):
     user: JWTUserData
     sub: str
     exp: int
+
+    def model_dump(self) -> Dict[str, Any]:
+        return self.dict()

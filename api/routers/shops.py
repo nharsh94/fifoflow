@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, HTTPException
 from typing import Union, List, Optional
 
 from queries.shop_database import (
@@ -11,9 +11,7 @@ from queries.shop_database import (
 router = APIRouter(tags=["Shops"], prefix="/api/shops")
 
 
-@router.post("/",
-             response_model=Union[ShopOut, Error],
-             tags=["Shops"])
+@router.post("/", response_model=Union[ShopOut, Error], tags=["Shops"])
 def create_shop(
     shop: ShopIn,
     repo: ShopRepository = Depends(),
@@ -25,7 +23,10 @@ def create_shop(
 def get_all(
     repo: ShopRepository = Depends(),
 ):
-    return repo.get_all()
+    shops = repo.get_all()
+    if not shops:
+        raise HTTPException(status_code=404, detail="No shops found")
+    return shops
 
 
 @router.put(
@@ -39,9 +40,7 @@ def update_shop(
     return repo.update(shops_id, shop)
 
 
-@router.delete("/{shops_id}",
-               response_model=bool,
-               tags=["Shops"])
+@router.delete("/{shops_id}", response_model=bool, tags=["Shops"])
 def delete_shop(
     shops_id: int,
     repo: ShopRepository = Depends(),
@@ -52,10 +51,9 @@ def delete_shop(
 @router.get("/{shops_id}", response_model=Optional[ShopOut], tags=["Shops"])
 def get_shop(
     shops_id: int,
-    response: Response,
     repo: ShopRepository = Depends(),
 ) -> ShopOut:
     shop = repo.get_one(shops_id)
-    if shop is None:
-        response.status_code = 404
+    if not shop:
+        raise HTTPException(status_code=404, detail="No shops matching ID")
     return shop

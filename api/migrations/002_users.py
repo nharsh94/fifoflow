@@ -6,12 +6,6 @@ steps = [
             id SERIAL PRIMARY KEY NOT NULL,
             username VARCHAR(100) NOT NULL UNIQUE,
             password VARCHAR(256) NOT NULL
-        # "Up" SQL statement for creating users table
-        """
-        CREATE TABLE users (
-            id SERIAL PRIMARY KEY NOT NULL,
-            username VARCHAR(100) NOT NULL UNIQUE,
-            password VARCHAR(256) NOT NULL
         );
         """,
         # "Down" SQL statement for dropping users table
@@ -45,11 +39,7 @@ steps = [
         );
         """,
         # "Down" SQL statement for dropping profiles table
-        # "Down" SQL statement for dropping profiles table
         """
-        DROP TABLE profiles;
-        """,
-    ],
         DROP TABLE profiles;
         """,
     ],

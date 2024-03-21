@@ -1,6 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+
+import FloatingLabel from 'react-bootstrap/FloatingLabel'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+
 function CreateProduct() {
     const [formData, setFormData] = useState({
         name: '',
@@ -15,7 +20,6 @@ function CreateProduct() {
     useEffect(() => {
         fetchSuppliers()
     }, [])
-    console.log('I am supplier', suppliers)
     const fetchSuppliers = async () => {
         try {
             const response = await fetch('http://localhost:8000/api/profile')
@@ -66,89 +70,80 @@ function CreateProduct() {
         })
     }
     return (
-        <div>
-            <ToastContainer />
-            <div className="container-fluid my-5">
-                <div className="row justify-content-center">
-                    <div className="col-md-6">
-                        <div className="card shadow">
-                            <div className="card-body">
-                                <h1 className="card-title text-center mb-4">
-                                    Add Product
-                                </h1>
-                                <form onSubmit={handleSubmit}>
-                                    <div className="mb-3">
-                                        <label
-                                            htmlFor="productName"
-                                            className="form-label"
-                                        >
-                                            Product Name
-                                        </label>
-                                        <input
-                                            value={formData.name}
-                                            onChange={handleChange}
-                                            type="text"
-                                            className="form-control"
-                                            name="name"
-                                            placeholder="Name"
-                                            required
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label
-                                            htmlFor="description"
-                                            className="form-label"
-                                        >
-                                            Description
-                                        </label>
-                                        <textarea
-                                            value={formData.description}
-                                            onChange={handleChange}
-                                            className="form-control"
-                                            name="description"
-                                            placeholder="Description of item if any"
-                                        ></textarea>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label
-                                            htmlFor="supplier_id"
-                                            className="form-label"
-                                        >
-                                            Supplier
-                                        </label>
-                                        <select
-                                            value={formData.supplier_id}
-                                            onChange={handleChange}
-                                            className="form-control"
-                                            name="supplier_id"
-                                            required
-                                        >
-                                            <option value="">
-                                                Select a Supplier
-                                            </option>
-                                            {suppliers.map((supplier) => (
-                                                <option
-                                                    key={supplier.user_id}
-                                                    value={supplier.user_id}
-                                                >
-                                                    {supplier.first_name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <button
-                                        className="btn btn-lg btn-primary"
-                                        type="submit"
+        <>
+            <div className="container">
+                <ToastContainer />
+                <div className="create-product-wrapper custom-shadow1">
+                    <h1>Add Product</h1>
+                    <Form
+                        onSubmit={handleSubmit}
+                        id="create-product-form"
+                        className="center-form mb-1"
+                    >
+                        <FloatingLabel
+                            controlId="FloatingProduct"
+                            label="Product Name"
+                            className="mb-1 custom-shadow"
+                        >
+                            <Form.Control
+                                type="text"
+                                placeholder="product_name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                required
+                            />
+                        </FloatingLabel>
+                        <FloatingLabel
+                            controlId="FloatingDescription"
+                            label="Description"
+                            className="mb-1 custom-shadow"
+                        >
+                            <Form.Control
+                                as="textarea"
+                                placeholder="description"
+                                name="description"
+                                value={formData.description}
+                                onChange={handleChange}
+                                style={{ height: '100px' }}
+                            />
+                        </FloatingLabel>
+                        <FloatingLabel
+                            controlId="FloatingSupplier"
+                            label="Supplier"
+                            className="mb-1 custom-shadow"
+                        >
+                            <Form.Select
+                                name="supplier_id"
+                                value={formData.supplier_id}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="">Select a Supplier</option>
+                                {suppliers.map((supplier) => (
+                                    <option
+                                        key={supplier.user_id}
+                                        value={supplier.user_id}
                                     >
-                                        Add Product
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                                        {supplier.first_name}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </FloatingLabel>
+                        <Button
+                            className="btn mt-2"
+                            variant="secondary"
+                            id="submit-btn"
+                            data-replace=""
+                            type="submit"
+                        >
+                            Add Product
+                        </Button>{' '}
+                    </Form>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
+
 export default CreateProduct

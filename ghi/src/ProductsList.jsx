@@ -1,15 +1,27 @@
 import { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
+import Sort from './Sort'
+import Pagination from './PaginationComponent'
+import SearchComponent from './Search'
 
 function ProductsList() {
     const [products, setProducts] = useState([])
+    const [suppliers, setSuppliers] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null)
     const [showModal, setShowModal] = useState(false)
+    const [sortConfig, setSortConfig] = useState({
+        key: null,
+        direction: 'asc',
+    })
+    const [searchQuery, setSearchQuery] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
+    const [productsPerPage] = useState(10)
 
     const getData = async () => {
         try {
@@ -17,17 +29,33 @@ function ProductsList() {
 
             if (response.ok) {
                 const data = await response.json()
-                const filteredProducts = data.filter(
+                const filteredData = data.filter(
                     (product) => !product.deleted_flag
                 )
-                setProducts(filteredProducts)
+                setProducts(filteredData)
             } else {
                 throw new Error(
-                    'Failed to fetch data. Status: ${response.status}'
+                    `Failed to fetch data. Status: ${response.status}`
                 )
             }
         } catch (error) {
             console.error('Error fetching products data', error)
+        }
+        try {
+            const supplierResponse = await fetch(
+                'http://localhost:8000/api/profile'
+            )
+            if (supplierResponse.ok) {
+                const suppliersData = await supplierResponse.json()
+                const suppliersFiltered = suppliersData.filter(
+                    (user) => user.role === 'Supplier'
+                )
+                setSuppliers(suppliersFiltered)
+            } else {
+                console.error('Failed to fetch suppliers')
+            }
+        } catch (error) {
+            console.error('Error fetch')
         }
     }
 
@@ -48,6 +76,7 @@ function ProductsList() {
                 const data = await response.json()
                 setSelectedProduct(data)
                 setShowModal(true)
+                checkAlertThreshold(data)
             } else {
                 throw new Error(
                     `Failed to fetch product details. Status: ${response.status}`
@@ -55,6 +84,37 @@ function ProductsList() {
             }
         } catch (error) {
             console.error('Error fetching product details', error)
+        }
+    }
+
+    const checkAlertThreshold = (product) => {
+        const { alert_threshold, quantity_in_stock, name, product_id } = product
+        if (parseInt(alert_threshold) === quantity_in_stock) {
+            toast.warn(
+                `Product "${name}" (ID: ${product_id}) has reached alert threshold.`,
+                {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                }
+            )
+        } else if (parseInt(alert_threshold) > quantity_in_stock) {
+            toast.error(
+                `Product "${name}" (ID: ${product_id}) quantity in stock is low.`,
+                {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                }
+            )
         }
     }
 
@@ -72,8 +132,8 @@ function ProductsList() {
             )
 
             if (response.ok) {
-                console.log('Product updated successfully:', selectedProduct)
                 handleCloseModal()
+                toast.success('Product successfully updated!')
                 getData()
             } else {
                 throw new Error(
@@ -84,9 +144,13 @@ function ProductsList() {
             console.error('Error updating product', error)
         }
     }
+
     const handleDeleteConfirmation = async () => {
         try {
-            const updatedProduct = { ...selectedProduct, deleted_flag: true }
+            const updatedProduct = {
+                ...selectedProduct,
+                deleted_flag: true,
+            }
             const response = await fetch(
                 `http://localhost:8000/api/products/${selectedProduct.product_id}`,
                 {
@@ -99,10 +163,10 @@ function ProductsList() {
             )
 
             if (response.ok) {
-                console.log('Product deleted successfully', selectedProduct)
                 getData()
                 handleCloseModal()
                 toast.dismiss()
+                toast.success('Product successfully deleted!')
             } else {
                 throw new Error(
                     `Failed to delete product. Status: ${response.status}`
@@ -126,7 +190,7 @@ function ProductsList() {
     const Msg = ({ closeToast }) => (
         <div>
             Are you sure you want to delete this product?
-            <br></br>
+            <br />
             <button
                 className={'btn btn-primary'}
                 onClick={handleDeleteConfirmation}
@@ -141,26 +205,124 @@ function ProductsList() {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
-        setSelectedProduct((prevProduct) => ({ ...prevProduct, [name]: value }))
+        setSelectedProduct((prevProduct) => ({
+            ...prevProduct,
+            [name]: value,
+        }))
     }
+
+    const requestSort = (key) => {
+        let direction = 'asc'
+        if (
+            sortConfig &&
+            sortConfig.key === key &&
+            sortConfig.direction === 'asc'
+        ) {
+            direction = 'desc'
+        }
+        setSortConfig({ key, direction })
+    }
+    const handleResetSort = () => {
+        setSortConfig({
+            key: null,
+            direction: 'asc',
+        })
+    }
+
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value)
+    }
+
+    const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+
+    const sortedProducts = [...filteredProducts].sort((a, b) => {
+        if (sortConfig && sortConfig.key) {
+            if (a[sortConfig.key] < b[sortConfig.key]) {
+                return sortConfig.direction === 'asc' ? -1 : 1
+            }
+            if (a[sortConfig.key] > b[sortConfig.key]) {
+                return sortConfig.direction === 'asc' ? 1 : -1
+            }
+        }
+        return 0
+    })
+
+    const indexOfLastProduct = currentPage * productsPerPage
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage
+    const currentProducts = sortedProducts.slice(
+        indexOfFirstProduct,
+        indexOfLastProduct
+    )
+
+    const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
+
+    const handlePaginationClick = (pageNumber) => setCurrentPage(pageNumber)
 
     return (
         <>
-            <div>
-                <h1>Products</h1>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Product ID</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Description</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products.map((product) => {
-                            return (
+            <div className="container-list">
+                <div className="signup-form-wrapper custom-shadow1">
+                    <h1>Products in Flow</h1>
+                    <SearchComponent
+                        value={searchQuery}
+                        onChange={handleSearch}
+                        placeholder="Search by product name.."
+                    />
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                            marginBottom: '10px',
+                            paddingRight: '10px',
+                        }}
+                    >
+                        <span
+                            style={{ marginRight: '5px', cursor: 'pointer' }}
+                            onClick={handleResetSort}
+                        >
+                            Reset
+                        </span>
+                        <i
+                            className="bi bi-funnel-fill"
+                            onClick={handleResetSort}
+                            style={{ cursor: 'pointer' }}
+                        ></i>
+                    </div>
+                    <Table responsive striped bordered hover>
+                        <thead>
+                            <tr>
+                                <Sort
+                                    label="Product ID"
+                                    onClick={() => requestSort('product_id')}
+                                    sortConfig={sortConfig}
+                                    field="product_id"
+                                />
+                                <Sort
+                                    label="Name"
+                                    onClick={() => requestSort('name')}
+                                    sortConfig={sortConfig}
+                                    field="name"
+                                />
+                                <Sort
+                                    label="Price"
+                                    onClick={() => requestSort('price')}
+                                    sortConfig={sortConfig}
+                                    field="price"
+                                />
+                                <Sort
+                                    label="Description"
+                                    onClick={() => requestSort('description')}
+                                    sortConfig={sortConfig}
+                                    field="description"
+                                />
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {currentProducts.map((product) => (
                                 <tr key={product.product_id}>
                                     <td>{product.product_id}</td>
                                     <td>{product.name}</td>
@@ -193,22 +355,20 @@ function ProductsList() {
                                         )}
                                     </td>
                                 </tr>
-                            )
-                        })}
-                    </tbody>
-                </Table>
+                            ))}
+                        </tbody>
+                    </Table>
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePaginationClick}
+                    />
+                </div>
             </div>
+
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>
-                        {selectedProduct &&
-                        selectedProduct.description &&
-                        selectedProduct.quantity_in_stock &&
-                        selectedProduct.category &&
-                        selectedProduct.alert_threshold
-                            ? 'Product Details'
-                            : 'Edit Product'}
-                    </Modal.Title>
+                    <Modal.Title>Edit Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -226,7 +386,7 @@ function ProductsList() {
                             <Form.Label>Description</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter description"
+                                placeholder="Enter Description"
                                 name="description"
                                 value={selectedProduct?.description || ''}
                                 onChange={handleInputChange}
@@ -235,17 +395,17 @@ function ProductsList() {
                         <Form.Group controlId="formPrice">
                             <Form.Label>Price</Form.Label>
                             <Form.Control
-                                type="text"
+                                type="number"
                                 placeholder="Enter price"
                                 name="price"
                                 value={selectedProduct?.price || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formQuantity">
-                            <Form.Label>Quantity In Stock</Form.Label>
+                        <Form.Group controlId="formQIS">
+                            <Form.Label>Quantity in Stock</Form.Label>
                             <Form.Control
-                                type="int"
+                                type="number"
                                 placeholder="Enter quantity"
                                 name="quantity_in_stock"
                                 value={selectedProduct?.quantity_in_stock || ''}
@@ -256,22 +416,52 @@ function ProductsList() {
                             <Form.Label>Category</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter Category"
+                                placeholder="Enter category"
                                 name="category"
                                 value={selectedProduct?.category || ''}
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formSupplier">
-                            <Form.Label>Supplier</Form.Label>
+                        <Form.Group controlId="formShopName">
+                            <Form.Label>Shop Name</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter Supplier"
-                                name="supplier_id"
+                                placeholder="Supplier"
+                                name="supplier_name"
+                                value={
+                                    selectedProduct?.supplier_id
+                                        ? suppliers.find(
+                                              (supplier) =>
+                                                  supplier.user_id ===
+                                                  selectedProduct.supplier_id
+                                          )?.first_name
+                                        : ''
+                                }
+                                readOnly
+                                disabled
+                            />
+                            <Form.Label style={{ marginTop: '5px' }}>
+                                Select a different Supplier
+                            </Form.Label>
+                            <select
                                 value={selectedProduct?.supplier_id || ''}
                                 onChange={handleInputChange}
-                            />
+                                className="form-control"
+                                name="supplier_id"
+                                required
+                            >
+                                <option value="">Select a Supplier</option>
+                                {suppliers.map((supplier) => (
+                                    <option
+                                        key={supplier.user_id}
+                                        value={supplier.user_id}
+                                    >
+                                        {supplier.first_name}
+                                    </option>
+                                ))}
+                            </select>
                         </Form.Group>
+
                         <Form.Group controlId="formAlert">
                             <Form.Label>Alert Threshold</Form.Label>
                             <Form.Control

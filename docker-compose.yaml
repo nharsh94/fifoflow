@@ -1,8 +1,6 @@
 volumes:
     postgres-data:
         external: true
-    pg-admin:
-        external: true
 services:
     postgres:
         image: postgres:14.5-bullseye
@@ -16,7 +14,7 @@ services:
             - 15432:5432
     fastapi:
         environment:
-            SIGNING_KEY: 6y6YDmXKOkttPWQcGzt4&hYx3^gI8S#q
+            SIGNING_KEY: aK8C0UNm9BCk9Bu9pPwiKqNL9FU4V/I/7OYd1n6TI+A=
             DATABASE_URL: postgresql://packit1:packit@postgres/packit
             CORS_HOST: http://localhost:5173
         build:
@@ -38,13 +36,3 @@ services:
             VITE_API_HOST: http://localhost:8000
         ports:
             - "5173:5173"
-    pg-admin:
-        image: dpage/pgadmin4
-        volumes:
-            - pg-admin:/var/lib/pgadmin
-        ports:
-            - 8082:80
-        environment:
-            PGADMIN_DEFAULT_EMAIL: packit@packit.com
-            PGADMIN_DEFAULT_PASSWORD: packit
-            PGADMIN_DISABLE_POSTFIX: 1

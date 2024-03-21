@@ -1,8 +1,6 @@
-import logging
 from typing import List, Optional, Union
 from queries.pool import pool
 from models.products import ProductIn, ProductOut, Error
-import traceback
 
 
 class ProductRepository:
@@ -21,14 +19,10 @@ class ProductRepository:
                     )
                     record = db.fetchone()
                     if record is None:
-                        logging.error(
-                            f"Product with ID {product_id} was not found"
-                        )
                         return None
                     return self.record_to_product_out(record)
-        except Exception as e:
-            logging.error(f"Could not get product: {e}")
-            return None
+        except Exception:
+            return {"message": "Product ID does not exist"}
 
     def delete(self, product_id: int) -> bool:
         try:
@@ -42,8 +36,7 @@ class ProductRepository:
                         [product_id],
                     )
                     return True
-        except Exception as e:
-            logging.error(f"Error deleting product with ID {product_id}: {e}")
+        except Exception:
             return False
 
     def update(
@@ -80,7 +73,6 @@ class ProductRepository:
                     )
                     return self.product_in_to_out(product_id, product)
         except Exception:
-            traceback.print_exc()
             return {"message": "Could not update product"}
 
     def get_all(self) -> Union[List[ProductOut], Error]:
@@ -99,9 +91,8 @@ class ProductRepository:
                         self.record_to_product_out(record)
                         for record in records
                     ]
-        except Exception as e:
-            logging.error(f"Could not get all products: {e}")
-            return []
+        except Exception:
+            return {"message": "Failed to get all orders"}
 
     def create(self, product: ProductIn) -> ProductOut:
         try:
@@ -133,9 +124,8 @@ class ProductRepository:
                     )
                     product_id = db.fetchone()[0]
                     return self.product_in_to_out(product_id, product)
-        except Exception as e:
-            logging.error(f"Error creating product: {e}")
-            return None
+        except Exception:
+            return {"message": "Product faild to create"}
 
     def product_in_to_out(self, product_id: int, product: ProductOut):
         old_data = product.dict()
@@ -151,5 +141,5 @@ class ProductRepository:
             category=record[5],
             supplier_id=record[6],
             alert_threshold=record[7],
-            deleted_flag=record[8]
+            deleted_flag=record[8],
         )

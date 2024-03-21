@@ -1,133 +1,128 @@
-// This makes VSCode check types as if you are using TypeScript
-//@ts-check
-import React from 'react'
-import React from 'react'
-import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
-import Header from './Header'
+import { useState } from 'react'
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    useLocation,
+    Navigate,
+} from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './App.css'
+import Nav from './Nav'
 import ErrorNotification from './ErrorNotification'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './App.css'
-import Nav from './Nav'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './App.css'
-import Nav from './Nav'
+import { UserProvider } from './UserContext'
+{
+    /* Authentication Routes */
+}
 import Construct from './Construct'
-import HomePage from './HomePage'
 import SignUpUserForm from './SignUpUserForm'
 import ForgotPassword from './ForgotPassword'
+{
+    /* User Routes */
+}
+import HomePage from './HomePage'
+import UsersList from './UsersList'
+import CreateSupplier from './CreateSupplier'
 import AssignRole from './AssignRole.jsx'
 import CreateProfile from './CreateProfile'
-import { UserProvider } from './UserContext'
+import ProfileDatabase from './ProfileDatabase'
+import CreateCustomer from './CreateCustomer'
+{
+    /* Shop Routes */
+}
 import ShopCreate from './ShopCreate'
 import ShopsList from './ShopsList'
-
+{
+    /* Product Routes */
+}
 import CreateProduct from './CreateProduct'
 import ProductsList from './ProductsList'
 import AllProducts from './AllProducts'
+{
+    /* Order Routes */
+}
+import OrderList from './OrderList'
+import OrderCreate from './OrderCreate'
+import OrderHistory from './OrdersHistory'
 
-import OrderList from './list_orders'
-import OrderCreate from './order_form'
-import CreateSupplier from './CreateSupplier'
-//
-import TestProductCreate from './TestProductCreate' // By Mel K
-import TestProductsList from './TestProductsList' // By Mel K
-import UsersList from './UsersList'
-// import ProductDetails from './ProductDetails'
-// import ThreeScene from './ThreeScene'
-
-console.table(import.meta.env)
-const API_HOST = import.meta.env.VITE_API_HOST
-
-if (!API_HOST) {
-    throw new Error('VITE_API_HOST is not defined')
+function Navigation() {
+    const location = useLocation()
+    return (
+        location.pathname !== '/' &&
+        location.pathname !== '/signup' &&
+        location.pathname !== '/role' &&
+        location.pathname !== '/profile' &&
+        location.pathname !== '/forgot-password' && <Nav />
+    )
 }
 
-/**
- * This is an example of using JSDOC to define types for your component
- * @typedef {{module: number, week: number, day: number, min: number, hour: number}} LaunchInfo
- * @typedef {{launch_details: LaunchInfo, message?: string}} LaunchData
- *
- * @returns {React.ReactNode}
- */
 function App() {
-    const [error, setError] = useState(null)
-
-    useEffect(() => {
-        async function getData() {
-            let url = `${API_HOST}/api/launch-details`
-            console.log('fastapi url: ', url)
-            let response = await fetch(url)
-
-            if (response.ok) {
-                console.log('Data fetched successfully!')
-                console.log('Data fetched successfully!')
-            } else {
-                console.log('Error fetching data')
-                setError('No fetched data')
-                console.log('Error fetching data')
-                setError('No fetched data')
-            }
-        }
-        getData()
-    }, [])
+    const [error] = useState(null)
 
     return (
-        <BrowserRouter>
-            <UserProvider>
+        <UserProvider>
+            <BrowserRouter>
                 <div className="App">
-                    <Header />
                     <Navigation />
                     <ErrorNotification error={error} />
                     <Routes>
-                        <Route path="/" element={<Construct info={{}} />} />
-                        <Route path="/orders" element={<OrderList />} />
-                        <Route path="/create-order" element={<OrderCreate />} />
+                        <Route path="/" element={<Construct />} />
+                        {/* Authentication Routes */}
                         <Route path="/signup" element={<SignUpUserForm />} />
+                        <Route
+                            path="/forgot-password"
+                            element={<ForgotPassword />}
+                        />
+                        {/* User Routes */}
+                        <Route path="/home" element={<HomePage />} />
+                        <Route path="/user" element={<UsersList />} />
                         <Route path="/role" element={<AssignRole />} />
+                        <Route path="/user" element={<UsersList />} />
                         <Route path="profile">
                             <Route
                                 path="/profile"
                                 element={<CreateProfile />}
                             />
                             <Route
+                                path="/profile/list"
+                                element={<ProfileDatabase />}
+                            />
+                            <Route
                                 path="/profile/supplier"
                                 element={<CreateSupplier />}
                             />
+                            <Route
+                                path="/profile/customer"
+                                element={<CreateCustomer />}
+                            />
                         </Route>
+
+                        {/* Shops Routes */}
                         <Route path="/shops">
                             <Route path="create" element={<ShopCreate />} />
                             <Route path="list" element={<ShopsList />} />
-                            {/* <Route path="details" element={<ShopDetails shopId={123} />} /> */}
                         </Route>
-                        {/* <Route path="/threescene" element={<ThreeScene />} /> */}
-
-                        <Route path="/home" element={<HomePage />} />
-                        <Route path="/user" element={<UsersList />} />
-                        <Route
-                            path="/forgot-password"
-                            element={<ForgotPassword />}
-                        />
-
+                        {/* Products Routes */}
                         <Route path="/products">
                             <Route path="create" element={<CreateProduct />} />
                             <Route path="list" element={<ProductsList />} />
                             <Route path="all" element={<AllProducts />} />
-                            <Route
-                                path="create1"
-                                element={<TestProductCreate />}
-                            />
-                            <Route
-                                path="list1"
-                                element={<TestProductsList />}
-                            />
-                            {/* <Route path="details" element={<ProductDetails />} /> */}
                         </Route>
-                        {/* Define more routes as needed */}
+                        {/* Orders Routes */}
+                        <Route path="/orders">
+                            <Route path="list" element={<OrderList />} />
+                            <Route path="create" element={<OrderCreate />} />
+                            <Route path="history" element={<OrderHistory />} />
+                        </Route>
+                        {/* Default Redirect */}
+                        <Route
+                            path="/"
+                            element={<Navigate to="/construct" replace />}
+                        />
                     </Routes>
                 </div>
-            </UserProvider>
-        </BrowserRouter>
+            </BrowserRouter>
+        </UserProvider>
     )
 }
 export default App

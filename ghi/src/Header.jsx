@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import './Header.css'
 import logoUrl from './assets/FIFOFlow_transparent_x1.png'
