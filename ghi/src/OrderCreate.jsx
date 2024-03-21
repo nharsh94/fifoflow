@@ -6,10 +6,8 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { useUser } from './UserContext'
-import { useUser } from './UserContext'
 
 function OrderCreate() {
-    const { userData } = useUser()
     const { userData } = useUser()
     const [orders, setOrders] = useState([])
     const [products, setProducts] = useState([])
