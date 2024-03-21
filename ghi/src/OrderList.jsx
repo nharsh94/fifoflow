@@ -51,13 +51,11 @@ function OrderList() {
         getOrderData(), getProductData(), getShopData(), getUserData()
     }, [])
 
-    const handleCancel = async (id) => {
-        const url = `http://localhost:8000/api/orders/${id}`
-        console.log(url)
+    const handleCancel = async (order) => {
+        const url = `http://localhost:8000/api/orders/${order.order_id}`
         const response = await fetch(url)
         const data = await response.json()
         data['status'] = 'cancelled'
-        console.log('this is happening in handleCancel', data)
         const cancelConfig = {
             method: 'PUT',
             body: JSON.stringify(data),
@@ -68,23 +66,22 @@ function OrderList() {
         await fetch(url, cancelConfig)
         toast.success('Order cancelled successfully')
 
-        setOrders((prevOrders) =>
-            prevOrders.map((order) => {
-                if (order.order_id === id) {
-                    return { ...order, status: 'cancelled' }
+            setOrders((prevOrders) =>
+            prevOrders.map((ordermap) => {
+                if (ordermap.order_id === order.order_id) {
+                    return { ...ordermap, status: 'cancelled' }
                 }
-                return order
+                return ordermap
             })
-        )
+            )
+        }
     }
 
     const handleApprove = async (id) => {
         const url = `http://localhost:8000/api/orders/${id}`
-        console.log(url)
         const response = await fetch(url)
         const data = await response.json()
         data['status'] = 'approved'
-        console.log('this is happening in handleApprove', data)
         const cancelConfig = {
             method: 'PUT',
             body: JSON.stringify(data),
@@ -96,9 +93,9 @@ function OrderList() {
         toast.success('Order approved successfully')
 
         setOrders((prevOrders) =>
-            prevOrders.map((order) => {
-                if (order.order_id === id) {
-                    return { ...order, status: 'approved' }
+            prevOrders.map((ordermap) => {
+                if (ordermap.order_id === order.order_id) {
+                    return { ...ordermap, status: 'approved' }
                 }
                 return order
             })
@@ -204,7 +201,7 @@ function OrderList() {
                                             <Button
                                                 variant="danger"
                                                 onClick={() =>
-                                                    handleCancel(order.order_id)
+                                                    handleCancel(order)
                                                 }
                                             >
                                                 Cancel

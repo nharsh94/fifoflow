@@ -94,7 +94,6 @@ function ShopsList() {
         }
     }
 
-
     const handleDeleteConfirmation = async () => {
         try {
             const updatedShop = {
@@ -110,22 +109,22 @@ function ShopsList() {
                     },
                     body: JSON.stringify(updatedShop),
                 }
-                )
+            )
 
-                if (response.ok) {
-                    getData()
-                    handleCloseModal()
-                    toast.dismiss()
-                    toast.success('Shop deleted successfully')
-                } else {
-                    throw new Error(
-                        `Failed to delete shop. Status: ${response.status}`
-                        )
-                    }
-                } catch (error) {
-                    console.error('Error deleting shop', error)
-                }
+            if (response.ok) {
+                getData()
+                handleCloseModal()
+                toast.dismiss()
+                toast.success('Shop deleted successfully')
+            } else {
+                throw new Error(
+                    `Failed to delete shop. Status: ${response.status}`
+                )
             }
+        } catch (error) {
+            console.error('Error deleting shop', error)
+        }
+    }
 
     const handleDeleteShop = async () => {
         toast.warn(<Msg />, {
@@ -182,7 +181,6 @@ function ShopsList() {
         setSearchQuery(e.target.value)
     }
 
-
     const filteredShops = shops.filter((shop) =>
         shop.shop_name.toLowerCase().includes(searchQuery.toLowerCase())
     )
@@ -201,10 +199,7 @@ function ShopsList() {
 
     const indexOfLastShop = currentPage * shopsPerPage
     const indexOfFirstShop = indexOfLastShop - shopsPerPage
-    const currentShops = sortedShops.slice(
-        indexOfFirstShop,
-        indexOfLastShop
-    )
+    const currentShops = sortedShops.slice(indexOfFirstShop, indexOfLastShop)
 
     const totalPages = Math.ceil(filteredShops.length / shopsPerPage)
 
