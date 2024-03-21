@@ -43,11 +43,7 @@ import AllProducts from './AllProducts'
 }
 import OrderList from './OrderList'
 import OrderCreate from './OrderCreate'
-import OrderHistory from './OrderHistory'
-{
-    /* Demo Routes */
-}
-import SignUpForm from './TestSignUpForm'
+import OrderHistory from './OrdersHistory'
 
 
 function Navigation() {
@@ -133,11 +129,6 @@ function App() {
                                 <Route path="list" element={<ProductsList />} />
                             </Route>
                                 <Route path="all" element={<AllProducts />} />
-                                {/* Demo Routes */}
-                                <Route
-                                    path="signup1"
-                                    element={<SignUpForm />}
-                                />
                             {/* Orders Routes */}
                             <Route path="/orders">
                                 <Route path="list" element={<OrderList />} />

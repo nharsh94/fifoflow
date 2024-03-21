@@ -110,7 +110,6 @@ function ShopCreate() {
                 zip_code: '',
                 phone: '',
             })
-            setFormSuccess(true)
         }
     }
 
@@ -139,7 +138,7 @@ function ShopCreate() {
         <>
             <div className="container">
                 <ToastContainer />
-                <div className="signup-form-wrapper custom-shadow1">
+                <div className="create-shop-wrapper custom-shadow1">
                     <h1>Add Shop to Flow</h1>
                     <Form
                         onSubmit={handleSubmit}

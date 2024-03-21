@@ -169,7 +169,7 @@ function ShopsList() {
 
 
     const filteredShops = shops.filter((shop) =>
-        shop.name.toLowerCase().includes(searchQuery.toLowerCase())
+        shop.shop_name.toLowerCase().includes(searchQuery.toLowerCase())
     )
 
     const sortedShops = [...filteredShops].sort((a, b) => {

@@ -72,8 +72,9 @@ function OrderHistory() {
             (product && order.status === 'cancelled') ||
             order.status === 'approved'
         ) {
+           if  (product !== undefined) {
             return product.name.toLowerCase().includes(searchQuery)
-        }
+        }}
     })
     const sortedOrders = [...filteredOrders].sort((a, b) => {
         if (sortConfig && sortConfig.key) {
@@ -123,6 +124,7 @@ function OrderHistory() {
                     <SearchComponent
                         value={searchQuery}
                         onChange={handleSearch}
+                        placeholder="Search by product name.."
                     />
                     <div
                         style={{

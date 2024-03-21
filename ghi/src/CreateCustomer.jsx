@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { toast, ToastContainer } from 'react-toastify'
@@ -77,81 +78,106 @@ export default function CreateSupplierProfile() {
     }
 
     return (
-        <div className="container mt-5">
-            <h1>Create a Customer</h1>
-            <Form onSubmit={handleFormSubmit}>
-                {error && <div className="alert alert-danger">{error}</div>}
-                <div className="mb-3">
-                    <select
-                        className="form-select"
-                        value={selectedUserId}
-                        onChange={handleUserChange}
-                        required
+        <>
+            <ToastContainer />
+            <div className="container">
+                <div className="create-customer-wrapper custom-shadow1">
+                    <h1>Create a Customer</h1>
+                    <Form
+                        id="create-customer-form"
+                        className="center-form mb-1"
+                        onSubmit={handleFormSubmit}
                     >
-                        <option value="">Select a User</option>
-                        {users.map((user) => (
-                            <option key={user.id} value={user.id}>
-                                {user.username}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                        {error && (
+                            <div className="alert alert-danger">{error}</div>
+                        )}
+                        <FloatingLabel
+                            controlId="formGroupUser"
+                            label="User"
+                            className="mb-1 custom-shadow"
+                        >
+                            <Form.Select
+                                value={selectedUserId}
+                                onChange={handleUserChange}
+                                required
+                            >
+                                <option value="">Select a User</option>
+                                {users.map((user) => (
+                                    <option key={user.id} value={user.id}>
+                                        {user.username}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </FloatingLabel>
+                        <FloatingLabel
+                            controlId="fromGroupFirstName"
+                            className="mb-1 custom-shadow"
+                            label="First Name"
+                        >
+                            <Form.Control
+                                type="text"
+                                name="first_name"
+                                placeholder="First Name"
+                                value={profileData.first_name}
+                                onChange={handleChange}
+                                required
+                            />
+                        </FloatingLabel>
+                        <FloatingLabel
+                            controlId="fromGroupLastName"
+                            className="mb-1 custom-shadow"
+                            label="Last Name"
+                        >
+                            <Form.Control
+                                type="text"
+                                name="last_name"
+                                placeholder="Last Name"
+                                value={profileData.last_name}
+                                onChange={handleChange}
+                                required
+                            />
+                        </FloatingLabel>
+                        <FloatingLabel
+                            controlId="fromGroupEmail"
+                            className="mb-1 custom-shadow"
+                            label="Email"
+                        >
+                            <Form.Control
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                value={profileData.email}
+                                onChange={handleChange}
+                                required
+                            />
+                        </FloatingLabel>
+                        <FloatingLabel
+                            controlId="fromGroupPhone"
+                            className="mb-1 custom-shadow"
+                            label="Phone"
+                        >
+                            <Form.Control
+                                type="text"
+                                name="phone"
+                                placeholder="Phone"
+                                value={profileData.phone}
+                                onChange={handleChange}
+                                required
+                            />
+                        </FloatingLabel>
 
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        name="first_name"
-                        className="form-control"
-                        placeholder="First Name"
-                        value={profileData.first_name}
-                        onChange={handleChange}
-                        required
-                    />
+                        <Button
+                            className="btn mt-2"
+                            variant="secondary"
+                            id="submit-btn"
+                            data-replace=""
+                            type="submit"
+                        >
+                            Create
+                        </Button>
+                    </Form>
                 </div>
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        name="last_name"
-                        className="form-control"
-                        placeholder="Last Name"
-                        value={profileData.last_name}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <input
-                        type="email"
-                        name="email"
-                        className="form-control"
-                        placeholder="Email"
-                        value={profileData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        name="phone"
-                        className="form-control"
-                        placeholder="Phone"
-                        value={profileData.phone}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <Button
-                    className="btn btn-outline-light"
-                    variant="secondary"
-                    id="submit-btn"
-                    data-replace=""
-                    type="submit"
-                >
-                    Create Customer Profile
-                </Button>
-            </Form>
-        </div>
+            </div>
+        </>
     )
 }

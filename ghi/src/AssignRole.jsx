@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import './SignUp.css'
+import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+
+import logo from './assets/FIFOFlow_transparent_x1.png'
 
 export default function AssignRole() {
     const [roles] = useState([
@@ -37,37 +41,66 @@ export default function AssignRole() {
     }
 
     return (
-        <div className="container mt-5">
-            <form onSubmit={handleFormSubmit}>
-                {error && <div className="alert alert-danger">{error}</div>}
-                <div className="mb-3">
-                    <select
-                        value={selectedRoleId}
-                        onChange={(event) =>
-                            setSelectedRoleId(event.target.value)
-                        }
-                        className="form-select select-role"
-                        required
-                    >
-                        <option value="">Select a role</option>
-                        {roles.map((role) => (
-                            <option
-                                key={role.role_id}
-                                value={role.role_id}
-                                className="option-role"
+        <div className="App">
+            <header className="App-header">
+                <img className="logo" src={logo} alt="FIFOFlow Logo" />
+                <h5 className="motto">
+                    An open-source, automated system for managing your
+                    logistical nightmares!
+                </h5>
+                <div className="signup-form-wrapper custom-shadow1">
+                    <div>
+                        <h2 className="role">Choose your Role</h2>
+                        <Form onSubmit={handleFormSubmit}>
+                            {error && (
+                                <div className="alert alert-danger">
+                                    {error}
+                                </div>
+                            )}
+                            <FloatingLabel
+                                controlId="FloatingRole"
+                                label="Role"
+                                className="mb-1 custom-shadow"
                             >
-                                {role.role_name}
-                            </option>
-                        ))}
-                    </select>
+                                <Form.Select
+                                    value={selectedRoleId}
+                                    onChange={(event) =>
+                                        setSelectedRoleId(event.target.value)
+                                    }
+                                    className="form-select select-role"
+                                    required
+                                >
+                                    <option value="">Select a role</option>
+                                    {roles.map((role) => (
+                                        <option
+                                            key={role.role_id}
+                                            value={role.role_id}
+                                            className="option-role"
+                                        >
+                                            {role.role_name}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                            </FloatingLabel>
+                            <Button
+                                className="btn btn-outline-light mt-1"
+                                variant="primary"
+                                size="md"
+                                id="account-btn"
+                                data-replace=""
+                                type="submit"
+                            >
+                                Assign Role
+                            </Button>
+                        </Form>
+                    </div>
                 </div>
-                <button
-                    type="submit"
-                    className="btn btn-primary btn-assign-role"
-                >
-                    Assign Role
-                </button>
-            </form>
+                <h6 className="terms">
+                    By signing up, you agree to our <a href="#">Terms</a>,{' '}
+                    <a href="#">Privacy Policy</a>, and{' '}
+                    <a href="#">Cookies Policy</a>.
+                </h6>
+            </header>
         </div>
     )
 }

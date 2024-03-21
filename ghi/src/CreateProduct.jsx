@@ -16,7 +16,6 @@ function CreateProduct() {
         supplier_id: 0,
         alert_threshold: 0,
     })
-
     const [suppliers, setSuppliers] = useState([])
     useEffect(() => {
         fetchSuppliers()
@@ -70,12 +69,11 @@ function CreateProduct() {
             [name]: value,
         })
     }
-
     return (
         <>
-            <ToastContainer />
             <div className="container">
-                <div className="signup-form-wrapper custom-shadow1">
+                <ToastContainer />
+                <div className="create-product-wrapper custom-shadow1">
                     <h1>Add Product</h1>
                     <Form
                         onSubmit={handleSubmit}
@@ -90,6 +88,7 @@ function CreateProduct() {
                             <Form.Control
                                 type="text"
                                 placeholder="product_name"
+                                name="name"
                                 value={formData.name}
                                 onChange={handleChange}
                             />
@@ -100,9 +99,12 @@ function CreateProduct() {
                             className="mb-1 custom-shadow"
                         >
                             <Form.Control
+                                as="textarea"
                                 placeholder="description"
+                                name="description"
                                 value={formData.description}
                                 onChange={handleChange}
+                                style={{ height: '100px' }}
                             />
                         </FloatingLabel>
                         <FloatingLabel
@@ -111,6 +113,7 @@ function CreateProduct() {
                             className="mb-1 custom-shadow"
                         >
                             <Form.Select
+                                name="supplier_id"
                                 value={formData.supplier_id}
                                 onChange={handleChange}
                             >

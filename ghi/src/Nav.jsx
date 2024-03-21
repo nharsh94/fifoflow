@@ -121,6 +121,7 @@ function Navs() {
                                             All Products
                                             </NavDropdown.Item>
                                             )}
+
                                 </NavDropdown>
                                 <NavDropdown
                                     className="px-2"
@@ -172,12 +173,6 @@ function Navs() {
                                             Add a Customer (Admin)
                                         </NavDropdown.Item>
                                     )}
-                                    <NavDropdown.Item
-                                        as={NavLink}
-                                        to="/home/user"
-                                    >
-                                        User Database (Admin)
-                                    </NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item disabled>
                                         Admin
