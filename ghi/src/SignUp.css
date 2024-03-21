@@ -1,5 +1,5 @@
 /* SignUpUser */
-/* .container {
+.container {
     max-width: 400px;
     margin: auto;
     padding-top: 50px;
@@ -43,10 +43,10 @@ button[type='submit']:hover {
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 20px;
-} */
+}
 
 /* AssignRole */
-/* .select-role {
+.select-role {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
@@ -71,10 +71,10 @@ button[type='submit']:hover {
 
 .btn-assign-role:hover {
     background-color: #218838;
-} */
+}
 
 /* Create Profile */
-/* .create-profile-input {
+.create-profile-input {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
@@ -96,4 +96,4 @@ button[type='submit']:hover {
 
 .btn-create-profile:hover {
     background-color: #0069d9;
-} */
+}

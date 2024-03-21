@@ -154,6 +154,7 @@ function ShopCreate() {
                                 type="text"
                                 placeholder="shop_name"
                                 value={formData.shop_name}
+                                required
                                 onChange={(e) =>
                                     handleFormChange(e, 'shop_name')
                                 }
@@ -168,6 +169,7 @@ function ShopCreate() {
                                 type="text"
                                 placeholder="street_address"
                                 value={formData.street_address}
+                                required
                                 onChange={(e) =>
                                     handleFormChange(e, 'street_address')
                                 }
@@ -182,6 +184,7 @@ function ShopCreate() {
                                 type="text"
                                 placeholder="city"
                                 value={formData.city}
+                                required
                                 onChange={(e) => handleFormChange(e, 'city')}
                             />
                         </FloatingLabel>
@@ -192,6 +195,7 @@ function ShopCreate() {
                         >
                             <Form.Select
                                 value={formData.selectedState}
+                                required
                                 onChange={(e) => handleStateChange(e)}
                             >
                                 <option value="" disabled>
@@ -216,6 +220,7 @@ function ShopCreate() {
                                 type="text"
                                 placeholder="zip_code"
                                 value={formData.zip_code}
+                                required
                                 onChange={(e) =>
                                     handleFormChange(e, 'zip_code')
                                 }
@@ -230,6 +235,7 @@ function ShopCreate() {
                                 type="tel"
                                 placeholder="phone"
                                 value={formData.phone}
+                                required
                                 onChange={(e) => handleFormChange(e, 'phone')}
                                 pattern="\d{3}-\d{3}-\d{4}"
                                 title="Enter a valid phone number (e.g., 123-456-7890)"

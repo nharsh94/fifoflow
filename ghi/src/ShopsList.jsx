@@ -80,9 +80,10 @@ function ShopsList() {
             )
 
             if (response.ok) {
-                console.log('Shop updated successfully:', selectedShop)
-                handleCloseModal()
                 getData()
+                handleCloseModal()
+                toast.dismiss()
+                toast.success('Shop updated successfully')
             } else {
                 throw new Error(
                     `Failed to update shop. Status: ${response.status}`
@@ -107,7 +108,10 @@ function ShopsList() {
         <div>
             Are you sure you want to delete this shop?
             <br />
-            <button className={'btn btn-primary'} onClick={handleDeleteConfirmation}>
+            <button
+                className={'btn btn-primary'}
+                onClick={handleDeleteConfirmation}
+            >
                 Yes
             </button>
             <button className={'btn btn-danger'} onClick={closeToast}>
@@ -126,9 +130,9 @@ function ShopsList() {
             )
 
             if (response.ok) {
-                console.log('Shop deleted successfully', selectedShop)
                 getData()
                 handleCloseModal()
+                toast.dismiss()
                 toast.success('Shop deleted successfully')
             } else {
                 throw new Error(
@@ -142,7 +146,10 @@ function ShopsList() {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
-        setSelectedShop((prevShop) => ({ ...prevShop, [name]: value }))
+        setSelectedShop((prevShop) => ({
+            ...prevShop,
+            [name]: value,
+        }))
     }
 
     const requestSort = (key) => {
@@ -167,7 +174,6 @@ function ShopsList() {
         setSearchQuery(e.target.value)
     }
 
-
     const filteredShops = shops.filter((shop) =>
         shop.shop_name.toLowerCase().includes(searchQuery.toLowerCase())
     )
@@ -186,10 +192,7 @@ function ShopsList() {
 
     const indexOfLastShop = currentPage * shopsPerPage
     const indexOfFirstShop = indexOfLastShop - shopsPerPage
-    const currentShops = sortedShops.slice(
-        indexOfFirstShop,
-        indexOfLastShop
-    )
+    const currentShops = sortedShops.slice(indexOfFirstShop, indexOfLastShop)
 
     const totalPages = Math.ceil(filteredShops.length / shopsPerPage)
 

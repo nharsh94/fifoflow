@@ -2,54 +2,43 @@ import { useState, useEffect } from 'react'
 import SearchComponent from './Search'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
-
 function OrderList() {
     const [orders, setOrders] = useState([])
     const [products, setProducts] = useState([])
     const [shops, setShops] = useState([])
     const [users, setUsers] = useState([])
     const [searchQuery, setSearchQuery] = useState([])
-
     const getOrderData = async () => {
         const response = await fetch('http://localhost:8000/api/orders')
-
         if (response.ok) {
             const data = await response.json()
             setOrders(data)
         }
     }
-
     const getProductData = async () => {
         const response = await fetch('http://localhost:8000/api/products')
-
         if (response.ok) {
             const data = await response.json()
             setProducts(data)
         }
     }
-
     const getShopData = async () => {
         const response = await fetch('http://localhost:8000/api/shops')
-
         if (response.ok) {
             const data = await response.json()
             setShops(data)
         }
     }
-
     const getUserData = async () => {
         const response = await fetch('http://localhost:8000/api/profile')
-
         if (response.ok) {
             const data = await response.json()
             setUsers(data)
         }
     }
-
     useEffect(() => {
         getOrderData(), getProductData(), getShopData(), getUserData()
     }, [])
-
     const handleCancel = async (order) => {
         const url = `http://localhost:8000/api/orders/${order.order_id}`
         const response = await fetch(url)
@@ -63,12 +52,13 @@ function OrderList() {
             },
         }
         await fetch(url, cancelConfig)
-
+        toast.success('Order cancelled successfully')
         const producturl = `http://localhost:8000/api/products/${order.product_id}`
         const productresponse = await fetch(producturl)
         if (productresponse.ok) {
             const productdata = await productresponse.json()
-            productdata['quantity_in_stock'] = productdata['quantity_in_stock'] + order.quantity
+            productdata['quantity_in_stock'] =
+                productdata['quantity_in_stock'] + order.quantity
             const updateConfig = {
                 method: 'PUT',
                 body: JSON.stringify(productdata),
@@ -77,18 +67,16 @@ function OrderList() {
                 },
             }
             await fetch(producturl, updateConfig)
-
             setOrders((prevOrders) =>
-            prevOrders.map((ordermap) => {
-                if (ordermap.order_id === order.order_id) {
-                    return { ...ordermap, status: 'cancelled' }
-                }
-                return ordermap
-            })
-            )
-        }
+                prevOrders.map((ordermap) => {
+                    if (ordermap.order_id === order.order_id) {
+                        return { ...ordermap, status: 'cancelled' }
+                    }
+                    return ordermap
+                })
+                )
+            }
     }
-
     const handleApprove = async (order) => {
         const url = `http://localhost:8000/api/orders/${order.order_id}`
         const response = await fetch(url)
@@ -102,7 +90,7 @@ function OrderList() {
             },
         }
         await fetch(url, cancelConfig)
-
+        toast.success('Order approved successfully')
         setOrders((prevOrders) =>
             prevOrders.map((ordermap) => {
                 if (ordermap.order_id === order.order_id) {
@@ -112,7 +100,6 @@ function OrderList() {
             })
         )
     }
-
     const handleSearch = (e) => {
         const inputValue = e.target.value.toLowerCase()
         if (typeof inputValue === 'string') {
@@ -123,7 +110,6 @@ function OrderList() {
         const product = products.find(
             (product) => product.product_id === order.product_id
         )
-
         if (
             product &&
             order.status !== 'cancelled' &&
@@ -131,7 +117,6 @@ function OrderList() {
         ) {
             return product.name.toLowerCase().includes(searchQuery)
         }
-
         return false
     })
     return (
@@ -139,11 +124,11 @@ function OrderList() {
             <div className="container-list">
                 <div className="signup-form-wrapper custom-shadow1">
                     <h1>Orders</h1>
-                        <SearchComponent
-                            value={searchQuery}
-                            onChange={handleSearch}
-                            placeholder="Search by product name.."
-                        />
+                    <SearchComponent
+                        value={searchQuery}
+                        onChange={handleSearch}
+                        placeholder="Search by product name.."
+                    />
                     <Table responsive striped bordered hover>
                         <thead>
                             <tr>
@@ -199,9 +184,7 @@ function OrderList() {
                                         <td>
                                             <Button
                                                 onClick={() =>
-                                                    handleApprove(
-                                                        order
-                                                    )
+                                                    handleApprove(order)
                                                 }
                                             >
                                                 Approve
@@ -227,5 +210,4 @@ function OrderList() {
         </>
     )
 }
-
 export default OrderList

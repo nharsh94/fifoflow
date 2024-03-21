@@ -33,7 +33,6 @@ function Navs() {
         return string.charAt(0).toUpperCase() + string.slice(1)
     }
 
-
     return (
         <>
             <UserProvider>
@@ -119,9 +118,8 @@ function Navs() {
                                             to="/products/all"
                                         >
                                             All Products
-                                            </NavDropdown.Item>
-                                            )}
-
+                                        </NavDropdown.Item>
+                                    )}
                                 </NavDropdown>
                                 <NavDropdown
                                     className="px-2"

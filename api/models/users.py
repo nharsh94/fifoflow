@@ -1,7 +1,3 @@
-"""
-Pydantic Models for Users.
-"""
-
 from jwtdown_fastapi.authentication import Token
 from pydantic import BaseModel
 
