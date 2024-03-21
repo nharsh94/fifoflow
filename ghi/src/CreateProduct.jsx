@@ -91,6 +91,7 @@ function CreateProduct() {
                                 name="name"
                                 value={formData.name}
                                 onChange={handleChange}
+                                required
                             />
                         </FloatingLabel>
                         <FloatingLabel
@@ -116,6 +117,7 @@ function CreateProduct() {
                                 name="supplier_id"
                                 value={formData.supplier_id}
                                 onChange={handleChange}
+                                required
                             >
                                 <option value="">Select a Supplier</option>
                                 {suppliers.map((supplier) => (

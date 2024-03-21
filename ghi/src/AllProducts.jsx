@@ -19,7 +19,7 @@ function AllProducts() {
     })
     const [searchQuery, setSearchQuery] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const [productsPerPage] = useState(5)
+    const [productsPerPage] = useState(10)
 
     const getData = async () => {
         try {
@@ -113,6 +113,7 @@ function AllProducts() {
             if (response.ok) {
                 handleCloseModal()
                 getData()
+                toast.success('Product successfully updated!')
             } else {
                 throw new Error(
                     `Failed to update product. Status: ${response.status}`
@@ -140,6 +141,7 @@ function AllProducts() {
                 getData()
                 handleCloseModal()
                 toast.dismiss()
+                toast.success('Product successfully deleted!')
             } else {
                 throw new Error(
                     `Failed to delete product. Status: ${response.status}`
@@ -194,6 +196,7 @@ function AllProducts() {
                 getData()
                 handleCloseModal()
                 toast.dismiss()
+                toast.success('Product successfully added!')
             } else {
                 throw new Error(
                     `Failed to add product. Status: ${response.status}`

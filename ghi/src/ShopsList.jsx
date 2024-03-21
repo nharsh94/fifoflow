@@ -94,38 +94,6 @@ function ShopsList() {
         }
     }
 
-    const handleDeleteConfirmation = async () => {
-        try {
-            const updatedShop = {
-                ...selectedShop,
-                deleted_flag: true,
-            }
-            const response = await fetch(
-                `http://localhost:8000/api/shops/${selectedShop.shop_id}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(updatedShop),
-                }
-            )
-
-            if (response.ok) {
-                getData()
-                handleCloseModal()
-                toast.dismiss()
-                toast.success('Shop deleted successfully')
-            } else {
-                throw new Error(
-                    `Failed to delete shop. Status: ${response.status}`
-                )
-            }
-        } catch (error) {
-            console.error('Error deleting shop', error)
-        }
-    }
-
     const handleDeleteShop = async () => {
         toast.warn(<Msg />, {
             position: 'top-center',
@@ -151,6 +119,31 @@ function ShopsList() {
             </button>
         </div>
     )
+
+    const handleDeleteConfirmation = async () => {
+        try {
+            const response = await fetch(
+                `http://localhost:8000/api/shops/${selectedShop.shop_id}`,
+                {
+                    method: 'DELETE',
+                }
+            )
+
+            if (response.ok) {
+                getData()
+                handleCloseModal()
+                toast.dismiss()
+                toast.success('Shop deleted successfully')
+            } else {
+                throw new Error(
+                    `Failed to delete shop. Status: ${response.status}`
+                )
+            }
+        } catch (error) {
+            console.error('Error deleting shop', error)
+        }
+    }
+
     const handleInputChange = (e) => {
         const { name, value } = e.target
         setSelectedShop((prevShop) => ({
