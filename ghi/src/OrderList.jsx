@@ -89,8 +89,8 @@ function OrderList() {
         }
     }
 
-    const handleApprove = async (id) => {
-        const url = `http://localhost:8000/api/orders/${id}`
+    const handleApprove = async (order) => {
+        const url = `http://localhost:8000/api/orders/${order.order_id}`
         const response = await fetch(url)
         const data = await response.json()
         data['status'] = 'approved'
@@ -108,7 +108,7 @@ function OrderList() {
                 if (ordermap.order_id === order.order_id) {
                     return { ...ordermap, status: 'approved' }
                 }
-                return order
+                return ordermap
             })
         )
     }
@@ -200,7 +200,7 @@ function OrderList() {
                                             <Button
                                                 onClick={() =>
                                                     handleApprove(
-                                                        order.order_id
+                                                        order
                                                     )
                                                 }
                                             >

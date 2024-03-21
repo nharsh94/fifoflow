@@ -77,7 +77,7 @@ def test_get_all_orders_multiple():
             "order_date": "2024-03-20T21:26:29.950466",
             "product_id": 1,
             "quantity": 12,
-            "total_price": "0.00",
+            "total_price": 0.0,
             "status": "submitted"
         },
             {
@@ -87,7 +87,7 @@ def test_get_all_orders_multiple():
             "order_date": "2024-05-20T21:26:29.950466",
             "product_id": 149,
             "quantity": 10,
-            "total_price": "0.00",
+            "total_price": 0.0,
             "status": "submitted"
         }
         ]
@@ -114,7 +114,7 @@ def test_create_order():
             "user_id": 1,
             "product_id": 1,
             "quantity": 1,
-            "total_price": "10.00",
+            "total_price": 10.0,
             "status": "submitted",
             "order_date": "2024-03-20T21:26:29.950466"
     }
