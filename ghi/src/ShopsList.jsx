@@ -80,9 +80,10 @@ function ShopsList() {
             )
 
             if (response.ok) {
-                console.log('Shop updated successfully:', selectedShop)
-                handleCloseModal()
                 getData()
+                handleCloseModal()
+                toast.dismiss()
+                toast.success('Shop updated successfully')
             } else {
                 throw new Error(
                     `Failed to update shop. Status: ${response.status}`
@@ -146,7 +147,10 @@ function ShopsList() {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
-        setSelectedShop((prevShop) => ({ ...prevShop, [name]: value }))
+        setSelectedShop((prevShop) => ({
+            ...prevShop,
+            [name]: value,
+        }))
     }
 
     const requestSort = (key) => {

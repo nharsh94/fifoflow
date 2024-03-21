@@ -59,7 +59,6 @@ function App() {
     const [error] = useState(null)
 
     return (
-        <>
             <UserProvider>
                 <BrowserRouter>
                     <div className="App">
@@ -135,7 +134,6 @@ function App() {
                     </div>
                 </BrowserRouter>
             </UserProvider>
-        </>
     )
 }
 export default App

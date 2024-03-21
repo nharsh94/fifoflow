@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import SearchComponent from './Search'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
+import { toast, ToastContainer } from 'react-toastify'
 
 function OrderList() {
     const [orders, setOrders] = useState([])
@@ -50,13 +51,11 @@ function OrderList() {
         getOrderData(), getProductData(), getShopData(), getUserData()
     }, [])
 
-    const handleCancel = async (id) => {
-        const url = `http://localhost:8000/api/orders/${id}`
-        console.log(url)
+    const handleCancel = async (order) => {
+        const url = `http://localhost:8000/api/orders/${order.order_id}`
         const response = await fetch(url)
         const data = await response.json()
         data['status'] = 'cancelled'
-        console.log('this is happening in handleCancel', data)
         const cancelConfig = {
             method: 'PUT',
             body: JSON.stringify(data),
@@ -65,24 +64,24 @@ function OrderList() {
             },
         }
         await fetch(url, cancelConfig)
+        toast.success('Order cancelled successfully')
 
-        setOrders((prevOrders) =>
-            prevOrders.map((order) => {
-                if (order.order_id === id) {
-                    return { ...order, status: 'cancelled' }
+            setOrders((prevOrders) =>
+            prevOrders.map((ordermap) => {
+                if (ordermap.order_id === order.order_id) {
+                    return { ...ordermap, status: 'cancelled' }
                 }
-                return order
+                return ordermap
             })
-        )
+            )
+        }
     }
 
     const handleApprove = async (id) => {
         const url = `http://localhost:8000/api/orders/${id}`
-        console.log(url)
         const response = await fetch(url)
         const data = await response.json()
         data['status'] = 'approved'
-        console.log('this is happening in handleApprove', data)
         const cancelConfig = {
             method: 'PUT',
             body: JSON.stringify(data),
@@ -91,11 +90,12 @@ function OrderList() {
             },
         }
         await fetch(url, cancelConfig)
+        toast.success('Order approved successfully')
 
         setOrders((prevOrders) =>
-            prevOrders.map((order) => {
-                if (order.order_id === id) {
-                    return { ...order, status: 'approved' }
+            prevOrders.map((ordermap) => {
+                if (ordermap.order_id === order.order_id) {
+                    return { ...ordermap, status: 'approved' }
                 }
                 return order
             })
@@ -126,13 +126,14 @@ function OrderList() {
     return (
         <>
             <div className="container-list">
+                <ToastContainer />
                 <div className="signup-form-wrapper custom-shadow1">
                     <h1>Orders</h1>
-                        <SearchComponent
-                            value={searchQuery}
-                            onChange={handleSearch}
-                            placeholder="Search by product name.."
-                        />
+                    <SearchComponent
+                        value={searchQuery}
+                        onChange={handleSearch}
+                        placeholder="Search by product name.."
+                    />
                     <Table responsive striped bordered hover>
                         <thead>
                             <tr>
@@ -200,7 +201,7 @@ function OrderList() {
                                             <Button
                                                 variant="danger"
                                                 onClick={() =>
-                                                    handleCancel(order.order_id)
+                                                    handleCancel(order)
                                                 }
                                             >
                                                 Cancel

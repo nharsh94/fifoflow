@@ -289,9 +289,10 @@ function AllProducts() {
 
     return (
         <>
-            <div>
+            <div className="container-list">
+                <div className="order-history-wrapper custom-shadow1">
                 <h1>All Products</h1>
-                <Search value={searchQuery} onChange={handleSearch} />
+                <Search value={searchQuery} onChange={handleSearch} placeholder="Search by product name.." />
                 <div
                     style={{
                         display: 'flex',
@@ -403,6 +404,7 @@ function AllProducts() {
                     totalPages={totalPages}
                     onPageChange={handlePaginationClick}
                 />
+            </div>
             </div>
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>

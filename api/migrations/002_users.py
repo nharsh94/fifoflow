@@ -42,5 +42,5 @@ steps = [
         """
         DROP TABLE profiles;
         """,
-    ],
+    ]
 ]
