@@ -9,9 +9,23 @@ steps = [
         """,
     ],
     [
+    [
+        """
+        CREATE TYPE status_type
+        AS ENUM('cancelled', 'submitted', 'approved', 'updated');
+        """,
+        """
+        DROP TYPE status_type ;
+        """,
+    ],
+    [
         """
         CREATE TABLE orders (
             order_id SERIAL PRIMARY KEY,
+            shop_id INT,
+            user_id INT,
+            order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            product_id INT,
             shop_id INT,
             user_id INT,
             order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
