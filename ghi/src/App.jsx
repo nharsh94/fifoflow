@@ -51,7 +51,8 @@ function Navigation() {
         location.pathname !== '/' &&
         location.pathname !== '/signup' &&
         location.pathname !== '/role' &&
-        location.pathname !== '/profile' && <Nav />
+        location.pathname !== '/profile' &&
+        location.pathname !== '/forgot-password' && <Nav />
     )
 }
 
@@ -59,81 +60,69 @@ function App() {
     const [error] = useState(null)
 
     return (
-            <UserProvider>
-                <BrowserRouter>
-                    <div className="App">
-                        <Navigation />
-                        <ErrorNotification error={error} />
-                        <Routes>
-                            <Route path="/" element={<Construct />} />
-                            {/* Authentication Routes */}
+        <UserProvider>
+            <BrowserRouter>
+                <div className="App">
+                    <Navigation />
+                    <ErrorNotification error={error} />
+                    <Routes>
+                        <Route path="/" element={<Construct />} />
+                        {/* Authentication Routes */}
+                        <Route path="/signup" element={<SignUpUserForm />} />
+                        <Route
+                            path="/forgot-password"
+                            element={<ForgotPassword />}
+                        />
+                        {/* User Routes */}
+                        <Route path="/home" element={<HomePage />} />
+                        <Route path="/user" element={<UsersList />} />
+                        <Route path="/role" element={<AssignRole />} />
+                        <Route path="/user" element={<UsersList />} />
+                        <Route path="profile">
                             <Route
-                                path="/signup"
-                                element={<SignUpUserForm />}
+                                path="/profile"
+                                element={<CreateProfile />}
                             />
                             <Route
-                                path="/forgot-password"
-                                element={<ForgotPassword />}
+                                path="/profile/list"
+                                element={<ProfileDatabase />}
                             />
-                            {/* User Routes */}
-                            <Route path="/home" element={<HomePage />} />
-                            <Route path="/user" element={<UsersList />} />
-                            <Route path="/role" element={<AssignRole />} />
-                            <Route path="/user" element={<UsersList />} />
-                            <Route path="profile">
-                                <Route
-                                    path="/profile"
-                                    element={<CreateProfile />}
-                                />
-                                <Route
-                                    path="/profile/list"
-                                    element={<ProfileDatabase />}
-                                />
-                                <Route
-                                    path="/profile/supplier"
-                                    element={<CreateSupplier />}
-                                />
-                                <Route
-                                    path="/profile/customer"
-                                    element={<CreateCustomer />}
-                                />
-                            </Route>
+                            <Route
+                                path="/profile/supplier"
+                                element={<CreateSupplier />}
+                            />
+                            <Route
+                                path="/profile/customer"
+                                element={<CreateCustomer />}
+                            />
+                        </Route>
 
-                            {/* Shops Routes */}
-                            <Route path="/shops">
-                                <Route path="create" element={<ShopCreate />} />
-                                <Route path="list" element={<ShopsList />} />
-                            </Route>
-                            {/* Products Routes */}
-                            <Route path="/products">
-                                <Route
-                                    path="create"
-                                    element={<CreateProduct />}
-                                />
-                                <Route path="list" element={<ProductsList />} />
-                                <Route path="all" element={<AllProducts />} />
-                            </Route>
-                            {/* Orders Routes */}
-                            <Route path="/orders">
-                                <Route path="list" element={<OrderList />} />
-                                <Route
-                                    path="create"
-                                    element={<OrderCreate />}
-                                />
-                                <Route
-                                    path="history"
-                                    element={<OrderHistory />}
-                                />
-                            </Route>
-                            {/* Default Redirect */}
-                            <Route
-                                path="/"
-                                element={<Navigate to="/construct" replace />}
-                            />
-                        </Routes>
-                    </div>
-                </BrowserRouter>
-            </UserProvider>
+                        {/* Shops Routes */}
+                        <Route path="/shops">
+                            <Route path="create" element={<ShopCreate />} />
+                            <Route path="list" element={<ShopsList />} />
+                        </Route>
+                        {/* Products Routes */}
+                        <Route path="/products">
+                            <Route path="create" element={<CreateProduct />} />
+                            <Route path="list" element={<ProductsList />} />
+                            <Route path="all" element={<AllProducts />} />
+                        </Route>
+                        {/* Orders Routes */}
+                        <Route path="/orders">
+                            <Route path="list" element={<OrderList />} />
+                            <Route path="create" element={<OrderCreate />} />
+                            <Route path="history" element={<OrderHistory />} />
+                        </Route>
+                        {/* Default Redirect */}
+                        <Route
+                            path="/"
+                            element={<Navigate to="/construct" replace />}
+                        />
+                    </Routes>
+                </div>
+            </BrowserRouter>
+        </UserProvider>
     )
 }
 export default App

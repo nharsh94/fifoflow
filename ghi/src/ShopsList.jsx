@@ -130,7 +130,6 @@ function ShopsList() {
             )
 
             if (response.ok) {
-                console.log('Shop deleted successfully', selectedShop)
                 getData()
                 handleCloseModal()
                 toast.dismiss()
