@@ -15,7 +15,7 @@ function OrderHistory() {
     })
     const [searchQuery, setSearchQuery] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const [ordersPerPage] = useState(5)
+    const [ordersPerPage] = useState(10)
 
     const getOrderData = async () => {
         const response = await fetch('http://localhost:8000/api/orders')
@@ -72,9 +72,10 @@ function OrderHistory() {
             (product && order.status === 'cancelled') ||
             order.status === 'approved'
         ) {
-           if  (product !== undefined) {
-            return product.name.toLowerCase().includes(searchQuery)
-        }}
+            if (product !== undefined) {
+                return product.name.toLowerCase().includes(searchQuery)
+            }
+        }
     })
     const sortedOrders = [...filteredOrders].sort((a, b) => {
         if (sortConfig && sortConfig.key) {
