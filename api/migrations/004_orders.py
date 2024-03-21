@@ -27,5 +27,5 @@ steps = [
         """
         DROP TABLE orders;
         """,
-    ],
+    ]
 ]
