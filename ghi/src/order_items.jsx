@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 function OrderItems() {
     const [orderItems, setOrderItems] = useState([])
     const [FormData, setFormData] = useState({
-        order_items: ""
+        order_items: '',
     })
 
     const getData = async () => {
@@ -19,12 +19,12 @@ function OrderItems() {
     }, [])
 
     const handleFormChange = (e) => {
-        const value = e.target.value;
-        const inputName = e.target.name;
+        const value = e.target.value
+        const inputName = e.target.name
         setFormData({
             ...FormData,
-            [inputName]: value
-        });
+            [inputName]: value,
+        })
     }
 
     return (

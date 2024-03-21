@@ -1,0 +1,33 @@
+.user-page {
+    text-align: center;
+    padding: 20px;
+}
+
+.home-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.home-button {
+    padding: 15px 20px;
+    border: 2px solid transparent;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out,
+        border-color 0.2s ease-in-out;
+}
+
+.home-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-color: #004d40;
+}
+
+.home-button i {
+    transition: transform 0.2s ease-in-out;
+}
+
+.home-button:hover i {
+    transform: rotate(10deg);
+}
