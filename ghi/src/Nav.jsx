@@ -17,7 +17,6 @@ import brand from './assets/FIFOFlow_transparent_x1.png'
 function Navs({ isLoggedIn }) {
     const navigate = useNavigate()
     const { userData } = useUser()
-
     useEffect(() => {
         if (!userData) {
             navigate('/')
@@ -37,7 +36,7 @@ function Navs({ isLoggedIn }) {
         <>
             <UserProvider>
                 {isLoggedIn && (
-                    <Navbar bg="dark" expand="lg" variant="dark">
+                    <Navbar bg="dark" expand="xl" variant="dark">
                         <Container fluid>
                             <Navbar.Brand as={NavLink} to="/home">
                                 <OverlayTrigger
@@ -80,19 +79,19 @@ function Navs({ isLoggedIn }) {
                                             as={NavLink}
                                             to="/orders/create"
                                         >
-                                            Add Order To Flow
+                                            Add To Flow
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             as={NavLink}
                                             to="/orders/list"
                                         >
-                                            Orders List
+                                            Database
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             as={NavLink}
-                                            to="/orders/list"
+                                            to="/orders/history"
                                         >
-                                            Orders(WIP)
+                                            History
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             as={NavLink}
@@ -114,31 +113,31 @@ function Navs({ isLoggedIn }) {
                                             as={NavLink}
                                             to="/products/create"
                                         >
-                                            Add Product To Flow
+                                            Add To Flow
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             as={NavLink}
                                             to="/products/create1"
                                         >
-                                            Add Product To Flow(Alt)
+                                            Add To Flow(Alt)
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             as={NavLink}
                                             to="/products/list"
                                         >
-                                            Product Database
+                                            Database
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             as={NavLink}
                                             to="/products/list1"
                                         >
-                                            Product Database(Alt)
+                                            Database(Alt)
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             as={NavLink}
                                             to="/products/details"
                                         >
-                                            Product Details
+                                            Details
                                         </NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item eventKey="4.4">
@@ -162,16 +161,16 @@ function Navs({ isLoggedIn }) {
                                             as={NavLink}
                                             to="/shops/create"
                                         >
-                                            Add Shop To Flow
+                                            Add To Flow
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             as={NavLink}
                                             to="/shops/list"
                                         >
-                                            Shop Database
+                                            Database
                                         </NavDropdown.Item>
                                         <NavDropdown.Item eventKey="4.2">
-                                            Shop Details
+                                            Details
                                         </NavDropdown.Item>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item eventKey="4.4">

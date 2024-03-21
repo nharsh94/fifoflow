@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+import FloatingLabel from 'react-bootstrap/FloatingLabel'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 function OrderCreate() {
-    const [setOrders] = useState([])
+    const [orders, setOrders] = useState([])
     const [products, setProducts] = useState([])
     const [shops, setShops] = useState([])
     const [users, setUsers] = useState([])
@@ -81,6 +87,7 @@ function OrderCreate() {
         }
         const response = await fetch(url, fetchConfig)
         if (response.ok) {
+            toast.success('Order successfully added!')
             setFormData({
                 shop_id: '',
                 user_id: '',
@@ -97,93 +104,111 @@ function OrderCreate() {
     }, [])
 
     return (
-        <div className="row">
-            <div className="offset-3 col-6">
-                <div className="shadow p-4 mt-4">
-                    <h1>Create a new order</h1>
-                    <form onSubmit={handleSubmit} id="create-sale-form">
-                        <div className="form-floating mb-3">
-                            <select
-                                onChange={handleFormChange}
-                                value={formData.shop_id}
-                                required
-                                name="shop_id"
-                                id="shop_id"
-                                className="form-select"
-                            >
-                                <option value="">Choose an Shop</option>
-                                {shops.map((shop) => {
-                                    return (
-                                        <option
-                                            key={shop.shop_id}
-                                            value={shop.shop_id}
-                                        >
-                                            {shop.shop_name}
-                                        </option>
-                                    )
-                                })}
-                            </select>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <select
-                                onChange={handleFormChange}
-                                value={formData.user_id}
-                                required
-                                name="user_id"
-                                id="user_id"
-                                className="form-select"
-                            >
-                                <option value="">Select User</option>
-                                {users.map((user) => {
-                                    return (
-                                        <option
-                                            key={user.user_id}
-                                            value={user.user_id}
-                                        >
-                                            {user.user_id}
-                                        </option>
-                                    )
-                                })}
-                            </select>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <select
-                                onChange={handleFormChange}
-                                value={formData.product_id}
-                                required
-                                name="product_id"
-                                id="product_id"
-                                className="form-select"
-                            >
-                                <option value="">Select Product</option>
-                                {products.map((product) => {
-                                    return (
-                                        <option
-                                            key={product.product_id}
-                                            value={product.product_id}
-                                        >
-                                            {product.name}
-                                        </option>
-                                    )
-                                })}
-                            </select>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <input
-                                onChange={handleFormChange}
-                                value={formData.quantity}
-                                placeholder="Quantity"
-                                required
-                                type="number"
-                                name="quantity"
-                                id="quantity"
-                                className="form-control"
-                            />
-                            <label htmlFor="starts">quantity</label>
-                        </div>
-                        <button className="btn btn-primary">Create</button>
-                    </form>
-                </div>
+        <div className="container">
+            <ToastContainer />
+            <div className="order-create-wrapper custom-shadow1">
+                <h1>Create a New Order</h1>
+                <Form onSubmit={handleSubmit} className="center-form">
+                    <FloatingLabel
+                        controlId="FloatingShopId"
+                        label="Shop"
+                        className="mb-1 custom-shadow"
+                    >
+                        <Form.Select
+                            value={formData.shop_id}
+                            onChange={handleFormChange}
+                            required
+                            name="shop_id"
+                        >
+                            <option value="" disabled>
+                                Choose a Shop
+                            </option>
+                            {shops.map((shop) => {
+                                return (
+                                    <option
+                                        key={shop.shop_id}
+                                        value={shop.shop_id}
+                                    >
+                                        {shop.shop_name}
+                                    </option>
+                                )
+                            })}
+                        </Form.Select>
+                    </FloatingLabel>
+                    <FloatingLabel
+                        controlId="FloatingUser"
+                        label="User"
+                        className="mb-1 custom-shadow"
+                    >
+                        <Form.Select
+                            onChange={handleFormChange}
+                            value={formData.user_id}
+                            required
+                            name="user_id"
+                        >
+                            <option value="" disabled>
+                                Select User
+                            </option>
+                            {users.map((user) => {
+                                return (
+                                    <option
+                                        key={user.user_id}
+                                        value={user.user_id}
+                                    >
+                                        {user.user_id}
+                                    </option>
+                                )
+                            })}
+                        </Form.Select>
+                    </FloatingLabel>
+                    <FloatingLabel
+                        controlId="FloatingProduct"
+                        label="Product"
+                        className="mb-1 custom-shadow"
+                    >
+                        <Form.Select
+                            value={formData.product_id}
+                            onChange={handleFormChange}
+                            required
+                            name="product_id"
+                        >
+                            <option value="">Select Product</option>
+                            {products.map((product) => {
+                                return (
+                                    <option
+                                        key={product.product_id}
+                                        value={product.product_id}
+                                    >
+                                        {product.name}
+                                    </option>
+                                )
+                            })}
+                        </Form.Select>
+                    </FloatingLabel>
+                    <FloatingLabel
+                        controlId="FloatingQuantity"
+                        label="Quantity"
+                        className="mb-1 custom-shadow"
+                    >
+                        <Form.Control
+                            type="number"
+                            onChange={handleFormChange}
+                            placeholder="Quantity"
+                            value={formData.quantity}
+                            required
+                            name="quantity"
+                        />
+                    </FloatingLabel>
+                    <Button
+                        className="btn btn-outline-light mt-1"
+                        variant="secondary"
+                        id="submit-btn"
+                        data-replace=""
+                        type="submit"
+                    >
+                        Create
+                    </Button>
+                </Form>
             </div>
         </div>
     )

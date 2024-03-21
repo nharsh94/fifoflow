@@ -50,19 +50,11 @@ import OrderHistory from './OrderHistory'
     /* Demo Routes */
 }
 import SignUpForm from './TestSignUpForm'
-import TestProductCreate from './TestProductCreate'
-import TestProductsList from './TestProductsList'
+
 
 function Navigation({ isLoggedIn }) {
     const location = useLocation()
-    const showNavRoutes = [
-        '/home',
-        'profile',
-        '/user',
-        '/shops',
-        '/products',
-        '/orders',
-    ]
+    const showNavRoutes = ['/home', 'profile', '/user', '/shops', '/products', '/orders']
     const shouldShowNav =
         isLoggedIn &&
         (showNavRoutes.some((route) => location.pathname.startsWith(route)) ||
@@ -80,8 +72,8 @@ function App() {
 
     useEffect(() => {
         const isAuthenticated = () => {
-            return true
             // return localStorage.getItem('token') !== null
+            return true
         }
 
         try {
@@ -148,13 +140,13 @@ function App() {
                                 <Route
                                     path="list"
                                     element={
-                                        <ShopsList isLoggedIn={isLoggedIn} />
+                                        <ShopsList />
                                     }
                                 />
                                 <Route
                                     path="details"
                                     element={
-                                        <ShopDetails isLoggedIn={isLoggedIn} />
+                                        <ShopDetails />
                                     }
                                 />
                             </Route>
@@ -170,22 +162,6 @@ function App() {
                                 <Route
                                     path="signup1"
                                     element={<SignUpForm />}
-                                />
-                                <Route
-                                    path="create1"
-                                    element={
-                                        <TestProductCreate
-                                            isLoggedIn={isLoggedIn}
-                                        />
-                                    }
-                                />
-                                <Route
-                                    path="list1"
-                                    element={
-                                        <TestProductsList
-                                            isLoggedIn={isLoggedIn}
-                                        />
-                                    }
                                 />
                             </Route>
                             {/* Orders Routes */}
