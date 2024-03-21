@@ -2,6 +2,9 @@ import pytest
 from unittest.mock import MagicMock
 from utils.authentication import verify_password, hash_password, generate_jwt
 from models.users import UserWithPw
+import os
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 
 @pytest.fixture

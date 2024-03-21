@@ -1,3 +1,4 @@
+import os
 FROM python:3.10-bullseye
 RUN python -m pip install --upgrade pip
 WORKDIR /app
