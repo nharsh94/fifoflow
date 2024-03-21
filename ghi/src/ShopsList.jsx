@@ -132,6 +132,7 @@ function ShopsList() {
                 console.log('Shop deleted successfully', selectedShop)
                 getData()
                 handleCloseModal()
+                toast.dismiss()
                 toast.success('Shop deleted successfully')
             } else {
                 throw new Error(
