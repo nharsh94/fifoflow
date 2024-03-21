@@ -86,39 +86,42 @@ function OrderCreate() {
         const productresponse = await fetch(producturl)
         if (productresponse.ok) {
             const productdata = await productresponse.json()
-            productdata['quantity_in_stock'] = productdata['quantity_in_stock'] - newFormData.quantity
-            if  (productdata['quantity_in_stock'] < 0) {
-                return {'message': 'not enough product in stock'}
+            productdata['quantity_in_stock'] =
+                productdata['quantity_in_stock'] - newFormData.quantity
+            if (productdata['quantity_in_stock'] < 0) {
+                toast.error('Not enough quanity in stock')
             }
             const fetchConfig = {
-            method: 'POST',
-            body: JSON.stringify(newFormData),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }
-            const response = await fetch(url, fetchConfig)
-            if (response.ok) {
-            const updateConfig = {
-                method: 'PUT',
-                body: JSON.stringify(productdata),
+                method: 'POST',
+                body: JSON.stringify(newFormData),
                 headers: {
                     'Content-Type': 'application/json',
                 },
             }
-            await fetch(producturl, updateConfig)
+            const response = await fetch(url, fetchConfig)
+            if (response.ok) {
+                const updateConfig = {
+                    method: 'PUT',
+                    body: JSON.stringify(productdata),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+                await fetch(producturl, updateConfig)
 
-            setFormData({
-                shop_id: '',
-                user_id: '',
-                product_id: '',
-                quantity: '',
-                total_price: '',
-                status: 'submitted',
-            })
+                toast.success('Order succesfully added!')
+
+                setFormData({
+                    shop_id: '',
+                    user_id: '',
+                    product_id: '',
+                    quantity: '',
+                    total_price: '',
+                    status: 'submitted',
+                })
+            }
         }
     }
-        }
     useEffect(() => {
         getOrderData(), getProductData(), getShopData(), getUserData()
     }, [])
@@ -194,7 +197,7 @@ function OrderCreate() {
                         />
                     </FloatingLabel>
                     <Button
-                        className="btn btn-outline-light mt-1"
+                        className="btn mt-2"
                         variant="secondary"
                         id="submit-btn"
                         data-replace=""

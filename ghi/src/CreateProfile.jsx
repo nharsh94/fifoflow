@@ -22,7 +22,6 @@ export default function CreateProfile() {
         email: '',
         phone: '',
     })
-    console.log(username)
 
     const [error, setError] = useState('')
 
@@ -60,8 +59,6 @@ export default function CreateProfile() {
             )
 
             const userData = await userDataResponse.json()
-
-            console.log('I am the response', userData)
 
             if (userDataResponse.ok) {
                 localStorage.setItem(

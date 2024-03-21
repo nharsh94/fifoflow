@@ -21,7 +21,7 @@ function ProductsList() {
     })
     const [searchQuery, setSearchQuery] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const [productsPerPage] = useState(5)
+    const [productsPerPage] = useState(10)
 
     const getData = async () => {
         try {
@@ -133,6 +133,7 @@ function ProductsList() {
 
             if (response.ok) {
                 handleCloseModal()
+                toast.success('Product successfully updated!')
                 getData()
             } else {
                 throw new Error(
@@ -165,6 +166,7 @@ function ProductsList() {
                 getData()
                 handleCloseModal()
                 toast.dismiss()
+                toast.success('Product successfully deleted!')
             } else {
                 throw new Error(
                     `Failed to delete product. Status: ${response.status}`
@@ -394,7 +396,7 @@ function ProductsList() {
                             <Form.Label>Price</Form.Label>
                             <Form.Control
                                 type="number"
-                                placeholder="Enter phone"
+                                placeholder="Enter price"
                                 name="price"
                                 value={selectedProduct?.price || ''}
                                 onChange={handleInputChange}

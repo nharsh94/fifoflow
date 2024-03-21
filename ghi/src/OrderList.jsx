@@ -66,15 +66,14 @@ function OrderList() {
         await fetch(url, cancelConfig)
         toast.success('Order cancelled successfully')
 
-            setOrders((prevOrders) =>
+        setOrders((prevOrders) =>
             prevOrders.map((ordermap) => {
                 if (ordermap.order_id === order.order_id) {
                     return { ...ordermap, status: 'cancelled' }
                 }
                 return ordermap
             })
-            )
-        }
+        )
     }
 
     const handleApprove = async (id) => {
@@ -94,10 +93,10 @@ function OrderList() {
 
         setOrders((prevOrders) =>
             prevOrders.map((ordermap) => {
-                if (ordermap.order_id === order.order_id) {
+                if (ordermap.order_id === orders.order_id) {
                     return { ...ordermap, status: 'approved' }
                 }
-                return order
+                return orders
             })
         )
     }
