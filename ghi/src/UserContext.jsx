@@ -1,7 +1,9 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 
+// Create the context outside of the component
 const UserContext = createContext()
 
+// Define the provider component
 export const UserProvider = ({ children }) => {
     // Lazy initialization of userData from localStorage
     const [userData, setUserData] = useState(() => {
@@ -32,4 +34,8 @@ export const UserProvider = ({ children }) => {
     )
 }
 
+// Define the hook to consume the context
 export const useUser = () => useContext(UserContext)
+
+// Export React for linting purposes
+export default React
