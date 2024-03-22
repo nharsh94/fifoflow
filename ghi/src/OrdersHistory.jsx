@@ -4,6 +4,10 @@ import Table from 'react-bootstrap/Table'
 import Sort from './Sort'
 import Pagination from './PaginationComponent'
 
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
 function OrderHistory() {
     const [orders, setOrders] = useState([])
     const [products, setProducts] = useState([])
@@ -18,7 +22,7 @@ function OrderHistory() {
     const [ordersPerPage] = useState(10)
 
     const getOrderData = async () => {
-        const response = await fetch('http://localhost:8000/api/orders')
+        const response = await fetch(`${API_HOST}orders`)
 
         if (response.ok) {
             const data = await response.json()
@@ -27,7 +31,7 @@ function OrderHistory() {
     }
 
     const getProductData = async () => {
-        const response = await fetch('http://localhost:8000/api/products')
+        const response = await fetch(`${API_HOST}products`)
 
         if (response.ok) {
             const data = await response.json()
@@ -36,7 +40,7 @@ function OrderHistory() {
     }
 
     const getShopData = async () => {
-        const response = await fetch('http://localhost:8000/api/shops')
+        const response = await fetch(`${API_HOST}shops`)
 
         if (response.ok) {
             const data = await response.json()
@@ -45,7 +49,7 @@ function OrderHistory() {
     }
 
     const getUserData = async () => {
-        const response = await fetch('http://localhost:8000/api/profile')
+        const response = await fetch(`${API_HOST}profile`)
 
         if (response.ok) {
             const data = await response.json()

@@ -10,6 +10,10 @@ import Sort from './Sort'
 import Pagination from './PaginationComponent'
 import SearchComponent from './Search'
 
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
 function ShopsList() {
     const [shops, setShops] = useState([])
     const [selectedShop, setSelectedShop] = useState(null)
@@ -20,18 +24,18 @@ function ShopsList() {
     })
     const [searchQuery, setSearchQuery] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const [shopsPerPage] = useState(5)
+    const [shopsPerPage] = useState(10)
 
     const getData = async () => {
         try {
-            const response = await fetch('http://localhost:8000/api/shops')
+            const response = await fetch(`${API_HOST}shops`)
 
             if (response.ok) {
                 const data = await response.json()
                 setShops(data)
             } else {
                 throw new Error(
-                    'Failed to fetch data. Status: ${response.status}'
+                    `Failed to fetch data. Status: ${response.status}`
                 )
             }
         } catch (error) {
@@ -49,9 +53,7 @@ function ShopsList() {
 
     const handleShowModal = async (shop) => {
         try {
-            const response = await fetch(
-                `http://localhost:8000/api/shops/${shop.shop_id}`
-            )
+            const response = await fetch(`${API_HOST}shops/${shop.shop_id}`)
             if (response.ok) {
                 const data = await response.json()
                 setSelectedShop(data)
@@ -69,7 +71,7 @@ function ShopsList() {
     const handleUpdateShop = async () => {
         try {
             const response = await fetch(
-                `http://localhost:8000/api/shops/${selectedShop.shop_id}`,
+                `${API_HOST}shops/${selectedShop.shop_id}`,
                 {
                     method: 'PUT',
                     headers: {

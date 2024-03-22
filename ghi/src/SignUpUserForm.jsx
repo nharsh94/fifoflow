@@ -7,6 +7,10 @@ import Button from 'react-bootstrap/Button'
 
 import logo from './assets/FIFOFlow_transparent_x1.png'
 
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
 export default function SignUpUserForm() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -20,14 +24,11 @@ export default function SignUpUserForm() {
         setIsLoading(true)
 
         try {
-            const response = await fetch(
-                'http://localhost:8000/api/user/signup',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password }),
-                }
-            )
+            const response = await fetch(`${API_HOST}user/signup`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            })
 
             if (!response.ok) {
                 const errorData = await response.json()

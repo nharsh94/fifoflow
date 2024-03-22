@@ -10,6 +10,10 @@ import Sort from './Sort'
 import Pagination from './PaginationComponent'
 import SearchComponent from './Search'
 
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
 function ProductsList() {
     const [products, setProducts] = useState([])
     const [suppliers, setSuppliers] = useState([])
@@ -25,7 +29,7 @@ function ProductsList() {
 
     const getData = async () => {
         try {
-            const response = await fetch('http://localhost:8000/api/products')
+            const response = await fetch(`${API_HOST}products`)
 
             if (response.ok) {
                 const data = await response.json()
@@ -42,9 +46,7 @@ function ProductsList() {
             console.error('Error fetching products data', error)
         }
         try {
-            const supplierResponse = await fetch(
-                'http://localhost:8000/api/profile'
-            )
+            const supplierResponse = await fetch(`${API_HOST}profile`)
             if (supplierResponse.ok) {
                 const suppliersData = await supplierResponse.json()
                 const suppliersFiltered = suppliersData.filter(
@@ -70,7 +72,7 @@ function ProductsList() {
     const handleShowModal = async (product) => {
         try {
             const response = await fetch(
-                `http://localhost:8000/api/products/${product.product_id}/`
+                `${API_HOST}products/${product.product_id}/`
             )
             if (response.ok) {
                 const data = await response.json()
@@ -121,7 +123,7 @@ function ProductsList() {
     const handleUpdateProduct = async () => {
         try {
             const response = await fetch(
-                `http://localhost:8000/api/products/${selectedProduct.product_id}`,
+                `${API_HOST}products/${selectedProduct.product_id}`,
                 {
                     method: 'PUT',
                     headers: {
@@ -152,7 +154,7 @@ function ProductsList() {
                 deleted_flag: true,
             }
             const response = await fetch(
-                `http://localhost:8000/api/products/${selectedProduct.product_id}`,
+                `${API_HOST}products/${selectedProduct.product_id}`,
                 {
                     method: 'PUT',
                     headers: {

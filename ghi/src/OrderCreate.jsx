@@ -6,6 +6,10 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
 function OrderCreate() {
     const { userData } = useContext(UserContext)
     const [orders, setOrders] = useState([])
@@ -21,10 +25,14 @@ function OrderCreate() {
         status: 'submitted',
     })
 
-    console.log(orders, users)
+    const noConsoleLog = -1
+
+    if (noConsoleLog == 1) {
+        console.log(orders, users)
+    }
 
     const getOrderData = async () => {
-        const response = await fetch('http://localhost:8000/api/orders')
+        const response = await fetch(`${API_HOST}orders`)
 
         if (response.ok) {
             const data = await response.json()
@@ -33,7 +41,7 @@ function OrderCreate() {
     }
 
     const getProductData = async () => {
-        const response = await fetch('http://localhost:8000/api/products')
+        const response = await fetch(`${API_HOST}products`)
 
         if (response.ok) {
             const data = await response.json()
@@ -42,7 +50,7 @@ function OrderCreate() {
     }
 
     const getShopData = async () => {
-        const response = await fetch('http://localhost:8000/api/shops')
+        const response = await fetch(`${API_HOST}shops`)
 
         if (response.ok) {
             const data = await response.json()
@@ -51,7 +59,7 @@ function OrderCreate() {
     }
 
     const getUserData = async () => {
-        const response = await fetch('http://localhost:8000/api/profile')
+        const response = await fetch(`${API_HOST}profile`)
 
         if (response.ok) {
             const data = await response.json()
@@ -69,7 +77,7 @@ function OrderCreate() {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        const url = 'http://localhost:8000/api/orders/'
+        const url = `${API_HOST}orders`
         const product = products.find(
             (product) => product.product_id === formData.product_id
         )
@@ -83,7 +91,7 @@ function OrderCreate() {
             total_price: total,
         }
 
-        const producturl = `http://localhost:8000/api/products/${product.product_id}`
+        const producturl = `${API_HOST}products/${product.product_id}`
         const productresponse = await fetch(producturl)
         if (productresponse.ok) {
             const productdata = await productresponse.json()

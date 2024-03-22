@@ -66,6 +66,10 @@ const stateOptions = [
     { label: 'U.S. Virgin Islands', value: 'VI' },
 ]
 
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
 function ShopCreate() {
     const [formData, setFormData] = useState({
         shop_name: '',
@@ -87,7 +91,7 @@ function ShopCreate() {
     const handleSubmit = async (event) => {
         event.preventDefault()
         const fullAddress = `${formData.street_address}, ${formData.city}, ${formData.selectedState}, ${formData.zip_code}`
-        const url = 'http://localhost:8000/api/shops/'
+        const url = `${API_HOST}shops/`
 
         const fetchConfig = {
             method: 'post',

@@ -8,12 +8,17 @@ router = APIRouter(tags=["Profiles"], prefix="/api/profile")
 
 @router.post("/", response_model=Union[ProfileOut, Error])
 def create_profile(profile: ProfileIn, repo: ProfileRepository = Depends()):
+    if profile.user_id == 0:
+        raise HTTPException(status_code=400, detail="Invalid User ID")
     return repo.create(profile)
 
 
 @router.get("/", response_model=Union[List[ProfileOut], Error])
 def get_all_profiles(repo: ProfileRepository = Depends()):
-    return repo.get_all()
+    profiles = repo.get_all()
+    if not profiles:
+        raise HTTPException(status_code=404, detail="No profiles found")
+    return profiles
 
 
 @router.put("/{user_id}", response_model=Union[ProfileOut, Error])
