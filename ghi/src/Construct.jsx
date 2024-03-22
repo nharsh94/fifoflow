@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import UserContext from './UserContext'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
@@ -6,12 +7,11 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/js/bootstrap.bundle'
 import 'react-json-pretty/themes/monikai.css'
-import { useUser } from './UserContext'
 
 import logo from './assets/FIFOFlow_transparent_x1.png'
 
 function Construct() {
-    const { setUserData } = useUser()
+    const { setUserData } = useContext(UserContext)
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -53,19 +53,6 @@ function Construct() {
             const userData = await userDataResponse.json()
 
             if (userDataResponse.ok) {
-                localStorage.setItem(
-                    'userData',
-                    JSON.stringify({
-                        user_id: userData.user_id,
-                        username: userData.username,
-                        role: userData.role,
-                        first_name: userData.first_name,
-                        last_name: userData.last_name,
-                        email: userData.email,
-                        phone: userData.phone,
-                        access_token: authData.access_token,
-                    })
-                )
                 setUserData({
                     user_id: userData.user_id,
                     username: userData.username,

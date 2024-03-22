@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import UserContext from './UserContext'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { useUser } from './UserContext'
 
 function OrderCreate() {
-    const { userData } = useUser()
+    const { userData } = useContext(UserContext)
     const [orders, setOrders] = useState([])
     const [products, setProducts] = useState([])
     const [shops, setShops] = useState([])
@@ -20,6 +20,8 @@ function OrderCreate() {
         total_price: '',
         status: 'submitted',
     })
+
+    console.log(orders, users)
 
     const getOrderData = async () => {
         const response = await fetch('http://localhost:8000/api/orders')

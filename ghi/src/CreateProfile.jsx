@@ -1,14 +1,14 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useUser } from './UserContext'
 import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import UserContext from './UserContext'
 
 import logo from './assets/FIFOFlow_transparent_x1.png'
 
 export default function CreateProfile() {
-    const { setUserData } = useUser()
+    const { setUserData } = useContext(UserContext)
     const navigate = useNavigate()
     const location = useLocation()
     const { user_id, username, role_id, role_name } = location.state || {}
@@ -61,18 +61,6 @@ export default function CreateProfile() {
             const userData = await userDataResponse.json()
 
             if (userDataResponse.ok) {
-                localStorage.setItem(
-                    'userData',
-                    JSON.stringify({
-                        user_id: userData.user_id,
-                        username: userData.username,
-                        role: userData.role,
-                        first_name: userData.first_name,
-                        last_name: userData.last_name,
-                        email: userData.email,
-                        phone: userData.phone,
-                    })
-                )
                 setUserData({
                     user_id: userData.user_id,
                     username: userData.username,
@@ -81,6 +69,7 @@ export default function CreateProfile() {
                     last_name: userData.last_name,
                     email: userData.email,
                     phone: userData.phone,
+                    access_token: null,
                 })
             }
 

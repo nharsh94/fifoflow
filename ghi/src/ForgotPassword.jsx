@@ -20,6 +20,7 @@ export default function ForgotPassword() {
             .then(
                 (result) => {
                     window.location.reload()
+                    console.log(result)
                 },
                 (error) => {
                     console.log(error.text)
