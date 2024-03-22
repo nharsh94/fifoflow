@@ -21,6 +21,8 @@ function OrderCreate() {
         status: 'submitted',
     })
 
+    console.log(orders, users)
+
     const getOrderData = async () => {
         const response = await fetch('http://localhost:8000/api/orders')
 
