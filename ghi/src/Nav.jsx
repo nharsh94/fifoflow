@@ -20,7 +20,7 @@ function Navs() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (userData === null) {
+        if (userData.user_id === null) {
             navigate('/')
         }
     }, [userData, navigate])
