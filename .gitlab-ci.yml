@@ -48,6 +48,7 @@ build-front-end-job:
         # You need to substitute in your real values for
         # GROUP_NAME, PROJECT_NAME, & WEBSERVICE_NAME below.
         # Don't forget to also replace PROJECT NAME in the npm run build line as well
+        DATABASE_URL: for tests
         VITE_API_HOST: https://nov-2023-7-packitapi.mod3projects.com/api/
     script:
         - cd ghi
