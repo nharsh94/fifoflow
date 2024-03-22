@@ -1,204 +1,204 @@
-# from fastapi.testclient import TestClient
-# from main import app
-# from models.profiles import ProfileOut, ProfileIn
-# from queries.profile_database import ProfileRepository
+from fastapi.testclient import TestClient
+from main import app
+from models.profiles import ProfileOut, ProfileIn
+from queries.profile_database import ProfileRepository
 
 
-# client = TestClient(app)
+client = TestClient(app)
 
 
-# class ProfileQuieres:
-#     def get_all(self):
-#         return [
-#             ProfileOut(
-#                 id=1,
-#                 user_id=1,
-#                 role="Admin",
-#                 first_name="string",
-#                 last_name="string",
-#                 email="string@example.com",
-#                 phone="1234567890",
-#             ),
-#             ProfileOut(
-#                 id=2,
-#                 user_id=2,
-#                 role="Supplier",
-#                 first_name="string2",
-#                 last_name="string2",
-#                 email="string2@example.com",
-#                 phone="0987654321",
-#             ),
-#         ]
+class ProfileQuieres:
+    def get_all(self):
+        return [
+            ProfileOut(
+                id=1,
+                user_id=1,
+                role="Admin",
+                first_name="string",
+                last_name="string",
+                email="string@example.com",
+                phone="1234567890",
+            ),
+            ProfileOut(
+                id=2,
+                user_id=2,
+                role="Supplier",
+                first_name="string2",
+                last_name="string2",
+                email="string2@example.com",
+                phone="0987654321",
+            ),
+        ]
 
-#     def get_one(self, user_id: int):
-#         profiles = self.get_all()
-#         for profile in profiles:
-#             if profile.user_id == user_id:
-#                 return profile
-#         return None
-
-
-# class CreateQuieres:
-#     def create(self, profile: ProfileIn):
-#         result = {
-#             "id": 1,
-#             "user_id": 1,
-#             "role": "string",
-#             "first_name": "string",
-#             "last_name": "string",
-#             "email": "string@example.com",
-#             "phone": "1234567890",
-#         }
-#         result.update(profile)
-#         return result
+    def get_one(self, user_id: int):
+        profiles = self.get_all()
+        for profile in profiles:
+            if profile.user_id == user_id:
+                return profile
+        return None
 
 
-# class UpdateQuieres:
-#     def update(self, user_id, profile: ProfileIn):
-#         result = {
-#             "id": user_id,
-#             "user_id": user_id,
-#             "role": profile.role,
-#             "first_name": profile.first_name,
-#             "last_name": profile.last_name,
-#             "email": profile.email,
-#             "phone": profile.phone,
-#         }
-#         return result
+class CreateQuieres:
+    def create(self, profile: ProfileIn):
+        result = {
+            "id": 1,
+            "user_id": 1,
+            "role": "string",
+            "first_name": "string",
+            "last_name": "string",
+            "email": "string@example.com",
+            "phone": "1234567890",
+        }
+        result.update(profile)
+        return result
 
 
-# class DeleteQuieres:
-#     def delete(self, user_id: int):
-#         return True
+class UpdateQuieres:
+    def update(self, user_id, profile: ProfileIn):
+        result = {
+            "id": user_id,
+            "user_id": user_id,
+            "role": profile.role,
+            "first_name": profile.first_name,
+            "last_name": profile.last_name,
+            "email": profile.email,
+            "phone": profile.phone,
+        }
+        return result
 
 
-# def test_get_all_profiles():
-#     app.dependency_overrides[ProfileRepository] = ProfileQuieres
-
-#     response = client.get("/api/profile/")
-
-#     app.dependency_overrides = {}
-
-#     assert response.status_code == 200
-
-#     assert response.json() == [
-#         {
-#             "id": 1,
-#             "user_id": 1,
-#             "role": "Admin",
-#             "first_name": "string",
-#             "last_name": "string",
-#             "email": "string@example.com",
-#             "phone": "1234567890",
-#         },
-#         {
-#             "id": 2,
-#             "user_id": 2,
-#             "role": "Supplier",
-#             "first_name": "string2",
-#             "last_name": "string2",
-#             "email": "string2@example.com",
-#             "phone": "0987654321",
-#         },
-#     ]
+class DeleteQuieres:
+    def delete(self, user_id: int):
+        return True
 
 
-# def test_create_profile():
-#     app.dependency_overrides[ProfileRepository] = CreateQuieres
+def test_get_all_profiles():
+    app.dependency_overrides[ProfileRepository] = ProfileQuieres
 
-#     profile = {
-#         "user_id": 1,
-#         "role": "Admin",
-#         "first_name": "string",
-#         "last_name": "string",
-#         "email": "string@example.com",
-#         "phone": "1234567890",
-#     }
+    response = client.get("/api/profile/")
 
-#     expected = {
-#         "id": 1,
-#         "user_id": 1,
-#         "role": "Admin",
-#         "first_name": "string",
-#         "last_name": "string",
-#         "email": "string@example.com",
-#         "phone": "1234567890",
-#     }
+    app.dependency_overrides = {}
 
-#     response = client.post("/api/profile/", json=profile)
+    assert response.status_code == 200
 
-#     app.dependency_overrides = {}
-
-#     assert response.status_code == 200
-
-#     assert response.json() == expected
-
-
-# def test_update_profile():
-
-#     app.dependency_overrides[ProfileRepository] = UpdateQuieres
-
-#     user_id = 1
-#     profile = {
-#         "user_id": 1,
-#         "role": "Admin",
-#         "first_name": "string",
-#         "last_name": "string",
-#         "email": "string@example.com",
-#         "phone": "1234567890",
-#     }
-
-#     expected = {
-#         "id": 1,
-#         "user_id": 1,
-#         "role": "Admin",
-#         "first_name": "string",
-#         "last_name": "string",
-#         "email": "string@example.com",
-#         "phone": "1234567890",
-#     }
-
-#     response = client.put(f"/api/profile/{user_id}", json=profile)
-
-#     app.dependency_overrides = {}
-
-#     assert response.status_code == 200
-
-#     assert response.json() == expected
+    assert response.json() == [
+        {
+            "id": 1,
+            "user_id": 1,
+            "role": "Admin",
+            "first_name": "string",
+            "last_name": "string",
+            "email": "string@example.com",
+            "phone": "1234567890",
+        },
+        {
+            "id": 2,
+            "user_id": 2,
+            "role": "Supplier",
+            "first_name": "string2",
+            "last_name": "string2",
+            "email": "string2@example.com",
+            "phone": "0987654321",
+        },
+    ]
 
 
-# def test_get_one_profile():
-#     app.dependency_overrides[ProfileRepository] = ProfileQuieres
+def test_create_profile():
+    app.dependency_overrides[ProfileRepository] = CreateQuieres
 
-#     user_id = 1
+    profile = {
+        "user_id": 1,
+        "role": "Admin",
+        "first_name": "string",
+        "last_name": "string",
+        "email": "string@example.com",
+        "phone": "1234567890",
+    }
 
-#     expected_product = {
-#         "id": 1,
-#         "user_id": 1,
-#         "role": "Admin",
-#         "first_name": "string",
-#         "last_name": "string",
-#         "email": "string@example.com",
-#         "phone": "1234567890",
-#     }
+    expected = {
+        "id": 1,
+        "user_id": 1,
+        "role": "Admin",
+        "first_name": "string",
+        "last_name": "string",
+        "email": "string@example.com",
+        "phone": "1234567890",
+    }
 
-#     response = client.get(f"/api/profile/{user_id}")
+    response = client.post("/api/profile/", json=profile)
 
-#     app.dependency_overrides = {}
+    app.dependency_overrides = {}
 
-#     assert response.status_code == 200
+    assert response.status_code == 200
 
-#     assert response.json() == expected_product
+    assert response.json() == expected
 
 
-# def test_delete_profile():
-#     app.dependency_overrides[ProfileRepository] = DeleteQuieres
+def test_update_profile():
 
-#     user_id = 1
+    app.dependency_overrides[ProfileRepository] = UpdateQuieres
 
-#     response = client.delete(f"/api/profile/{user_id}")
+    user_id = 1
+    profile = {
+        "user_id": 1,
+        "role": "Admin",
+        "first_name": "string",
+        "last_name": "string",
+        "email": "string@example.com",
+        "phone": "1234567890",
+    }
 
-#     app.dependency_overrides = {}
+    expected = {
+        "id": 1,
+        "user_id": 1,
+        "role": "Admin",
+        "first_name": "string",
+        "last_name": "string",
+        "email": "string@example.com",
+        "phone": "1234567890",
+    }
 
-#     assert response.status_code == 200
-#     assert response.json() is True
+    response = client.put(f"/api/profile/{user_id}", json=profile)
+
+    app.dependency_overrides = {}
+
+    assert response.status_code == 200
+
+    assert response.json() == expected
+
+
+def test_get_one_profile():
+    app.dependency_overrides[ProfileRepository] = ProfileQuieres
+
+    user_id = 1
+
+    expected_product = {
+        "id": 1,
+        "user_id": 1,
+        "role": "Admin",
+        "first_name": "string",
+        "last_name": "string",
+        "email": "string@example.com",
+        "phone": "1234567890",
+    }
+
+    response = client.get(f"/api/profile/{user_id}")
+
+    app.dependency_overrides = {}
+
+    assert response.status_code == 200
+
+    assert response.json() == expected_product
+
+
+def test_delete_profile():
+    app.dependency_overrides[ProfileRepository] = DeleteQuieres
+
+    user_id = 1
+
+    response = client.delete(f"/api/profile/{user_id}")
+
+    app.dependency_overrides = {}
+
+    assert response.status_code == 200
+    assert response.json() is True
