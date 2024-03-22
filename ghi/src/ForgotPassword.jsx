@@ -1,5 +1,6 @@
 import emailjs from 'emailjs-com'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { useNavigate } from 'react-router-dom'
 import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -7,6 +8,8 @@ import logo from './assets/FIFOFlow_transparent_x1.png'
 import { Link } from 'react-router-dom'
 
 export default function ForgotPassword() {
+    const navigate = useNavigate()
+
     function sendPasswordResetEmail(event) {
         event.preventDefault()
 
@@ -26,6 +29,7 @@ export default function ForgotPassword() {
                     console.log(error.text)
                 }
             )
+            navigate('/')
     }
 
     return (
