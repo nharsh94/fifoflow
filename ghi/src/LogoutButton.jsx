@@ -1,8 +1,6 @@
-import { useUser } from './UserContext'
 import { useNavigate } from 'react-router-dom'
 
-const LogoutButton = () => {
-    const { setUserData } = useUser()
+const LogoutButton = ({ setUserData }) => {
     const navigate = useNavigate()
 
     const handleLogout = () => {
@@ -12,9 +10,12 @@ const LogoutButton = () => {
             role: null,
             first_name: null,
             last_name: null,
+            email: null,
+            phone: null,
+            access_token: null,
         })
 
-        localStorage.removeItem('userData')
+        // localStorage.removeItem('userData')
 
         navigate('/')
     }

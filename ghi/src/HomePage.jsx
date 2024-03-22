@@ -1,11 +1,8 @@
 import { NavLink } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import './HomePage.css'
-import { useUser } from './UserContext'
 
-function HomePage() {
-    const { userData } = useUser()
-
+function HomePage({ userData }) {
     return (
         <div className="user-page">
             <h1>Welcome!</h1>
