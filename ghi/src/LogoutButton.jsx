@@ -1,6 +1,9 @@
 import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import UserContext from './UserContext'
 
-const LogoutButton = ({ setUserData }) => {
+const LogoutButton = () => {
+    const { setUserData } = useContext(UserContext)
     const navigate = useNavigate()
 
     const handleLogout = () => {
