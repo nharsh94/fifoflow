@@ -1,5 +1,5 @@
 import Nav from 'react-bootstrap/Nav'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Container from 'react-bootstrap/Container'
@@ -10,13 +10,11 @@ import Button from 'react-bootstrap/Button'
 import LogoutButton from './LogoutButton'
 
 import { NavLink } from 'react-router-dom'
-import { UserContext } from './UserContext'
 
 import brand from './assets/FIFOFlow_transparent_x1.png'
 
-function Navs() {
+function Navs({ userData }) {
     const navigate = useNavigate()
-    const { userData } = React.useContext(UserContext)
 
     useEffect(() => {
         if (userData.user_id === null) {
