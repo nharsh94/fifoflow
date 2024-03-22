@@ -8,16 +8,19 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Button from 'react-bootstrap/Button'
 import LogoutButton from './LogoutButton'
+import { useContext } from 'react'
+import UserContext from './UserContext'
 
 import { NavLink } from 'react-router-dom'
 
 import brand from './assets/FIFOFlow_transparent_x1.png'
 
-function Navs({ userData }) {
+function Navs() {
+    const { userData } = useContext(UserContext)
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (userData === null) {
+        if (userData.user_id === null) {
             navigate('/')
         }
     }, [userData, navigate])

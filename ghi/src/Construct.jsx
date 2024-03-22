@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import UserContext from './UserContext'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
@@ -9,7 +10,8 @@ import 'react-json-pretty/themes/monikai.css'
 
 import logo from './assets/FIFOFlow_transparent_x1.png'
 
-function Construct({ setUserData }) {
+function Construct() {
+    const { setUserData } = useContext(UserContext)
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
