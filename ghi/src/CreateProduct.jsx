@@ -6,6 +6,10 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
 function CreateProduct() {
     const [formData, setFormData] = useState({
         name: '',
@@ -20,9 +24,10 @@ function CreateProduct() {
     useEffect(() => {
         fetchSuppliers()
     }, [])
+
     const fetchSuppliers = async () => {
         try {
-            const response = await fetch('http://localhost:8000/api/profile')
+            const response = await fetch(`${API_HOST}profile`)
             if (response.ok) {
                 const suppliersData = await response.json()
                 const suppliersFiltered = suppliersData.filter(
@@ -38,7 +43,7 @@ function CreateProduct() {
     }
     const handleSubmit = async (event) => {
         event.preventDefault()
-        const url = 'http://localhost:8000/api/products'
+        const url = `${API_HOST}products`
         const fetchConfig = {
             method: 'post',
             body: JSON.stringify({

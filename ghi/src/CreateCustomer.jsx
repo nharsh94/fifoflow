@@ -6,6 +6,10 @@ import Button from 'react-bootstrap/Button'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
 export default function CreateSupplierProfile() {
     const navigate = useNavigate()
 
@@ -23,9 +27,7 @@ export default function CreateSupplierProfile() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch(
-                    'http://localhost:8000/api/user/list'
-                )
+                const response = await fetch(`${API_HOST}user/list`)
                 if (!response.ok) throw new Error('Failed to fetch users')
                 const data = await response.json()
                 setUsers(data)
@@ -53,7 +55,7 @@ export default function CreateSupplierProfile() {
         const requestData = { ...profileData, user_id: selectedUserId }
 
         try {
-            const response = await fetch('http://localhost:8000/api/profile', {
+            const response = await fetch(`${API_HOST}profile`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
