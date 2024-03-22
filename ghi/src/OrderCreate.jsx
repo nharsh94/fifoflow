@@ -4,10 +4,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { useUser } from './UserContext'
 
-function OrderCreate() {
-    const { userData } = useUser()
+function OrderCreate({ userData }) {
     const [orders, setOrders] = useState([])
     const [products, setProducts] = useState([])
     const [shops, setShops] = useState([])
