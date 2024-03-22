@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom' // Import useNavigate
 
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
 export default function SignUpForm() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -10,16 +14,13 @@ export default function SignUpForm() {
     const handleFormSubmit = async (event) => {
         event.preventDefault()
         try {
-            const response = await fetch(
-                'http://localhost:8000/api/user/signup',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ username, password }),
-                }
-            )
+            const response = await fetch(`${API_HOST}user/signup`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            })
 
             if (!response.ok) {
                 const errorData = await response.json()

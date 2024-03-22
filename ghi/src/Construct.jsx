@@ -10,6 +10,10 @@ import 'react-json-pretty/themes/monikai.css'
 
 import logo from './assets/FIFOFlow_transparent_x1.png'
 
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
 function Construct() {
     const { setUserData } = useContext(UserContext)
     const navigate = useNavigate()
@@ -25,30 +29,25 @@ function Construct() {
         }
 
         try {
-            const response = await fetch(
-                'http://localhost:8000/api/user/token',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({
-                        username,
-                        password,
-                        grant_type: 'password',
-                        scope: 'read write',
-                    }),
-                }
-            )
+            const response = await fetch(`${API_HOST}user/token`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    username,
+                    password,
+                    grant_type: 'password',
+                    scope: 'read write',
+                }),
+            })
             if (!response.ok) {
                 throw new Error('Login failed')
             }
 
             const authData = await response.json()
 
-            const userDataResponse = await fetch(
-                `http://localhost:8000/api/user/${username}`
-            )
+            const userDataResponse = await fetch(`${API_HOST}user/${username}`)
 
             const userData = await userDataResponse.json()
 

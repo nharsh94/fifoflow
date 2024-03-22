@@ -1,7 +1,6 @@
 from typing import List, Optional, Union
 from queries.pool import pool
 from models.profiles import ProfileOut, ProfileIn, Error
-import traceback
 
 
 class ProfileRepository:
@@ -23,7 +22,6 @@ class ProfileRepository:
                         return None
                     return self.record_to_profile_out(profile)
         except Exception:
-            traceback.print_exc()
             return None
 
     def delete(self, user_id: int) -> bool:
@@ -125,7 +123,6 @@ class ProfileRepository:
                     inserted_id = db.fetchone()[0]
                     return self.profile_in_to_out(inserted_id, profile)
         except Exception as e:
-            traceback.print_exc()
             return {"message": str(e)}
 
     def profile_in_to_out(self, id: int, profile: ProfileIn) -> ProfileOut:

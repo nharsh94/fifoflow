@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react'
 import Table from 'react-bootstrap/Table'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
 
 function ProfileDatabase() {
     const [profiles, setProfiles] = useState([])
 
     const getUserData = async () => {
-        const response = await fetch('http://localhost:8000/api/profile/')
+        const response = await fetch(`${API_HOST}profile/`)
 
         if (response.ok) {
             const data = await response.json()

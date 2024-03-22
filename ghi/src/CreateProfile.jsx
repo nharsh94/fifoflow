@@ -5,6 +5,10 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import UserContext from './UserContext'
 
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
 import logo from './assets/FIFOFlow_transparent_x1.png'
 
 export default function CreateProfile() {
@@ -33,7 +37,7 @@ export default function CreateProfile() {
     const handleFormSubmit = async (event) => {
         event.preventDefault()
         try {
-            const response = await fetch('http://localhost:8000/api/profile', {
+            const response = await fetch(`${API_HOST}profile`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -54,9 +58,7 @@ export default function CreateProfile() {
                 throw new Error(errorData.message || 'Failed to create profile')
             }
 
-            const userDataResponse = await fetch(
-                `http://localhost:8000/api/user/${username}`
-            )
+            const userDataResponse = await fetch(`${API_HOST}user/${username}`)
 
             const userData = await userDataResponse.json()
 
