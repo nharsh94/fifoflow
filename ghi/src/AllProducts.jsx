@@ -291,120 +291,127 @@ function AllProducts() {
         <>
             <div className="container-list">
                 <div className="order-history-wrapper custom-shadow1">
-                <h1>All Products</h1>
-                <Search value={searchQuery} onChange={handleSearch} placeholder="Search by product name.." />
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        alignItems: 'center',
-                        marginBottom: '10px',
-                        paddingRight: '10px',
-                    }}
-                >
-                    <span
-                        style={{ marginRight: '5px', cursor: 'pointer' }}
-                        onClick={handleResetSort}
+                    <h1>All Products</h1>
+                    <Search
+                        value={searchQuery}
+                        onChange={handleSearch}
+                        placeholder="Search by product name.."
+                    />
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                            marginBottom: '10px',
+                            paddingRight: '10px',
+                        }}
                     >
-                        Reset
-                    </span>
-                    <i
-                        className="bi bi-funnel-fill"
-                        onClick={handleResetSort}
-                        style={{ cursor: 'pointer' }}
-                    ></i>
-                </div>
-                <Table responsive striped bordered hover>
-                    <thead>
-                        <tr>
-                            <Sort
-                                label="Product ID"
-                                onClick={() => requestSort('product_id')}
-                                sortConfig={sortConfig}
-                                field="product_id"
-                            />
-                            <Sort
-                                label="Name"
-                                onClick={() => requestSort('name')}
-                                sortConfig={sortConfig}
-                                field="name"
-                            />
-                            <Sort
-                                label="Price"
-                                onClick={() => requestSort('price')}
-                                sortConfig={sortConfig}
-                                field="price"
-                            />
-                            <Sort
-                                label="Description"
-                                onClick={() => requestSort('description')}
-                                sortConfig={sortConfig}
-                                field="description"
-                            />
-                            <Sort
-                                label="Deleted"
-                                onClick={() => requestSort('deleted_flag')}
-                                sortConfig={sortConfig}
-                                field="deleted_flag"
-                            />
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentProducts.map((product) => (
-                            <tr key={product.product_id}>
-                                <td>{product.product_id}</td>
-                                <td>{product.name}</td>
-                                <td>{`$${product.price}`}</td>
-                                <td>{product.description}</td>
-                                <td>{product.deleted_flag ? 'Yes' : 'No'}</td>
-                                <td>
-                                    {product.description &&
-                                    product.category &&
-                                    product.alert_threshold &&
-                                    (product.quantity_in_stock > 1 ||
-                                        product.quantity_in_stock === '') ? (
-                                        <Button
-                                            variant={
-                                                product.deleted_flag
-                                                    ? 'secondary'
-                                                    : 'success'
-                                            }
-                                            onClick={() =>
-                                                handleShowModal(product)
-                                            }
-                                        >
-                                            {product.deleted_flag
-                                                ? 'View'
-                                                : 'Details'}
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            variant={
-                                                product.deleted_flag
-                                                    ? 'secondary'
-                                                    : 'primary'
-                                            }
-                                            onClick={() =>
-                                                handleShowModal(product)
-                                            }
-                                        >
-                                            {product.deleted_flag
-                                                ? 'View'
-                                                : 'Edit'}
-                                        </Button>
-                                    )}
-                                </td>
+                        <span
+                            style={{ marginRight: '5px', cursor: 'pointer' }}
+                            onClick={handleResetSort}
+                        >
+                            Reset
+                        </span>
+                        <i
+                            className="bi bi-funnel-fill"
+                            onClick={handleResetSort}
+                            style={{ cursor: 'pointer' }}
+                        ></i>
+                    </div>
+                    <Table responsive striped bordered hover>
+                        <thead>
+                            <tr>
+                                <Sort
+                                    label="Product ID"
+                                    onClick={() => requestSort('product_id')}
+                                    sortConfig={sortConfig}
+                                    field="product_id"
+                                />
+                                <Sort
+                                    label="Name"
+                                    onClick={() => requestSort('name')}
+                                    sortConfig={sortConfig}
+                                    field="name"
+                                />
+                                <Sort
+                                    label="Price"
+                                    onClick={() => requestSort('price')}
+                                    sortConfig={sortConfig}
+                                    field="price"
+                                />
+                                <Sort
+                                    label="Description"
+                                    onClick={() => requestSort('description')}
+                                    sortConfig={sortConfig}
+                                    field="description"
+                                />
+                                <Sort
+                                    label="Deleted"
+                                    onClick={() => requestSort('deleted_flag')}
+                                    sortConfig={sortConfig}
+                                    field="deleted_flag"
+                                />
+                                <th>Action</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </Table>
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePaginationClick}
-                />
-            </div>
+                        </thead>
+                        <tbody>
+                            {currentProducts.map((product) => (
+                                <tr key={product.product_id}>
+                                    <td>{product.product_id}</td>
+                                    <td>{product.name}</td>
+                                    <td>{`$${product.price}`}</td>
+                                    <td>{product.description}</td>
+                                    <td>
+                                        {product.deleted_flag ? 'Yes' : 'No'}
+                                    </td>
+                                    <td>
+                                        {product.description &&
+                                        product.category &&
+                                        product.alert_threshold &&
+                                        (product.quantity_in_stock > 1 ||
+                                            product.quantity_in_stock ===
+                                                '') ? (
+                                            <Button
+                                                variant={
+                                                    product.deleted_flag
+                                                        ? 'secondary'
+                                                        : 'success'
+                                                }
+                                                onClick={() =>
+                                                    handleShowModal(product)
+                                                }
+                                            >
+                                                {product.deleted_flag
+                                                    ? 'View'
+                                                    : 'Details'}
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                variant={
+                                                    product.deleted_flag
+                                                        ? 'secondary'
+                                                        : 'primary'
+                                                }
+                                                onClick={() =>
+                                                    handleShowModal(product)
+                                                }
+                                            >
+                                                {product.deleted_flag
+                                                    ? 'View'
+                                                    : 'Edit'}
+                                            </Button>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePaginationClick}
+                    />
+                </div>
             </div>
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>

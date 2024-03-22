@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -89,7 +88,8 @@ function OrderCreate() {
             productdata['quantity_in_stock'] =
                 productdata['quantity_in_stock'] - newFormData.quantity
             if (productdata['quantity_in_stock'] < 0) {
-                toast.error('Not enough quanity in stock')
+                toast.error('Not enough quantity in stock')
+                return
             }
             const fetchConfig = {
                 method: 'POST',

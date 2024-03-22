@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import SearchComponent from './Search'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 function OrderList() {
     const [orders, setOrders] = useState([])
     const [products, setProducts] = useState([])
@@ -74,8 +77,8 @@ function OrderList() {
                     }
                     return ordermap
                 })
-                )
-            }
+            )
+        }
     }
     const handleApprove = async (order) => {
         const url = `http://localhost:8000/api/orders/${order.order_id}`
@@ -122,6 +125,7 @@ function OrderList() {
     return (
         <>
             <div className="container-list">
+                <ToastContainer />
                 <div className="signup-form-wrapper custom-shadow1">
                     <h1>Orders</h1>
                     <SearchComponent

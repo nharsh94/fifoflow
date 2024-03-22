@@ -93,7 +93,6 @@ export default function ForgotPassword() {
                                     variant="primary"
                                     type="submit"
                                     className="btn mt-2"
-
                                 >
                                     Send
                                 </Button>
