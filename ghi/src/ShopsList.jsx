@@ -10,13 +10,10 @@ import Sort from './Sort'
 import Pagination from './PaginationComponent'
 import SearchComponent from './Search'
 
-<<<<<<< HEAD
-=======
 console.table(import.meta.env)
 
 const API_HOST = import.meta.env.VITE_API_HOST
 
->>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 function ShopsList() {
     const [shops, setShops] = useState([])
     const [selectedShop, setSelectedShop] = useState(null)
@@ -27,30 +24,18 @@ function ShopsList() {
     })
     const [searchQuery, setSearchQuery] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-<<<<<<< HEAD
-    const [shopsPerPage] = useState(5)
-
-    const getData = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/api/shops')
-=======
     const [shopsPerPage] = useState(10)
 
     const getData = async () => {
         try {
             const response = await fetch(`${API_HOST}shops`)
->>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 
             if (response.ok) {
                 const data = await response.json()
                 setShops(data)
             } else {
                 throw new Error(
-<<<<<<< HEAD
-                    'Failed to fetch data. Status: ${response.status}'
-=======
                     `Failed to fetch data. Status: ${response.status}`
->>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
                 )
             }
         } catch (error) {
@@ -68,13 +53,7 @@ function ShopsList() {
 
     const handleShowModal = async (shop) => {
         try {
-<<<<<<< HEAD
-            const response = await fetch(
-                `http://localhost:8000/api/shops/${shop.shop_id}`
-            )
-=======
             const response = await fetch(`${API_HOST}shops/${shop.shop_id}`)
->>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
             if (response.ok) {
                 const data = await response.json()
                 setSelectedShop(data)
@@ -92,11 +71,7 @@ function ShopsList() {
     const handleUpdateShop = async () => {
         try {
             const response = await fetch(
-<<<<<<< HEAD
-                `http://localhost:8000/api/shops/${selectedShop.shop_id}`,
-=======
                 `${API_HOST}shops/${selectedShop.shop_id}`,
->>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
                 {
                     method: 'PUT',
                     headers: {

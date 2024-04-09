@@ -5,60 +5,40 @@ import Table from 'react-bootstrap/Table'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-<<<<<<< HEAD
-=======
 console.table(import.meta.env)
 
 const API_HOST = import.meta.env.VITE_API_HOST
 
->>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 function OrderList() {
     const [orders, setOrders] = useState([])
     const [products, setProducts] = useState([])
     const [shops, setShops] = useState([])
     const [users, setUsers] = useState([])
     const [searchQuery, setSearchQuery] = useState([])
-<<<<<<< HEAD
-    const getOrderData = async () => {
-        const response = await fetch('http://localhost:8000/api/orders')
-=======
 
     const getOrderData = async () => {
         const response = await fetch(`${API_HOST}orders`)
->>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
         if (response.ok) {
             const data = await response.json()
             setOrders(data)
         }
     }
     const getProductData = async () => {
-<<<<<<< HEAD
-        const response = await fetch('http://localhost:8000/api/products')
-=======
         const response = await fetch(`${API_HOST}products`)
->>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
         if (response.ok) {
             const data = await response.json()
             setProducts(data)
         }
     }
     const getShopData = async () => {
-<<<<<<< HEAD
-        const response = await fetch('http://localhost:8000/api/shops')
-=======
         const response = await fetch(`${API_HOST}shops`)
->>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
         if (response.ok) {
             const data = await response.json()
             setShops(data)
         }
     }
     const getUserData = async () => {
-<<<<<<< HEAD
-        const response = await fetch('http://localhost:8000/api/profile')
-=======
         const response = await fetch(`${API_HOST}profile`)
->>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
         if (response.ok) {
             const data = await response.json()
             setUsers(data)
@@ -68,11 +48,7 @@ function OrderList() {
         getOrderData(), getProductData(), getShopData(), getUserData()
     }, [])
     const handleCancel = async (order) => {
-<<<<<<< HEAD
-        const url = `http://localhost:8000/api/orders/${order.order_id}`
-=======
         const url = `${API_HOST}orders/${order.order_id}`
->>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
         const response = await fetch(url)
         const data = await response.json()
         data['status'] = 'cancelled'
@@ -85,11 +61,7 @@ function OrderList() {
         }
         await fetch(url, cancelConfig)
         toast.success('Order cancelled successfully')
-<<<<<<< HEAD
-        const producturl = `http://localhost:8000/api/products/${order.product_id}`
-=======
         const producturl = `${API_HOST}products/${order.product_id}`
->>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
         const productresponse = await fetch(producturl)
         if (productresponse.ok) {
             const productdata = await productresponse.json()
@@ -114,11 +86,7 @@ function OrderList() {
         }
     }
     const handleApprove = async (order) => {
-<<<<<<< HEAD
-        const url = `http://localhost:8000/api/orders/${order.order_id}`
-=======
         const url = `${API_HOST}orders/${order.order_id}`
->>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
         const response = await fetch(url)
         const data = await response.json()
         data['status'] = 'approved'
