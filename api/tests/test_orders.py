@@ -105,7 +105,6 @@ def test_create_order():
     }
     response = client.post("/api/orders", json=order)
     app.dependency_overrides = {}
-    print(response.json())
     assert response.status_code == 200
     assert response.json() == {
         "order_id": 1,
