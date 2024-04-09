@@ -28,9 +28,15 @@ else:
     origins = [CORS_HOST]
 
 
+<<<<<<< HEAD
 # @app.get("/")
 # def root():
 #     return {"message": "You hit the root path!"}
+=======
+@app.get("/")
+def root():
+    return {"message": "You hit the root path!"}
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 
 
 app.add_middleware(

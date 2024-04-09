@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { useState } from 'react'
+=======
+import { useState, useContext } from 'react'
+import UserContext from './UserContext'
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
@@ -6,12 +11,24 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/js/bootstrap.bundle'
 import 'react-json-pretty/themes/monikai.css'
+<<<<<<< HEAD
 import { useUser } from './UserContext'
 
 import logo from './assets/FIFOFlow_transparent_x1.png'
 
 function Construct() {
     const { setUserData } = useUser()
+=======
+
+import logo from './assets/FIFOFlow_transparent_x1.png'
+
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
+function Construct() {
+    const { setUserData } = useContext(UserContext)
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -25,6 +42,7 @@ function Construct() {
         }
 
         try {
+<<<<<<< HEAD
             const response = await fetch(
                 'http://localhost:8000/api/user/token',
                 {
@@ -40,19 +58,38 @@ function Construct() {
                     }),
                 }
             )
+=======
+            const response = await fetch(`${API_HOST}user/token`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    username,
+                    password,
+                    grant_type: 'password',
+                    scope: 'read write',
+                }),
+            })
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
             if (!response.ok) {
                 throw new Error('Login failed')
             }
 
             const authData = await response.json()
 
+<<<<<<< HEAD
             const userDataResponse = await fetch(
                 `http://localhost:8000/api/user/${username}`
             )
+=======
+            const userDataResponse = await fetch(`${API_HOST}user/${username}`)
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 
             const userData = await userDataResponse.json()
 
             if (userDataResponse.ok) {
+<<<<<<< HEAD
                 localStorage.setItem(
                     'userData',
                     JSON.stringify({
@@ -66,6 +103,8 @@ function Construct() {
                         access_token: authData.access_token,
                     })
                 )
+=======
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
                 setUserData({
                     user_id: userData.user_id,
                     username: userData.username,

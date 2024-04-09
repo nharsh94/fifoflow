@@ -27,5 +27,9 @@ steps = [
         """
         DROP TABLE orders;
         """,
+<<<<<<< HEAD
     ]
+=======
+    ],
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 ]

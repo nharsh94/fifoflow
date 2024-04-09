@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -9,6 +10,22 @@ import { useUser } from './UserContext'
 
 function OrderCreate() {
     const { userData } = useUser()
+=======
+import { useState, useEffect, useContext } from 'react'
+import UserContext from './UserContext'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import FloatingLabel from 'react-bootstrap/FloatingLabel'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
+function OrderCreate() {
+    const { userData } = useContext(UserContext)
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
     const [orders, setOrders] = useState([])
     const [products, setProducts] = useState([])
     const [shops, setShops] = useState([])
@@ -22,8 +39,19 @@ function OrderCreate() {
         status: 'submitted',
     })
 
+<<<<<<< HEAD
     const getOrderData = async () => {
         const response = await fetch('http://localhost:8000/api/orders')
+=======
+    const noConsoleLog = -1
+
+    if (noConsoleLog == 1) {
+        console.log(orders, users)
+    }
+
+    const getOrderData = async () => {
+        const response = await fetch(`${API_HOST}orders`)
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 
         if (response.ok) {
             const data = await response.json()
@@ -32,7 +60,11 @@ function OrderCreate() {
     }
 
     const getProductData = async () => {
+<<<<<<< HEAD
         const response = await fetch('http://localhost:8000/api/products')
+=======
+        const response = await fetch(`${API_HOST}products`)
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 
         if (response.ok) {
             const data = await response.json()
@@ -41,7 +73,11 @@ function OrderCreate() {
     }
 
     const getShopData = async () => {
+<<<<<<< HEAD
         const response = await fetch('http://localhost:8000/api/shops')
+=======
+        const response = await fetch(`${API_HOST}shops`)
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 
         if (response.ok) {
             const data = await response.json()
@@ -50,7 +86,11 @@ function OrderCreate() {
     }
 
     const getUserData = async () => {
+<<<<<<< HEAD
         const response = await fetch('http://localhost:8000/api/profile')
+=======
+        const response = await fetch(`${API_HOST}profile`)
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 
         if (response.ok) {
             const data = await response.json()
@@ -68,7 +108,11 @@ function OrderCreate() {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+<<<<<<< HEAD
         const url = 'http://localhost:8000/api/orders/'
+=======
+        const url = `${API_HOST}orders`
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
         const product = products.find(
             (product) => product.product_id === formData.product_id
         )
@@ -82,14 +126,23 @@ function OrderCreate() {
             total_price: total,
         }
 
+<<<<<<< HEAD
         const producturl = `http://localhost:8000/api/products/${product.product_id}`
+=======
+        const producturl = `${API_HOST}products/${product.product_id}`
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
         const productresponse = await fetch(producturl)
         if (productresponse.ok) {
             const productdata = await productresponse.json()
             productdata['quantity_in_stock'] =
                 productdata['quantity_in_stock'] - newFormData.quantity
             if (productdata['quantity_in_stock'] < 0) {
+<<<<<<< HEAD
                 toast.error('Not enough quanity in stock')
+=======
+                toast.error('Not enough quantity in stock')
+                return
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
             }
             const fetchConfig = {
                 method: 'POST',

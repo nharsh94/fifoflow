@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { createContext, useContext, useState, useEffect } from 'react'
+=======
+import { createContext, useState, useEffect } from 'react'
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 
 const UserContext = createContext()
 
@@ -32,4 +36,8 @@ export const UserProvider = ({ children }) => {
     )
 }
 
+<<<<<<< HEAD
 export const useUser = () => useContext(UserContext)
+=======
+export default UserContext
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8

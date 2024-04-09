@@ -13,8 +13,13 @@
     justify-content: center;
 }
 body {
+<<<<<<< HEAD
     background-color: hsl(72.3,37.1%,90%);
     background-color: hsl(72.3,37.1%,90%);
+=======
+    background-color: hsl(72.3, 37.1%, 90%);
+    background-color: hsl(72.3, 37.1%, 90%);
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 }
 .container {
     max-width: 600px; /* Set a maximum width for the container */
@@ -81,6 +86,7 @@ Nav.Link {
     justify-content: center;
 }
 .custom-shadow {
+<<<<<<< HEAD
     box-shadow: 0px 5px 5px -5px hsl(72.3,37.1%,80%),
                 5px 5px 5px -5px hsl(72.3,37.1%,80%),
                 -5px 5px 5px -5px hsl(72.3,37.1%,80%);
@@ -91,6 +97,18 @@ Nav.Link {
     box-shadow: 0px 5px 10px -5px rgba(0, 0, 0, 0.5), /* Left */
                 5px 5px 10px -5px rgba(0, 0, 0, 0.5), /* Bottom */
                 -5px 5px 15px -5px rgba(0, 0, 0, 0.5); /* Right */
+=======
+    box-shadow: 0px 5px 5px -5px hsl(72.3, 37.1%, 80%),
+        5px 5px 5px -5px hsl(72.3, 37.1%, 80%),
+        -5px 5px 5px -5px hsl(72.3, 37.1%, 80%);
+    border-radius: 5px;
+}
+.custom-shadow1 {
+    background-color: hsl(72.3, 37.1%, 99%);
+    box-shadow: 0px 5px 10px -5px rgba(0, 0, 0, 0.5),
+        /* Left */ 5px 5px 10px -5px rgba(0, 0, 0, 0.5),
+        /* Bottom */ -5px 5px 15px -5px rgba(0, 0, 0, 0.5); /* Right */
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
     padding: 20px;
     border-radius: 10px;
 }

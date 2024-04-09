@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # import pytest
 # from unittest.mock import AsyncMock, MagicMock
 # from fastapi import HTTPException, status
@@ -51,3 +52,21 @@
 #     # Test invalid username
 #     assert await mock_user_queries.get_by_username("nonexistent_user")
 #   is None
+=======
+from fastapi.testclient import TestClient
+from main import app
+from jose import jwt
+from datetime import datetime, timedelta
+
+client = TestClient(app)
+
+
+def create_token(user_id: int, expires_delta: timedelta = None):
+    to_encode = {"sub": user_id}
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, "secret", algorithm="HS256")
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8

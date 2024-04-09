@@ -1,5 +1,9 @@
 import emailjs from 'emailjs-com'
 import 'bootstrap/dist/css/bootstrap.min.css'
+<<<<<<< HEAD
+=======
+import { useNavigate } from 'react-router-dom'
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 import FloatingLabel from 'react-bootstrap/esm/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -7,6 +11,11 @@ import logo from './assets/FIFOFlow_transparent_x1.png'
 import { Link } from 'react-router-dom'
 
 export default function ForgotPassword() {
+<<<<<<< HEAD
+=======
+    const navigate = useNavigate()
+
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
     function sendPasswordResetEmail(event) {
         event.preventDefault()
 
@@ -20,11 +29,21 @@ export default function ForgotPassword() {
             .then(
                 (result) => {
                     window.location.reload()
+<<<<<<< HEAD
                 },
                 (error) => {
                     console.log(error.text)
                 }
             )
+=======
+                    console.log(result)
+                },
+                (error) => {
+                    console.log(error)
+                }
+            )
+        navigate('/')
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
     }
 
     return (
@@ -93,7 +112,10 @@ export default function ForgotPassword() {
                                     variant="primary"
                                     type="submit"
                                     className="btn mt-2"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
                                 >
                                     Send
                                 </Button>

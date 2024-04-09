@@ -10,6 +10,13 @@ import Sort from './Sort'
 import Pagination from './PaginationComponent'
 import SearchComponent from './Search'
 
+<<<<<<< HEAD
+=======
+console.table(import.meta.env)
+
+const API_HOST = import.meta.env.VITE_API_HOST
+
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 function ProductsList() {
     const [products, setProducts] = useState([])
     const [suppliers, setSuppliers] = useState([])
@@ -25,7 +32,11 @@ function ProductsList() {
 
     const getData = async () => {
         try {
+<<<<<<< HEAD
             const response = await fetch('http://localhost:8000/api/products')
+=======
+            const response = await fetch(`${API_HOST}products`)
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
 
             if (response.ok) {
                 const data = await response.json()
@@ -42,9 +53,13 @@ function ProductsList() {
             console.error('Error fetching products data', error)
         }
         try {
+<<<<<<< HEAD
             const supplierResponse = await fetch(
                 'http://localhost:8000/api/profile'
             )
+=======
+            const supplierResponse = await fetch(`${API_HOST}profile`)
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
             if (supplierResponse.ok) {
                 const suppliersData = await supplierResponse.json()
                 const suppliersFiltered = suppliersData.filter(
@@ -70,7 +85,11 @@ function ProductsList() {
     const handleShowModal = async (product) => {
         try {
             const response = await fetch(
+<<<<<<< HEAD
                 `http://localhost:8000/api/products/${product.product_id}/`
+=======
+                `${API_HOST}products/${product.product_id}/`
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
             )
             if (response.ok) {
                 const data = await response.json()
@@ -121,7 +140,11 @@ function ProductsList() {
     const handleUpdateProduct = async () => {
         try {
             const response = await fetch(
+<<<<<<< HEAD
                 `http://localhost:8000/api/products/${selectedProduct.product_id}`,
+=======
+                `${API_HOST}products/${selectedProduct.product_id}`,
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
                 {
                     method: 'PUT',
                     headers: {
@@ -152,7 +175,11 @@ function ProductsList() {
                 deleted_flag: true,
             }
             const response = await fetch(
+<<<<<<< HEAD
                 `http://localhost:8000/api/products/${selectedProduct.product_id}`,
+=======
+                `${API_HOST}products/${selectedProduct.product_id}`,
+>>>>>>> 19e193e0f2d357e5bb364a4455c5e926d8f18ed8
                 {
                     method: 'PUT',
                     headers: {
